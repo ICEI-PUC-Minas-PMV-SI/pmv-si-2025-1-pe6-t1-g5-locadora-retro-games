@@ -53,10 +53,25 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 
 ### Requisitos Funcionais
 
-|ID    | Descrição do Requisito  | Prioridade |
-|------|-----------------------------------------|----|
-|RF-001| Permitir que o usuário cadastre tarefas | ALTA | 
-|RF-002| Emitir um relatório de tarefas no mês   | MÉDIA |
+| ID      | Descrição do Requisito                                                            | Prioridade |
+|---------|----------------------------------------------------------------------------------|------------|
+| RF-001  | Permitir que o usuário realize seu cadastro                                     | ALTA       |
+| RF-002  | Permitir que o usuário edite seus dados cadastrais                              | ALTA       |
+| RF-003  | Permitir que o usuário exclua sua conta                                         | ALTA       |
+| RF-004  | Permitir que o administrador cadastre novos jogos no sistema                   | ALTA       |
+| RF-005  | Permitir que o administrador edite os dados dos jogos cadastrados              | ALTA       |
+| RF-006  | Permitir que o administrador exclua jogos do catálogo                          | ALTA       |
+| RF-007  | Permitir que o usuário visualize a lista de jogos disponíveis                  | ALTA       |
+| RF-008  | Permitir que o usuário realize reservas de jogos disponíveis                   | ALTA       |
+| RF-009  | Permitir que o usuário cancele suas reservas                                   | ALTA       |
+| RF-010  | Impedir que um jogo já reservado seja alugado por outro usuário               | ALTA       |
+| RF-011  | Notificar o usuário sobre o status de sua reserva (confirmação, cancelamento) | MÉDIA      |
+| RF-012  | Permitir que o administrador visualize todas as reservas realizadas           | MÉDIA      |
+| RF-013  | Permitir que o usuário filtre os jogos por categoria, console ou ano         | MÉDIA      |
+| RF-014  | Permitir que o administrador gere relatórios de reservas realizadas           | MÉDIA      |
+| RF-015  | Enviar lembretes automáticos sobre a data de devolução dos jogos              | BAIXA      |
+| RF-016  | Permitir que o usuário consiga prorrogar apenas uma vez sua entrega          | BAIXA      |
+
 
 ### Requisitos não Funcionais
 
