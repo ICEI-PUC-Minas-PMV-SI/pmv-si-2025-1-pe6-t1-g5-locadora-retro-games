@@ -71,6 +71,10 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 | RF-014  | Permitir que o administrador gere relatórios de reservas realizadas           | MÉDIA      |
 | RF-015  | Enviar lembretes automáticos sobre a data de devolução dos jogos              | BAIXA      |
 | RF-016  | Permitir que o usuário consiga prorrogar apenas uma vez sua entrega          | BAIXA      |
+| RF-017  | Ao reservar um jogo pelo sistema, o jogo fica reservado temporariamente por 24h | ALTA       |
+| RF-018  | Se a reserva não for aprovada pelo administrador em até 24h, será cancelada   | ALTA       |
+| RF-019  | A reserva deve ser completada fisicamente na loja e aprovada pelo administrador | ALTA       |
+| RF-020  | Após a reserva, o usuário tem até X dias para usufruir da locação. Após isso, será enviado um e-mail de alerta | MÉDIA |
 
 
 ### Requisitos não Funcionais
