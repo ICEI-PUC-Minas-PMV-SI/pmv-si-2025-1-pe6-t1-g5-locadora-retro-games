@@ -79,10 +79,15 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 
 ### Requisitos não Funcionais
 
-|ID     | Descrição do Requisito  |Prioridade |
-|-------|-------------------------|----|
-|RNF-001| O sistema deve ser responsivo para rodar em um dispositivos móvel | MÉDIA | 
-|RNF-002| Deve processar requisições do usuário em no máximo 3s |  BAIXA | 
+Código	Descrição	Prioridade
+|RNF-001|	As páginas devem carregar em no máximo 6 segundos em condições normais de rede.	|MÉDIA|
+|RNF-002|	O banco de dados deve ser capaz de armazenar e recuperar informações de pelo menos X jogos sem degradação de performance.	|ALTA|
+|RNF-003|	O sistema deve utilizar autenticação segura com senha criptografada.	|ALTA|
+|RNF-005|	As informações dos usuários devem ser armazenadas.	|ALTA|
+|RNF-006|	O sistema deve bloquear a conta do usuário após 5 tentativas consecutivas de login mal-sucedidas.	|MÉDIA|
+|RNF-007|	A interface deve ser responsiva e acessível em dispositivos móveis e desktops.	|ALTA|
+|RNF-008|	O sistema deve ser intuitivo e de fácil uso, proporcionando uma experiência fluida para todos os usuários. Garantindo compatibilidade com leitores de tela e contrastes adequados.	|MÉDIA|
+|RNF-010|	O sistema deve ser compatível com os navegadores mais populares (Chrome, Firefox, Edge, Safari).	|ALTA|
 
 Com base nas Histórias de Usuário, enumere os requisitos da sua solução. Classifique esses requisitos em dois grupos:
 
