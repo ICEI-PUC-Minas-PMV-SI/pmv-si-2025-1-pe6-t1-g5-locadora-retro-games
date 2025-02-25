@@ -132,6 +132,27 @@ Definição de como o software é estruturado em termos dos componentes que faze
 
 ## Tecnologias Utilizadas
 
+# Tecnologias Utilizadas  
+
+Essas são as tecnologias utilizadas para o desenvolvimento de nosso sistema de aluguel de jogos, **Nintendin**:  
+
+## Frontend  
+O desenvolvimento da interface do usuário será feito com:  
+- **React**: Para a aplicação web, garantindo uma experiência interativa e responsiva.  
+- **React Native + Expo**: Para o desenvolvimento do aplicativo mobile.  
+- **JavaScript**: Como linguagem principal para o frontend.  
+
+## APIs  
+- **Axios**: Biblioteca para realizar requisições HTTP de maneira simplificada, permitindo chamadas à API do backend.  
+- **REST API**: O backend será estruturado para expor endpoints RESTful.  
+
+## Backend  
+- **Node.js + Express**: Para o desenvolvimento da API backend.  
+- **PostgreSQL**: Utilizado como banco de dados relacional.  
+
+## IDE e Ferramentas de Desenvolvimento  
+- **Visual Studio Code (VSCode)** será a principal IDE utilizada no desenvolvimento, devido à sua versatilidade e ampla compatibilidade com extensões.  
+
 Descreva aqui qual(is) tecnologias você vai usar para resolver o seu problema, ou seja, implementar a sua solução. Liste todas as tecnologias envolvidas, linguagens a serem utilizadas, serviços web, frameworks, bibliotecas, IDEs de desenvolvimento, e ferramentas.
 
 Apresente também uma figura explicando como as tecnologias estão relacionadas ou como uma interação do usuário com o sistema vai ser conduzida, por onde ela passa até retornar uma resposta ao usuário.
