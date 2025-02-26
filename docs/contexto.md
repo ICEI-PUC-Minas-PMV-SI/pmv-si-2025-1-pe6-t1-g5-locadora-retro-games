@@ -45,6 +45,8 @@ Adicione informações sobre o público-alvo por meio de uma descrição textual
 > - [Público-alvo: o que é, tipos, como definir seu público e exemplos](https://klickpages.com.br/blog/publico-alvo-o-que-e/)
 > - [Qual a diferença entre público-alvo e persona?](https://rockcontent.com/blog/diferenca-publico-alvo-e-persona/)
 
+<br>
+
 # Especificações do Projeto
 
 ## Requisitos
@@ -64,45 +66,32 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 | RF-007  | Permitir que o usuário visualize a lista de jogos disponíveis                  | ALTA       |
 | RF-008  | Permitir que o usuário realize reservas de jogos disponíveis                   | ALTA       |
 | RF-009  | Permitir que o usuário cancele suas reservas                                   | ALTA       |
-| RF-010  | Impedir que um jogo já reservado seja alugado por outro usuário               | ALTA       |
-| RF-011  | Notificar o usuário sobre o status de sua reserva (confirmação, cancelamento) | MÉDIA      |
-| RF-012  | Permitir que o administrador visualize todas as reservas realizadas           | MÉDIA      |
-| RF-013  | Permitir que o usuário filtre os jogos por categoria, console ou ano         | MÉDIA      |
-| RF-014  | Permitir que o administrador gere relatórios de reservas realizadas           | MÉDIA      |
-| RF-015  | Enviar lembretes automáticos sobre a data de devolução dos jogos              | BAIXA      |
-| RF-016  | Permitir que o usuário consiga prorrogar apenas uma vez sua entrega          | BAIXA      |
-| RF-017  | Ao reservar um jogo pelo sistema, o jogo fica reservado temporariamente por 24h | ALTA       |
-| RF-018  | Se a reserva não for aprovada pelo administrador em até 24h, será cancelada   | ALTA       |
-| RF-019  | A reserva deve ser completada fisicamente na loja e aprovada pelo administrador | ALTA       |
-| RF-020  | Após a reserva, o usuário tem até X dias para usufruir da locação. Após isso, será enviado um e-mail de alerta | MÉDIA |
+| RF-010  | Ao reservar um jogo pelo sistema, o jogo fica reservado temporariamente por 24h | ALTA       |
+| RF-011  | Impedir que um jogo já reservado seja alugado por outro usuário               | ALTA       |
+| RF-012  | Se a reserva não for aprovada pelo administrador em até 24h, será cancelada   | ALTA       |
+| RF-013  | A reserva deve ser completada fisicamente na loja e aprovada pelo administrador | ALTA       |
+| RF-014  | Notificar o usuário sobre o status de sua reserva (confirmação, cancelamento) | MÉDIA      |
+| RF-015  | Permitir que o administrador visualize todas as reservas realizadas           | MÉDIA      |
+| RF-016  | Permitir que o usuário filtre os jogos por categoria, console ou ano         | MÉDIA      |
+| RF-017  | Permitir que o administrador gere relatórios de reservas realizadas           | MÉDIA      |
+| RF-018  | Após a reserva, o usuário tem até X dias para usufruir da locação. Após isso, será enviado um e-mail de alerta | MÉDIA |
+| RF-019  | Enviar lembretes automáticos sobre a data de devolução dos jogos              | BAIXA      |
+| RF-020  | Permitir que o usuário consiga prorrogar apenas uma vez sua entrega          | BAIXA      |
+<br> 
 
+### Requisitos Não Funcionais
 
-### Requisitos não Funcionais
-
-Código	Descrição	Prioridade
-|RNF-001|	As páginas devem carregar em no máximo 6 segundos em condições normais de rede.	|MÉDIA|
-|RNF-002|	O banco de dados deve ser capaz de armazenar e recuperar informações de pelo menos X jogos sem degradação de performance.	|ALTA|
-|RNF-003|	O sistema deve utilizar autenticação segura com senha criptografada.	|ALTA|
-|RNF-005|	As informações dos usuários devem ser armazenadas.	|ALTA|
-|RNF-006|	O sistema deve bloquear a conta do usuário após 5 tentativas consecutivas de login mal-sucedidas.	|MÉDIA|
-|RNF-007|	A interface deve ser responsiva e acessível em dispositivos móveis e desktops.	|ALTA|
+| ID      | Descrição do Requisito Não Funcional                                             | Prioridade |
+|---------|----------------------------------------------------------------------------------|------------|
+|RNF-001|	O banco de dados deve ser capaz de armazenar e recuperar informações de pelo menos X jogos sem degradação de performance.	|ALTA|
+|RNF-002|	O sistema deve utilizar autenticação segura com senha criptografada.	|ALTA|
+|RNF-003|	As informações dos usuários devem ser armazenadas.	|ALTA|
+|RNF-004|	A interface deve ser responsiva e acessível em dispositivos móveis e desktops.	|ALTA|
+|RNF-005|	O sistema deve ser compatível com os navegadores mais populares (Chrome, Firefox, Edge, Safari).	|ALTA|
+|RNF-006|	As páginas devem carregar em no máximo 6 segundos em condições normais de rede.	|MÉDIA|
+|RNF-007|	O sistema deve bloquear a conta do usuário após 5 tentativas consecutivas de login mal-sucedidas.	|MÉDIA|
 |RNF-008|	O sistema deve ser intuitivo e de fácil uso, proporcionando uma experiência fluida para todos os usuários. Garantindo compatibilidade com leitores de tela e contrastes adequados.	|MÉDIA|
-|RNF-010|	O sistema deve ser compatível com os navegadores mais populares (Chrome, Firefox, Edge, Safari).	|ALTA|
 
-Com base nas Histórias de Usuário, enumere os requisitos da sua solução. Classifique esses requisitos em dois grupos:
-
-- [Requisitos Funcionais
- (RF)](https://pt.wikipedia.org/wiki/Requisito_funcional):
- correspondem a uma funcionalidade que deve estar presente na
-  plataforma (ex: cadastro de usuário).
-- [Requisitos Não Funcionais
-  (RNF)](https://pt.wikipedia.org/wiki/Requisito_n%C3%A3o_funcional):
-  correspondem a uma característica técnica, seja de usabilidade,
-  desempenho, confiabilidade, segurança ou outro (ex: suporte a
-  dispositivos iOS e Android).
-Lembre-se que cada requisito deve corresponder à uma e somente uma
-característica alvo da sua solução. Além disso, certifique-se de que
-todos os aspectos capturados nas Histórias de Usuário foram cobertos.
 
 ## Restrições
 
@@ -129,33 +118,25 @@ Definição de como o software é estruturado em termos dos componentes que faze
 
 ![arq](https://github.com/user-attachments/assets/b9402e05-8445-47c3-9d47-f11696e38a3d)
 
+<br> 
 
-## Tecnologias Utilizadas
-
-# Tecnologias Utilizadas  
+# Tecnologias Utilizadas 
 
 Essas são as tecnologias utilizadas para o desenvolvimento de nosso sistema de aluguel de jogos, **Nintendin**:  
 
-## Frontend  
-O desenvolvimento da interface do usuário será feito com:  
-- **React**: Para a aplicação web, garantindo uma experiência interativa e responsiva.  
-- **React Native + Expo**: Para o desenvolvimento do aplicativo mobile.  
-- **JavaScript**: Como linguagem principal para o frontend.  
+| Atuação | Linguagem | Descrição |                                  
+|---------|-----------|-----------|
+| **Front-End**  | **`React`** <br><br>  **`React Native + Expo`** <br><br> **`JavaScript`** | Para a aplicação web, garantindo uma experiência interativa e responsiva. <br><br> Para o desenvolvimento do aplicativo mobile. <br><br>  Como linguagem principal para o frontend.| 
+| **APIs**  | **`Axios`** <br><br> **`REST API`**| Biblioteca para realizar requisições HTTP de maneira simplificada, permitindo chamadas à API do backend. <br><br> O backend será estruturado para expor endpoints RESTful. | 
+| **Back-End**  | **`Node.js + Express`** <br><br> **`PostgreSQL`** |  Para o desenvolvimento da API backend. <br><br> Utilizado como banco de dados relacional.|
 
-## APIs  
-- **Axios**: Biblioteca para realizar requisições HTTP de maneira simplificada, permitindo chamadas à API do backend.  
-- **REST API**: O backend será estruturado para expor endpoints RESTful.  
+| Atuação | Ferramenta de Desenvolvimento | Descrição |                                  
+|---------|-----------|-----------|
+| **IDE** | **`Visual Studio Code (VSCode)`** | Será a principal IDE utilizada no desenvolvimento, devido à sua versatilidade e ampla compatibilidade com extensões.  
 
-## Backend  
-- **Node.js + Express**: Para o desenvolvimento da API backend.  
-- **PostgreSQL**: Utilizado como banco de dados relacional.  
 
-## IDE e Ferramentas de Desenvolvimento  
-- **Visual Studio Code (VSCode)** será a principal IDE utilizada no desenvolvimento, devido à sua versatilidade e ampla compatibilidade com extensões.  
-
-Descreva aqui qual(is) tecnologias você vai usar para resolver o seu problema, ou seja, implementar a sua solução. Liste todas as tecnologias envolvidas, linguagens a serem utilizadas, serviços web, frameworks, bibliotecas, IDEs de desenvolvimento, e ferramentas.
-
-Apresente também uma figura explicando como as tecnologias estão relacionadas ou como uma interação do usuário com o sistema vai ser conduzida, por onde ela passa até retornar uma resposta ao usuário.
+>Descreva aqui qual(is) tecnologias você vai usar para resolver o seu problema, ou seja, implementar a sua solução. Liste todas as tecnologias envolvidas, linguagens a serem utilizadas, serviços web, frameworks, bibliotecas, IDEs de desenvolvimento, e ferramentas.
+>Apresente também uma figura explicando como as tecnologias estão relacionadas ou como uma interação do usuário com o sistema vai ser conduzida, por onde ela passa até retornar uma resposta ao usuário.
 
 ## Hospedagem
 
