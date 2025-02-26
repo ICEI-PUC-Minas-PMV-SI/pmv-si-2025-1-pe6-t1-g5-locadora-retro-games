@@ -57,28 +57,18 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 
 ### Requisitos Funcionais
 
-| ID      | Descrição do Requisito                                                            | Prioridade |
-|---------|----------------------------------------------------------------------------------|------------|
-| RF-001  | Permitir que o usuário realize seu cadastro                                     | ALTA       |
-| RF-002  | Permitir que o usuário edite seus dados cadastrais                              | ALTA       |
-| RF-003  | Permitir que o usuário exclua sua conta                                         | ALTA       |
-| RF-004  | Permitir que o administrador cadastre novos jogos no sistema                   | ALTA       |
-| RF-005  | Permitir que o administrador edite os dados dos jogos cadastrados              | ALTA       |
-| RF-006  | Permitir que o administrador exclua jogos do catálogo                          | ALTA       |
-| RF-007  | Permitir que o usuário visualize a lista de jogos disponíveis                  | ALTA       |
-| RF-008  | Permitir que o usuário realize reservas de jogos disponíveis                   | ALTA       |
-| RF-009  | Permitir que o usuário cancele suas reservas                                   | ALTA       |
-| RF-010  | Ao reservar um jogo pelo sistema, o jogo fica reservado temporariamente por 24h | ALTA       |
-| RF-011  | Impedir que um jogo já reservado seja alugado por outro usuário               | ALTA       |
-| RF-012  | Se a reserva não for aprovada pelo administrador em até 24h, será cancelada   | ALTA       |
-| RF-013  | A reserva deve ser completada fisicamente na loja e aprovada pelo administrador | ALTA       |
-| RF-014  | Notificar o usuário sobre o status de sua reserva (confirmação, cancelamento) | MÉDIA      |
-| RF-015  | Permitir que o administrador visualize todas as reservas realizadas           | MÉDIA      |
-| RF-016  | Permitir que o usuário filtre os jogos por categoria, console ou ano         | MÉDIA      |
-| RF-017  | Permitir que o administrador gere relatórios de reservas realizadas           | MÉDIA      |
-| RF-018  | Após a reserva, o usuário tem até X dias para usufruir da locação. Após isso, será enviado um e-mail de alerta | MÉDIA |
-| RF-019  | Enviar lembretes automáticos sobre a data de devolução dos jogos              | BAIXA      |
-| RF-020  | Permitir que o usuário consiga prorrogar apenas uma vez sua entrega          | BAIXA      |
+| ID      | Descrição do Requisito                                                                                      | Prioridade | Responsável  |
+|---------|------------------------------------------------------------------------------------------------------------|------------|--------------|
+| RF-001  | Permitir que o usuário realize seu cadastro, edite seus dados cadastrais e exclua sua conta.               | ALTA       | Sarah        |
+| RF-002  | Permitir que o administrador cadastre, edite e exclua jogos do catálogo.                                   | ALTA       | Matheus      |
+| RF-003  | Permitir que o usuário visualize a lista de jogos disponíveis e utilize filtros por categoria, console ou ano. | ALTA       | Julia        |
+| RF-004  | Permitir que o usuário realize e cancele reservas de jogos disponíveis.                                    | ALTA       | Bianka       |
+| RF-005  | Garantir que, ao reservar um jogo, ele fique indisponível por até 24h até a aprovação do administrador. Se a reserva não for aprovada nesse período, ela será automaticamente cancelada. | ALTA       | Bayer        |
+| RF-006  | A reserva deve ser finalizada fisicamente na loja e aprovada pelo administrador no sistema.                | ALTA       | Guilherme    |
+| RF-007  | Notificar o usuário sobre o status de sua reserva (confirmação, cancelamento, etc.) e enviar lembretes sobre a data de devolução dos jogos. | MÉDIA       | Michael      |
+| RF-008  | Após a reserva, o usuário tem até X dias para usufruir da locação. Após isso, será enviado um e-mail de alerta. | MÉDIA       | Matheus      |
+| RF-009  | Permitir que o administrador visualize todas as reservas realizadas e gere relatórios de reservas.         | MÉDIA       | Bayer        |
+| RF-010  | Permitir que o usuário consiga prorrogar apenas uma vez sua entrega.                                       | BAIXA       | Guilherme    |
 <br> 
 
 ### Requisitos Não Funcionais
