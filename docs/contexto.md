@@ -139,12 +139,15 @@ Essas são as tecnologias utilizadas para o desenvolvimento de nosso sistema de 
 >Apresente também uma figura explicando como as tecnologias estão relacionadas ou como uma interação do usuário com o sistema vai ser conduzida, por onde ela passa até retornar uma resposta ao usuário.
 
 ## Hospedagem
-
-Explique como a hospedagem e o lançamento da plataforma foi feita.
-
-> **Links Úteis**:
->
-> - [Website com GitHub Pages](https://pages.github.com/)
-> - [Programação colaborativa com Repl.it](https://repl.it/)
-> - [Getting Started with Heroku](https://devcenter.heroku.com/start)
-> - [Publicando Seu Site No Heroku](http://pythonclub.com.br/publicando-seu-hello-world-no-heroku.html)
+- **Frontend** - Vercel
+> - Suporte nativo para React.
+> - Deploy fácil (basta conectar com Github).
+> - Domínio gratuito (exemplo.vercel.app).
+> - CI/CD integrado (atualiza ao dar push no repositório).
+- **Backend** - Render
+> - Hospeda APIs Node.js gratuitamente.
+> - Banco de dados PostgreSQL grátis.
+> - Embora desligue após períodos de inatividade, não é um problema tendo em vista o contexto da aplicação.
+- **Mobile** - Expo
+> - Publicação no Expo Go para rodar em dispositivos físicos sem precisar de build nativo.
+> - Expo EAS pode ser uma opção caso necessário, embora a hospedagem gratuita tenha limitações.
