@@ -1,27 +1,35 @@
 # Introdução
 
-Texto descritivo com a visão geral do projeto abordado. Inclui o contexto, o problema, os objetivos, a justificativa e o público-alvo do projeto.
+Nos últimos anos, o mercado de jogos retrô tem crescido significativamente, impulsionado tanto pela nostalgia dos jogadores veteranos quanto pelo interesse de novas gerações em experimentar clássicos que marcaram época. No entanto, a disponibilidade desses jogos ainda é um desafio, pois muitas locadoras físicas foram descontinuadas e as opções digitais nem sempre oferecem uma experiência completa.
+
+Diante desse cenário, este projeto tem como objetivo desenvolver uma aplicação híbrida (mobile e web) para a locação de jogos retrô, proporcionando aos usuários um acesso prático e organizado a um catálogo diversificado. A plataforma permitirá que os clientes explorem títulos, realizem reservas e acompanhem suas locações de forma intuitiva e eficiente.
+
 
 ## Problema
-Nesse momento você deve apresentar o problema que a sua aplicação deve  resolver. No entanto, não é a hora de comentar sobre a aplicação.
 
-Descreva também o contexto em que essa aplicação será usada, se  houver: empresa, tecnologias, etc. Novamente, descreva apenas o que de  fato existir, pois ainda não é a hora de apresentar requisitos  detalhados ou projetos.
+A escassez de locadoras físicas e a dificuldade de acesso a jogos retrô em formato físico limitam a experiência de muitos entusiastas de videogames clássicos. Além disso, a falta de um sistema digital eficiente para gerenciar empréstimos e devoluções dificulta tanto a administração de acervos particulares quanto a experiência do usuário final.
 
-Nesse momento, o grupo pode optar por fazer uso  de ferramentas como Design Thinking, que permite um olhar de ponta a ponta para o problema.
-
-> **Links Úteis**:
-> - [Objetivos, Problema de pesquisa e Justificativa](https://medium.com/@versioparole/objetivos-problema-de-pesquisa-e-justificativa-c98c8233b9c3)
-> - [Matriz Certezas, Suposições e Dúvidas](https://medium.com/educa%C3%A7%C3%A3o-fora-da-caixa/matriz-certezas-suposi%C3%A7%C3%B5es-e-d%C3%BAvidas-fa2263633655)
-> - [Brainstorming](https://www.euax.com.br/2018/09/brainstorming/)
+O problema central que buscamos solucionar é a falta de uma plataforma moderna e acessível para a locação de jogos retrô, permitindo que os usuários encontrem e reservem títulos de forma prática e segura, seja pelo celular ou pelo computador.
 
 ## Objetivos
 
-Aqui você deve descrever os objetivos do trabalho indicando que o objetivo geral é desenvolver um software para solucionar o problema apresentado acima. 
+**Objetivo Geral**
 
-Apresente também alguns (pelo menos 2) objetivos específicos dependendo de onde você vai querer concentrar a sua prática investigativa, ou como você vai aprofundar no seu trabalho.
- 
-> **Links Úteis**:
-> - [Objetivo geral e objetivo específico: como fazer e quais verbos utilizar](https://blog.mettzer.com/diferenca-entre-objetivo-geral-e-objetivo-especifico/)
+Desenvolver uma aplicação web e mobile que facilite a locação de jogos retrô, proporcionando uma interface intuitiva para a busca, reserva e administração dos jogos disponíveis.
+
+**Objetivos Específicos**
+
+- Criar um sistema de cadastro de usuários e locações, garantindo segurança e praticidade no processo de aluguel.
+
+- Implementar um catálogo interativo com informações detalhadas sobre os jogos disponíveis.
+
+- Desenvolver funcionalidades para reserva e devolução de jogos, otimizando a gestão do acervo.
+
+- Criar notificações e lembretes para usuários sobre prazos de locação.
+
+- Garantir a compatibilidade da aplicação em diferentes dispositivos, proporcionando uma experiência fluida tanto em web quanto mobile.
+
+
 
 ## Justificativa
 
