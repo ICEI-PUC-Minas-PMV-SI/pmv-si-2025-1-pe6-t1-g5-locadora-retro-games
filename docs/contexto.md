@@ -84,10 +84,14 @@ todos os aspectos capturados nas Histórias de Usuário foram cobertos.
 
 O projeto está restrito pelos itens apresentados na tabela a seguir.
 
-|ID| Restrição                                             |
-|--|-------------------------------------------------------|
-|01| O projeto deverá ser entregue até o final do semestre |
-|02| Não pode ser desenvolvido um módulo de backend        |
+|ID| Restrição                                                                                               |
+|--|---------------------------------------------------------------------------------------------------------|
+|01| O sistema deve estar disponível 24 horas por dia                                                        |
+|02| O sistema deve permitir no máximo 3 tentativas de login antes de bloquear o usuário por 5 minutos       |
+|03| O sistema deve permitir que um usuário compre no máximo 5 unidades do mesmo jogo por pedido             |
+|04| Apenas usuários cadastrados podem deixar avaliações nos produtos                                        |
+|05| O sistema deve permitir diferentes métodos de pagamento, incluindo cartão de crédito e boleto           |
+|06| O site deve ter um layout compatível com celulares e tablets                                            |
 
 Enumere as restrições à sua solução. Lembre-se de que as restrições geralmente limitam a solução candidata.
 
@@ -97,7 +101,15 @@ Enumere as restrições à sua solução. Lembre-se de que as restrições geral
 
 # Catálogo de Serviços
 
-Descreva aqui todos os serviços que serão disponibilizados pelo seu projeto, detalhando suas características e funcionalidades.
+|ID|	Serviço	Descrição                                                                                    |
+|--|------------------------------------------------------------------------------------------------------|
+|Catálogo de Jogos|	Permite aos clientes visualizar e pesquisar jogos disponíveis para compra.            |
+|Carrinho de Compras|	Permite adicionar, remover e modificar itens antes da finalização da compra.        |
+|Processamento de Pagamento|	Garante pagamentos seguros via cartão de crédito, boleto e PIX.              |
+|Gestão de Pedidos|	Registra e acompanha pedidos, permitindo ao usuário visualizar o status da compra.    |
+|Avaliação de Produtos|	Usuários cadastrados podem deixar avaliações e comentários nos jogos.             |
+|Controle de Estoque|	Atualiza automaticamente a quantidade de produtos disponíveis após cada compra.     |
+|Suporte ao Cliente|	Canal de atendimento para dúvidas, trocas e devoluções.                              |
 
 # Arquitetura da Solução
 
