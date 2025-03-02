@@ -128,9 +128,9 @@ Descreva aqui todos os serviços que serão disponibilizados pelo seu projeto, d
 
 # Arquitetura da Solução
 
-Definição de como o software é estruturado em termos dos componentes que fazem parte da solução e do ambiente de hospedagem da aplicação.
+A imagem abaixo representa como a solução será arquitetada, visando atender os requisitos de maneira otimizada, tanto tecnologicamente quanto do conhecimento e domínio da equipe no uso das mesmas.
 
-![arq](https://github.com/user-attachments/assets/b9402e05-8445-47c3-9d47-f11696e38a3d)
+![arq](./img/arquitetura.png)
 
 <br> 
 
