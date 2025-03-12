@@ -90,16 +90,19 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 
 ### Requisitos Não Funcionais
 
-| ID      | Descrição do Requisito Não Funcional                                             | Prioridade |
-|---------|----------------------------------------------------------------------------------|------------|
-|RNF-001|	O banco de dados deve ser capaz de armazenar e recuperar informações de pelo menos X jogos sem degradação de performance.	|ALTA|
-|RNF-002|	O sistema deve utilizar autenticação segura com senha criptografada.	|ALTA|
-|RNF-003|	As informações dos usuários devem ser armazenadas.	|ALTA|
-|RNF-004|	A interface deve ser responsiva e acessível em dispositivos móveis e desktops.	|ALTA|
-|RNF-005|	O sistema deve ser compatível com os navegadores mais populares (Chrome, Firefox, Edge, Safari).	|ALTA|
-|RNF-006|	As páginas devem carregar em no máximo 6 segundos em condições normais de rede.	|MÉDIA|
-|RNF-007|	O sistema deve bloquear a conta do usuário após 5 tentativas consecutivas de login mal-sucedidas.	|MÉDIA|
-|RNF-008|	O sistema deve ser intuitivo e de fácil uso, proporcionando uma experiência fluida para todos os usuários. Garantindo compatibilidade com leitores de tela e contrastes adequados.	|MÉDIA|
+| ID      | Descrição do Requisito Não Funcional                                                                 | Prioridade | Nome                                     |
+|---------|------------------------------------------------------------------------------------------------------|------------|------------------------------------------|
+| RNF-001 | O tempo de resposta das páginas e ações do sistema não deve ultrapassar 5 segundos.                   | ALTA       | Guilherme Monteiro Barbosa de Jesus     |
+| RNF-002 | O banco de dados deve suportar pelo mais de 10.000 usuários e 5.000 jogos cadastrados simultaneamente.  | ALTA       | Sarah Sousa Saud                        |
+| RNF-003 | A reserva deve ser processada em tempo real, garantindo que jogos reservados não sejam alugados por outros usuários. | ALTA       | Michael Henrique Ferreira Dias          |
+| RNF-004 | O sistema deve enviar notificações automáticas por e-mail e/ou SMS sobre o status da reserva.         | MÉDIA      | Bianka Dias Tenório D'Albuquerque       |
+| RNF-005 | A interface do sistema deve ser fácil de usar e adaptável para computadores e celulares.              | MÉDIA      | Matheus de Oliveira Souza Santos        |
+| RNF-006 | O sistema deve ser compatível com os navegadores Chrome, Firefox e Edge.                              | MÉDIA      | Guilherme Campos Bayerl Coelho          |
+| RNF-007 | O sistema deve armazenar um histórico das mudanças feitas em jogos, reservas e contas de usuário.     | MÉDIA      | Júlia Souza de Rezende                  |
+| RNF-008 | O sistema deve utilizar autenticação segura com senha criptografada.                                  | ALTA       | Guilherme Monteiro Barbosa de Jesus     |
+| RNF-009 | O sistema deve permitir que o administrador configure prazos e regras de locação facilmente.         | BAIXA      | Sarah Sousa Saud                        |
+| RNF-010 | O sistema deve ser intuitivo e de fácil uso, proporcionando uma experiência fluida para todos os usuários, garantindo compatibilidade com leitores de tela e contrastes adequados. | MÉDIA      | Michael Henrique Ferreira Dias          |
+| RNF-011 | O sistema deve bloquear a conta do usuário após 5 tentativas consecutivas de login mal-sucedidas.     | ALTA       | Bianka Dias Tenório D'Albuquerque       |
 
 <br>
 
