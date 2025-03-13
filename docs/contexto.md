@@ -1,31 +1,34 @@
 # Introdução
 
-Texto descritivo com a visão geral do projeto abordado. Inclui o contexto, o problema, os objetivos, a justificativa e o público-alvo do projeto.
+Nos últimos anos, o mercado de jogos retrô tem crescido significativamente, impulsionado tanto pela nostalgia dos jogadores veteranos quanto pelo interesse de novas gerações em experimentar clássicos que marcaram época. No entanto, a disponibilidade desses jogos ainda é um desafio, pois muitas locadoras físicas foram descontinuadas e as opções digitais nem sempre oferecem uma experiência completa.
+Diante desse cenário, este projeto tem como objetivo desenvolver uma aplicação híbrida (mobile e web) para a locação de jogos retrô, proporcionando aos usuários um acesso prático e organizado a um catálogo diversificado. A plataforma permitirá que os clientes explorem títulos, realizem reservas e acompanhem suas locações de forma intuitiva e eficiente.
 
 <br>
 
-## Problema
-Nesse momento você deve apresentar o problema que a sua aplicação deve  resolver. No entanto, não é a hora de comentar sobre a aplicação.
+## Problematica
 
-Descreva também o contexto em que essa aplicação será usada, se  houver: empresa, tecnologias, etc. Novamente, descreva apenas o que de  fato existir, pois ainda não é a hora de apresentar requisitos  detalhados ou projetos.
-
-Nesse momento, o grupo pode optar por fazer uso  de ferramentas como Design Thinking, que permite um olhar de ponta a ponta para o problema.
-
-> **Links Úteis**:
-> - [Objetivos, Problema de pesquisa e Justificativa](https://medium.com/@versioparole/objetivos-problema-de-pesquisa-e-justificativa-c98c8233b9c3)
-> - [Matriz Certezas, Suposições e Dúvidas](https://medium.com/educa%C3%A7%C3%A3o-fora-da-caixa/matriz-certezas-suposi%C3%A7%C3%B5es-e-d%C3%BAvidas-fa2263633655)
-> - [Brainstorming](https://www.euax.com.br/2018/09/brainstorming/)
+Nos dias de hoje é possível encontrar jogos retro digitalmente para se jogar em emuladores, mas muitas pessoas tem o desejo de jogar esses jogos em seus consoles de origem de forma física. A escassez de e dificuldade de acesso a jogos retrô em formato físico limitam a experiência de muitos entusiastas de videogames clássicos. Jogos e consoles de décadas passadas nos dias de hoje se encontram em uma escassez devido a sua falta de produção, o que gera uma de supervalorização de custo. Isso faz com que seu valor de compra fique em valores orbitantes dificultando o a possibilidade de aquisição.
+O problema central que buscamos solucionar é a facilitação de acesso ao público dessas mídias físicas dos jogos e dos consoles, fazendo com que todas as pessoas possam desfrutar essa experiência.
 
 <br>
 
 ## Objetivos
 
-Aqui você deve descrever os objetivos do trabalho indicando que o objetivo geral é desenvolver um software para solucionar o problema apresentado acima. 
+### 3.1 Objetivo Geral
 
-Apresente também alguns (pelo menos 2) objetivos específicos dependendo de onde você vai querer concentrar a sua prática investigativa, ou como você vai aprofundar no seu trabalho.
- 
-> **Links Úteis**:
-> - [Objetivo geral e objetivo específico: como fazer e quais verbos utilizar](https://blog.mettzer.com/diferenca-entre-objetivo-geral-e-objetivo-especifico/)
+- Desenvolver uma aplicação web e mobile que facilite a locação de jogos retrô, proporcionando uma interface intuitiva para a busca, reserva e administração dos jogos disponíveis.
+
+### 3.2 Objetivos Específicos
+
+- Criar um sistema de cadastro de usuários e locações, garantindo segurança e praticidade no processo de aluguel.
+
+- Implementar um catálogo interativo com informações detalhadas sobre os jogos disponíveis.
+
+- Desenvolver funcionalidades para reserva e devolução de jogos, otimizando a gestão do acervo.
+
+- Criar notificações e lembretes para usuários sobre prazos de locação.
+
+- Garantir a compatibilidade da aplicação em diferentes dispositivos, proporcionando uma experiência fluida tanto em web quanto mobile.
 
 <br>
 
@@ -108,12 +111,6 @@ O projeto está restrito pelos itens apresentados na tabela a seguir.
 |04| Apenas usuários cadastrados podem deixar avaliações nos produtos                                        |
 |05| O sistema deve permitir diferentes métodos de pagamento, incluindo cartão de crédito e boleto           |
 |06| O site deve ter um layout compatível com celulares e tablets                                            |
-
-Enumere as restrições à sua solução. Lembre-se de que as restrições geralmente limitam a solução candidata.
-
-> **Links Úteis**:
-> - [O que são Requisitos Funcionais e Requisitos Não Funcionais?](https://codificar.com.br/requisitos-funcionais-nao-funcionais/)
-> - [O que são requisitos funcionais e requisitos não funcionais?](https://analisederequisitos.com.br/requisitos-funcionais-e-requisitos-nao-funcionais-o-que-sao/)
 
 <br>
 
