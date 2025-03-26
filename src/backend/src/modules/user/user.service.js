@@ -1,4 +1,4 @@
-import prisma from "./infra/prisma/prisma.js";
+import prisma from "../../infra/prisma/prisma.js";
 
 const ExampleService = {};
 
@@ -10,9 +10,10 @@ ExampleService.list = async () => {
 ExampleService.create = async (body) => {
     await prisma.user.create({
         data: {
-          name: req.body.name,
-          email: req.body.email,
-          age: req.body.age,
+          name: body.name,
+          email: body.email,
+          password: body.password,
+          cpf: body.cpf
         },
       });
 };
