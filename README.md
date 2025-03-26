@@ -16,7 +16,8 @@
 <div align="justify">
 
 # Introdução
-  Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo desenvolvido.
+
+Este projeto tem como objetivo desenvolver uma aplicação híbrida (mobile e web) para a locação de jogos retrô, proporcionando aos usuários um acesso prático e organizado a um catálogo diversificado. A plataforma permitirá que os clientes explorem títulos, realizem reservas e acompanhem suas locações de forma intuitiva e eficiente.
 
 ## Integrantes
 
