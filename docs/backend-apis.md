@@ -4,7 +4,10 @@ _O planejamento de uma aplicação de APIS Web é uma etapa fundamental para o s
 
 ### Descrição do Projeto:
 
-O projeto tem como finalidade desenvolver uma plataforma para gerenciar aluguéis de mídias físicas e consoles em uma locadora de jogos retrô. Buscando tornar acessível esta coletânia ao público-alvo, o processo de aluguel tende a ser realizado de forma objetiva e eficiente. A aplicação, utilizando APIs e Web Services, permitirá que a plataforma possua um gerenciamento do estoque de jogos e consoles; a realização de reservas, devoluções e cancelamentos; o cadastro, edição e eclusão de clientes; e integração com soluções de pagamento.
+<p align="justify">
+O projeto tem como finalidade desenvolver uma plataforma para gerenciar aluguéis de mídias físicas e consoles em uma locadora de jogos retrô. Buscando tornar acessível esta coletânea ao público-alvo, o processo de aluguel tende a ser realizado de forma objetiva e eficiente. A aplicação, utilizando APIs e Web Services, permitirá que a plataforma possua um gerenciamento do estoque de jogos e consoles; a realização de reservas, devoluções e cancelamentos; o cadastro, edição e exclusão de clientes; e integração com soluções de pagamento.
+</p>
+<br>
 
 ## Objetivos da API
 
@@ -27,12 +30,16 @@ O objetivo é criar uma ferramenta prática, segura e moderna, que facilite a ge
 ## Modelagem da Aplicação
 [Descreva a modelagem da aplicação, incluindo a estrutura de dados, diagramas de classes ou entidades, e outras representações visuais relevantes.]
 
+<br>
 
 ## Tecnologias Utilizadas
+Para o desenvolvimento do sistema foram utilizadas as seguintes tecnologias:
 
-Existem muitas tecnologias diferentes que podem ser usadas para desenvolver APIs Web. A tecnologia certa para o seu projeto dependerá dos seus objetivos, dos seus clientes e dos recursos que a API deve fornecer.
+- **Node.js:** Tecnologia utilizada para o desenvolvimendo do Back-End.
+- **Express e Prisma:** Tecnologia utilizada para o uso de Frameworks.
+- **PostgreSQL:** Tecnologia utilizada para a criação e armazenamento do Banco de Dados.
 
-[Lista das tecnologias principais que serão utilizadas no projeto.]
+<br>
 
 ## API Endpoints
 
