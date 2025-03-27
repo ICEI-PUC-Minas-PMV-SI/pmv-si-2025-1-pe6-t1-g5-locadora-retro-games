@@ -4,14 +4,25 @@ _O planejamento de uma aplicação de APIS Web é uma etapa fundamental para o s
 
 ### Descrição do Projeto:
 
-O projeto tem como finalidade desenvolver uma plataforma para gerenciar aluguéis de mídias físicas e consoles em uma locadora de jogos retrô. Buscando tornar acessível esta coletânia ao público-alvo, o processo de aluguel tende a ser realizado de forma objetiva e eficiente. A aplicação, utilizando APIs e Web Services, permitirá que a plataforma possua um gerenciamento do estoque de jogos e consoles; a realização de reservas, devoluções e cancelamentos; o cadastro, edição e eclusão de clientes; e integração com soluções de pagamento. O objetivo é criar uma ferramenta prática, segura e moderna, que facilite a gestão do negócio e proporcione um atendimento de qualidade aos apaixonados por jogos clássicos.
+O projeto tem como finalidade desenvolver uma plataforma para gerenciar aluguéis de mídias físicas e consoles em uma locadora de jogos retrô. Buscando tornar acessível esta coletânia ao público-alvo, o processo de aluguel tende a ser realizado de forma objetiva e eficiente. A aplicação, utilizando APIs e Web Services, permitirá que a plataforma possua um gerenciamento do estoque de jogos e consoles; a realização de reservas, devoluções e cancelamentos; o cadastro, edição e eclusão de clientes; e integração com soluções de pagamento.
 
 ## Objetivos da API
 
-O primeiro passo é definir os objetivos da sua API. O que você espera alcançar com ela? Você quer que ela seja usada por clientes externos ou apenas por aplicações internas? Quais são os recursos que a API deve fornecer?
+O objetivo é criar uma ferramenta prática, segura e moderna, que facilite a gestão do negócio e proporcione um atendimento de qualidade aos apaixonados por jogos clássicos. A aplicação deve ser intuitiva tanto para os administradores quanto para os clientes. 
 
-[Inclua os objetivos da sua api.]
+- **Usuários**
+  - Administrador: Permitir erenciamento das contas de usuários.
+  - Cliente: Permitir criar e gerenciar a própria conta.
+  
+- **Catálogo**
+  - Administrador: Permitir adição, remoção e gerenciamento do controle de estoque dos jogos e consoles ofertados.
+  - Cliente: Permitir visualização e adição das unidades de interesse ao carrinho de reserva.
+    
+- **Reserva**
+  - Administrador: Permitir a aprovação e cancelamento da reserva.
+  - Cliente: Permitir a realização de reservas das unidades de interesse do catálogo.
 
+<br>
 
 ## Modelagem da Aplicação
 [Descreva a modelagem da aplicação, incluindo a estrutura de dados, diagramas de classes ou entidades, e outras representações visuais relevantes.]
