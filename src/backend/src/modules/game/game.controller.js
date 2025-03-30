@@ -1,11 +1,11 @@
-import UserService from "./user.service.js";
+import GameService from "./game.service.js";
 
-const UserController = {};
+const GameController = {};
 
 // get, post, put, patch, etc ...
-UserController.getUser = async (req, res) => {
+GameController.getGame = async (req, res) => {
   try {
-    const data = await UserService.list();
+    const data = await GameService.list();
     res.status(200).json(data);
   } catch (error) {
     console.error(error);
@@ -13,7 +13,7 @@ UserController.getUser = async (req, res) => {
   }
 };
 
-UserController.insertUser = async (req, res) => {
+GameController.insertGame = async (req, res) => {
   try {
     const body = {
       name: req.body.name,
@@ -21,14 +21,14 @@ UserController.insertUser = async (req, res) => {
       cpf: req.body.cpf,
       password: req.body.password,
     };
-    await UserService.create(body);
-    res.status(200).json("User created successfully");
+    await GameService.create(body);
+    res.status(200).json("Game created successfully");
   } catch (error) {
     console.error(error);
     res.status(500).json("Internal server error");
   }
 };
-UserController.updateUser = async (req, res) => {
+GameController.updateGame = async (req, res) => {
   try {
     const body = {
       id: Number(req.params.id),
@@ -39,8 +39,8 @@ UserController.updateUser = async (req, res) => {
 
     };
     console.log(req.body);
-    await UserService.update(body);
-    res.status(200).json("User updated successfully");
+    await GameService.update(body);
+    res.status(200).json("Game updated successfully");
   } catch (error) {
     console.error(error);
     res.status(500).json("Internal server error");
@@ -48,7 +48,7 @@ UserController.updateUser = async (req, res) => {
 };
 
 
-UserController.updateUser = async (req, res) => {
+GameController.updateGame = async (req, res) => {
     try {
       const body = {
         id: Number(req.params.id),
@@ -59,25 +59,25 @@ UserController.updateUser = async (req, res) => {
   
       };
       console.log(req.body);
-      await UserService.update(body);
-      res.status(200).json("User updated successfully");
+      await GameService.update(body);
+      res.status(200).json("Game updated successfully");
     } catch (error) {
       console.error(error);
       res.status(500).json("Internal server error");
     }
   };
   
-UserController.deleteUser = async (req, res) => {
+GameController.deleteGame = async (req, res) => {
   try {
     const body = {
       id: Number(req.params.id),
     };
-    await UserService.delete(body);
-    res.status(200).json("User deleted successfully");
+    await GameService.delete(body);
+    res.status(200).json("Game deleted successfully");
   } catch (error) {
     console.error(error);
     res.status(500).json("Internal server error");
   }
 };
 
-export default UserController;
+export default GameController;

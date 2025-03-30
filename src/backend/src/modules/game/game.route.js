@@ -1,12 +1,12 @@
 import express from 'express';
-import UserController from './user.controller.js';
+import GameController from './game.controller.js';
 
-const UserRouter = express.Router();
+const GameRouter = express.Router();
 
 // Define your routes here
-UserRouter.get('/', UserController.getUser);
-UserRouter.post('/', UserController.insertUser);
-UserRouter.put('/:id', UserController.updateUser);
-UserRouter.delete('/:id', UserController.deleteUser);
+GameRouter.get('/', GameController.getGame);
+GameRouter.post('/', GameController.insertGame);
+GameRouter.put('/:id', GameController.updateGame);
+GameRouter.delete('/:id', GameController.deleteGame);
 
-export default UserRouter;
+export default GameRouter;

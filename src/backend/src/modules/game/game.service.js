@@ -3,34 +3,32 @@ import prisma from "../../infra/prisma/prisma.js";
 const ExampleService = {};
 
 ExampleService.list = async () => {
-  const result = await prisma.user.findMany();
+  const result = await prisma.game.findMany();
   return result;
 };
 
 ExampleService.create = async (body) => {
-  await prisma.user.create({
+  await prisma.game.create({
     data: {
       name: body.name,
-      email: body.email,
-      password: body.password,
-      cpf: body.cpf,
+      price: body.price,
+      description: body.description
     },
   });
 };
 ExampleService.update = async (body) => {
-  await prisma.user.update({
+  await prisma.game.update({
     where: { id: body.id },
     data: {
       name: body.name,
-      email: body.email,
-      password: body.password,
-      cpf: body.cpf,
+      price: body.price,
+      description: body.descriptionw
     },
   });
 };
 
 ExampleService.delete = async (body) => {
-  await prisma.user.delete({
+  await prisma.game.delete({
     where: { id: body.id },
   });
 };
