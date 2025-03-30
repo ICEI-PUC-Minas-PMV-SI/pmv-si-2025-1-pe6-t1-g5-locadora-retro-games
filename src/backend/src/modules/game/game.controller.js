@@ -17,9 +17,9 @@ GameController.insertGame = async (req, res) => {
   try {
     const body = {
       name: req.body.name,
-      email: req.body.email,
-      cpf: req.body.cpf,
-      password: req.body.password,
+      price: req.body.price,
+      description: req.body.description,
+      console: req.body.console
     };
     await GameService.create(body);
     res.status(200).json("Game created successfully");
@@ -33,9 +33,9 @@ GameController.updateGame = async (req, res) => {
     const body = {
       id: Number(req.params.id),
       name: req.body.name,
-      email: req.body.email,
-      cpf: req.body.cpf,
-      password: req.body.password,
+      price: req.body.price,
+      description: req.body.description,
+      console: req.body.console
 
     };
     console.log(req.body);
@@ -53,10 +53,9 @@ GameController.updateGame = async (req, res) => {
       const body = {
         id: Number(req.params.id),
         name: req.body.name,
-        email: req.body.email,
-        cpf: req.body.cpf,
-        password: req.body.password,
-  
+        price: req.body.price,
+        description: req.body.description,
+        console: req.body.console
       };
       console.log(req.body);
       await GameService.update(body);
