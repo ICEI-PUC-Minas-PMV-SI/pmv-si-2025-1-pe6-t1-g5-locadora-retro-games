@@ -47,11 +47,11 @@ CREATE TABLE "Reserve" (
     "userId" INTEGER NOT NULL,
     "gameId" INTEGER NOT NULL,
     "statusReserveId" INTEGER NOT NULL,
-    "reserveDate" TIMESTAMP(3),
+    "reserveDate" TIMESTAMP(3) NOT NULL,
     "approveDate" TIMESTAMP(3),
     "returnDate" TIMESTAMP(3),
 
-    CONSTRAINT "Reserve_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Reserve_pkey" PRIMARY KEY ("id", "gameId")
 );
 
 -- CreateTable
