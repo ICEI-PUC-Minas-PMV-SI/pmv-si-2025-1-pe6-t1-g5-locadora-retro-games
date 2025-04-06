@@ -18,6 +18,11 @@ UserService.list = async () => {
   return result;
 };
 
+UserService.getUserById = async (userId) => {
+  const result = await prisma.user.findUnique({ where: { id: userId }, omit: { password: true }})
+  return result;
+};
+
 UserService.create = async (body) => {
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(body.password, salt);

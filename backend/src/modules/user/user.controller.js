@@ -13,6 +13,16 @@ UserController.getUser = async (req, res) => {
   }
 };
 
+UserController.getUserById = async (req, res) => {
+  try {
+    const data = await UserService.getUserById(req.userData.id);
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json("Internal server error");
+  }
+};
+
 UserController.insertUser = async (req, res) => {
   try {
     const body = {
@@ -21,6 +31,9 @@ UserController.insertUser = async (req, res) => {
       cpf: req.body.cpf,
       password: req.body.password,
     };
+    if (!body.name || !body.email || !body.cpf || !body.password) {
+      res.status(404).json("Missing or wrong data");
+    }
     await UserService.create(body);
     res.status(200).json("User created successfully");
   } catch (error) {

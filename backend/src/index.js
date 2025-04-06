@@ -18,9 +18,9 @@ app.listen(3000, () => {
 // config routes
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use("/auth", AuthRouter);
-app.use("/user", UserRouter);
-app.use("/game", GameRouter);
-app.use("/console", ConsoleRouter);
+app.use("/users", UserRouter);
+app.use("/games", GameRouter);
+app.use("/consoles", ConsoleRouter);
 
 // gracefully shutdown
 process.on("SIGINT", () => {

@@ -10,8 +10,14 @@
 
 ## Restart Docker
 1. docker restart backend
-## Rodar migration
+
+## Rodar migration nova
 2. docker exec backend npx prisma migrate dev
+
+## Resetar banco
+1. docker stop backend postgres
+2. docker system prune -fa --volumes (cuidado! se tiver outras imagens e volumes no docker que não estiver usando, ele vai limpar também!!!)
+3. se optar por não usar o comando 2, dê um docker volume ls e delete apenas o volume que precisa
 
 ## ---------------------------------------------------------
 

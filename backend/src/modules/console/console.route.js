@@ -1,5 +1,7 @@
 import express from 'express';
 import ConsoleController from './console.controller.js';
+import authMiddleware from '../../middleware/auth.middleware.js';
+import isAdmin from '../../middleware/isAdminAuthorization.middleware.js';
 
 const ConsoleRouter = express.Router();
 
