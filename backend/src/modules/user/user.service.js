@@ -1,23 +1,22 @@
 import prisma from "../../infra/prisma/prisma.js";
 
-const ExampleService = {};
-ExampleService.findByEmailAndPassword = async (email, password) => {
+const UserService = {};
+UserService.findByEmailAndPassword = async (email, password) => {
   const user = await prisma.user.findUnique({
     where: { email },
   });
-
   if (user && user.password === password) {
     return user;
   }
-
   return null;
 };
-ExampleService.list = async () => {
+
+UserService.list = async () => {
   const result = await prisma.user.findMany();
   return result;
 };
 
-ExampleService.create = async (body) => {
+UserService.create = async (body) => {
   await prisma.user.create({
     data: {
       name: body.name,
@@ -28,7 +27,7 @@ ExampleService.create = async (body) => {
   });
 };
 
-ExampleService.update = async (body) => {
+UserService.update = async (body) => {
   await prisma.user.update({
     where: { id: body.id },
     data: {
@@ -40,10 +39,10 @@ ExampleService.update = async (body) => {
   });
 };
 
-ExampleService.delete = async (body) => {
+UserService.delete = async (body) => {
   await prisma.user.delete({
     where: { id: body.id },
   });
 };
 
-export default ExampleService;
+export default UserService;
