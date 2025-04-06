@@ -9,9 +9,9 @@
 1. docker logs backend -f
 
 ## Restart Docker
-1. Docker restart backend
+1. docker restart backend
 ## Rodar migration
-2. Docker exec backend npx prisma migrate dev
+2. docker exec backend npx prisma migrate dev
 
 ## ---------------------------------------------------------
 
@@ -34,3 +34,6 @@
 ## Index
 1. Inicio da configuração do servidor
  
+
+ ## Swagger
+ 1. Referência https://davibaltar.medium.com/documenta%C3%A7%C3%A3o-autom%C3%A1tica-de-apis-em-node-js-com-swagger-parte-2-usando-openapi-v3-cbc371d8c5ee
