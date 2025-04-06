@@ -1,8 +1,8 @@
-import UserService from "./user.service.js";
+import UserService from "../user/user.service";
 
 const AuthController = {};
 
-AuthController.loginUser = async (req, res) => {
+AuthController.login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await UserService.findByEmailAndPassword(email, password);
@@ -10,7 +10,7 @@ AuthController.loginUser = async (req, res) => {
       return res.status(404).json({ message: "Usuário e senha incorretos." });
     }
     const token = jwt.sign(
-      { id: user.id, email: user.email }, 
+      { id: user.id, email: user.email, roleId: user.roleId }, 
       process.env.JWT_SECRET, 
       { expiresIn: 3600 } 
     );
