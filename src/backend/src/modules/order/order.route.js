@@ -5,8 +5,8 @@ const OrderRouter = express.Router();
 
 // Define your routes here
 OrderRouter.get('/', OrderController.getOrdersFromUser);
-OrderRouter.get('/:id', OrderController.getOrdersFromUser)
 OrderRouter.post('/', OrderController.insertOrder);
-OrderRouter.post('/checkout', OrderController.checkout)
+OrderRouter.post('/checkout/:id', OrderController.checkout);
+OrderRouter.delete('/:id', OrderController.cancelOrder);
 
 export default OrderRouter;

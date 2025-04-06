@@ -1,5 +1,5 @@
 import express from 'express';
-import { verifyAdmin } from '../../Util.js';
+import AsaasService from './asaas.service.js';
 import OrderService from './order.service.js';
 
 const OrderController = {}
@@ -7,11 +7,14 @@ const OrderController = {}
 OrderController.getOrdersFromUser = async (req, res) => {
     try {
         let data;
-        if(req.params.id && verifyAdmin(req)) {
-            data = await OrderService.getOrdersFromUser(req.params.id);
-        } else {
-            data = await OrderService.getOrdersFromUser(req.headers.id);
+        
+        if(!req.headers.id) {
+            res.status(400).json('Bad Request');
+            return;
         }
+
+        data = await OrderService.getOrdersFromUser(req.headers.id);
+        
         res.status(200).json(data);
     } catch(error) {
         console.log(error);
@@ -20,8 +23,11 @@ OrderController.getOrdersFromUser = async (req, res) => {
 }
 
 OrderController.insertOrder = async (req, res) => {
-    // recebo id do cliente e array de produtos, para cada um na lista
-    // registro order com id + 
+    if(!req.headers.id || !req.body.gameList) {
+        res.status(400).json('Bad Request')
+        return;
+    }
+
     try {
         const params = {
             userId: req.headers.id,
@@ -34,12 +40,6 @@ OrderController.insertOrder = async (req, res) => {
         console.log(error);
         res.status(500).json("Internal Server Error");
     }
-    // buscar cliente
-    // caso não haja, criar cliente
-    // gerar cobranca cartao
-    // callback confirm
-    // status: pendente > confirmado
-    // insertOrder; checkoutOrder; confirmOrder; cancelOrder; editOrder (pendente only)
 }
 
 OrderController.checkout = async (req, res) => {
@@ -48,18 +48,28 @@ OrderController.checkout = async (req, res) => {
         number,
         expiryMonth,
         expiryYear,
-        ccv
+        ccv,
+        value
     } = req.body;
 
-    try {
-        const customer = await OrderService.getCustomerData(req.headers.token);
+    if(!holderName || !number || !expiryMonth || !expiryYear || !ccv || !value) {
+        res.status(400).json('Bad Request')
+        return;
+    }
 
-        if(!customer) res.status(401).json("Por favor, tente novamente mais tarde");
+    try {
+        const customer = await OrderService.getCustomerData(req.headers.id);
+        if(!customer){ 
+            res.status(401).json("Por favor, tente novamente mais tarde");
+            return;
+        }
 
         const customerId = await AsaasService.getCustomerId(customer);
-
-        if(!customerId) res.status(500).json('Internal Server Error');
-
+        
+        if(!customerId) {
+            res.status(500).json('Internal Server Error');
+            return;
+        }
 
         const params = {
             holderName,
@@ -68,19 +78,34 @@ OrderController.checkout = async (req, res) => {
             expiryYear,
             ccv,
         };
+        const isConfirmed = await OrderService.checkout(params, value, { ...customer, customerId }, { id: req.params.id, user: req.headers.id });
 
-        await OrderService.checkout(params);
-        await OrderService.confirm(req.params.id);
-        res.status(200).json(true);
+        if(isConfirmed) res.status(200).json(`Pagamento efetuado para reserva ${req.params.id}`);
+        else res.status(500).json('Internal Server Error');
     } catch(error) {
         console.log(error);
         res.status(500).json("Internal Server Error");
     }
 }
 
-OrderController.deleteOrder = async (req, res) => {
-    // cancela pedido feito pelo cliente
-    // remover registro ou manter protocolo?
+OrderController.cancelOrder = async (req, res) => {
+    const params = {
+        id: req.params.id,
+        user: Number(req.headers.id),
+    };
+
+    try {
+        if(!params.id || !params.user) {
+            res.status(400).json('Bad Request');
+            return;
+        }
+
+        await OrderService.cancelOrder(params);
+        res.status(200).json('Ok');
+    } catch(error) {
+        console.log(error);
+        res.status(500).json('Internal Server Error');
+    }
 }
 
 export default OrderController;
