@@ -13,9 +13,16 @@ UserService.findByEmailAndPassword = async (email, password) => {
   return null;
 };
 
-UserService.list = async () => {
-  const result = await prisma.user.findMany({omit: { password: true }});
-  return result;
+UserService.list = async (limit, offset) => {
+  const [users, total] = await Promise.all([
+    prisma.user.findMany({
+      take: limit,
+      skip: offset,
+      omit: { password: true }
+    }),
+    prisma.user.count()
+  ]);
+  return { users, total };
 };
 
 UserService.getUserById = async (userId) => {

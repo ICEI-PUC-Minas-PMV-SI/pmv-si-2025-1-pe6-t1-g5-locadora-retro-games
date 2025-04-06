@@ -5,8 +5,17 @@ const UserController = {};
 // get, post, put, patch, etc ...
 UserController.getUser = async (req, res) => {
   try {
-    const data = await UserService.list();
-    res.status(200).json(data);
+    const limit = Number(req.query.limit) || 10; // default 10 items per page
+    const page = Number(req.query.page) || 1; // default first page
+    const offset = (page - 1) * limit;
+    const { users, total } = await UserService.list(limit, offset);
+    res.status(200).json({
+      users,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+      itemsPerPage: limit
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json("Internal server error");

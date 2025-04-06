@@ -5,8 +5,17 @@ const GameController = {};
 // get, post, put, patch, etc ...
 GameController.getGame = async (req, res) => {
   try {
-    const data = await GameService.list();
-    res.status(200).json(data);
+    const limit = Number(req.query.limit) || 10;
+    const page = Number(req.query.page) || 1;
+    const offset = (page - 1) * limit;
+    const { games, total } = await GameService.list(limit, offset);
+    res.status(200).json({
+      games,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+      itemsPerPage: limit
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json("Internal server error");

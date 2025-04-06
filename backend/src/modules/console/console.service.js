@@ -1,19 +1,31 @@
 import prisma from "../../infra/prisma/prisma.js";
 import { Decimal } from '@prisma/client/runtime/library';
-const ExampleService = {};
+const ConsoleService = {};
 
-ExampleService.list = async () => {
-  const result = await prisma.console.findMany();
-  return result;
+ConsoleService.list = async (limit, offset) => {
+  const [consoles, total] = await Promise.all([
+    prisma.console.findMany({
+      take: limit,
+      skip: offset,
+      include: {
+        _count: {
+          select: { games: true }
+        }
+      }
+    }),
+    prisma.console.count()
+  ]);
+
+  return { consoles, total };
 };
 
-ExampleService.create = async (body) => {
+ConsoleService.create = async (body) => {
   await prisma.console.create({
     data: {
       name: body.name,
       ...(body.games && body.games.length > 0 && {
         games: {
-          connect: body.games.map((gameId) => ({ id: gameId })), // Conecta os jogos existentes pelo ID
+          connect: body.games.map((gameId) => ({ id: gameId })),
         },
       }),
     },
@@ -21,40 +33,33 @@ ExampleService.create = async (body) => {
   console.log("Body recebido:", body);
 };
 
-ExampleService.create = async (body) => {
-  console.log("Body recebido:", body);
-
-  // Cria o console e captura o resultado
+ConsoleService.create = async (body) => {
   const createdConsole = await prisma.console.create({
     data: {
       name: body.name,
       games: body.games,
     },
   });
-
-  // Exibe o console criado, incluindo o ID
-  console.log("Console criado:", createdConsole);
-
-  return createdConsole; // Retorna o console criado, se necessário
+  return createdConsole;
 };
 
-ExampleService.update = async (body) => {
+ConsoleService.update = async (body) => {
   await prisma.console.update({
     where: { id: body.id },
     data: {
       name: body.name,
       ...(body.games && body.games.length > 0 && {
         games: {
-          connect: body.games.map((gameId) => ({ id: gameId })), // Conecta os jogos existentes pelo ID
+          connect: body.games.map((gameId) => ({ id: gameId })),
         },
       }),
     },
   });
 };
 
-ExampleService.delete = async (body) => {
+ConsoleService.delete = async (body) => {
   await prisma.console.delete({
     where: { id: body.id },
   });
 };
-export default ExampleService;
+export default ConsoleService;
