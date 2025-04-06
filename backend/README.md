@@ -26,13 +26,13 @@
 
 ## Service
 1. Camada de Aplicação
- - Regra de negócios
- -Acesso ao BD
+    - Regra de negócios
+    - Acesso ao BD
 
 ## Controller
 1. Camada de apresentação
- - Mostra os dados 
- - Formata os métodos http Ex:(200,201,400,500)
+    - Mostra os dados 
+    - Formata os métodos HTTP (200, 201, 400, 500 e etc...)
 
 ## Route
 1. Rotas do modulo

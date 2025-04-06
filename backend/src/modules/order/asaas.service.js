@@ -4,7 +4,7 @@ const AsaasService = {}
 const API_KEY = process.env.API_KEY
 
 AsaasService.getCustomerId = async (customer) => {
-    const url = `https://api-sandbox.asaas.com/v3/customers?cpfCnpj=${customer.cpf}`
+    const url = `https://api-sandbox.asaas.com/v3/customers?cpfCnpj=${customer.cpf}`;
     const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -12,15 +12,13 @@ AsaasService.getCustomerId = async (customer) => {
             access_token: API_KEY
         }
     });
-
     const responseBody = await response.json();
-
     if(!responseBody.totalCount) return AsaasService.createCustomerId(customer);
     else return responseBody.data[0].id;
 }
 
 AsaasService.createCustomerId = async (customer) => {
-    const url = `https://api-sandbox.asaas.com/v3/customers`
+    const url = `https://api-sandbox.asaas.com/v3/customers`;
     const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -32,13 +30,12 @@ AsaasService.createCustomerId = async (customer) => {
             cpfCnpj: customer.cpf,
         })
     });
-
     const responseBody = await response.json();
     return responseBody.id;
 }
 
 AsaasService.payment = async (cardInfo, customer, value) => {
-    const url = `https://api-sandbox.asaas.com/v3/payments`
+    const url = `https://api-sandbox.asaas.com/v3/payments`;
     const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -68,7 +65,6 @@ AsaasService.payment = async (cardInfo, customer, value) => {
         })
     });
     const responseBody = await response.json();
-
     return responseBody.id;
 }
 

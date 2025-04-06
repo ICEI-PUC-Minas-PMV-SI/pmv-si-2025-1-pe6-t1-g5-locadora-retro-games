@@ -47,7 +47,6 @@ GameController.updateGame = async (req, res) => {
       console: req.body.console
 
     };
-    console.log(req.body);
     await GameService.update(body);
     res.status(200).json("Game updated successfully");
   } catch (error) {
@@ -55,25 +54,6 @@ GameController.updateGame = async (req, res) => {
     res.status(500).json("Internal server error");
   }
 };
-
-
-GameController.updateGame = async (req, res) => {
-    try {
-      const body = {
-        id: Number(req.params.id),
-        name: req.body.name,
-        price: req.body.price,
-        description: req.body.description,
-        console: req.body.console
-      };
-      console.log(req.body);
-      await GameService.update(body);
-      res.status(200).json("Game updated successfully");
-    } catch (error) {
-      console.error(error);
-      res.status(500).json("Internal server error");
-    }
-  };
   
 GameController.deleteGame = async (req, res) => {
   try {

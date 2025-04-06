@@ -10,11 +10,11 @@ import GameRouter from "./modules/game/game.route.js";
 import ConsoleRouter from "./modules/console/console.route.js";
 import OrderRouter from "./modules/order/order.route.js";
 
+dotenv.config();
 const app = express();
 app.use(bodyParser.json());
-dotenv.config();
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.json());
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
@@ -22,10 +22,10 @@ app.listen(3000, () => {
 // config routes
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use("/auth", AuthRouter);
-app.use("/user", UserRouter);
-app.use("/game", GameRouter);
-app.use("/console", ConsoleRouter);
-app.use("/order", OrderRouter)
+app.use("/users", UserRouter);
+app.use("/games", GameRouter);
+app.use("/consoles", ConsoleRouter);
+app.use("/orders", OrderRouter)
 
 // gracefully shutdown
 process.on("SIGINT", () => {

@@ -15,6 +15,20 @@ async function main() {
     skipDuplicates: true
   })
 
+  await prisma.console.createMany({
+    data: [
+      { name: 'Playstation 2' },
+    ],
+    skipDuplicates: true
+  })
+
+  await prisma.game.createMany({
+    data: [
+      { name: "Devil May Cry 3: Dante's Awakening", consoleId: 1, price: 25 },
+    ],
+    skipDuplicates: true
+  })
+
   // Create Roles
   await prisma.role.createMany({
     data: [
@@ -33,7 +47,7 @@ async function main() {
       name: 'Admin',
       email: 'admin@nintendin.com',
       password: hashedPassword,
-      cpf: '12345678901',
+      cpf: '22328703089', // fake cpf
       roleId: 1
     }
   })

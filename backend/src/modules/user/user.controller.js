@@ -60,7 +60,6 @@ UserController.updateUser = async (req, res) => {
       cpf: req.body.cpf,
       password: req.body.password,
     };
-    console.log(req.body);
     await UserService.update(body);
     res.status(200).json("User updated successfully");
   } catch (error) {

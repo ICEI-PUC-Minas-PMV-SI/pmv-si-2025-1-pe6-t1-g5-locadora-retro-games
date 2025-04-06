@@ -9,7 +9,7 @@ const UserRouter = express.Router();
 // Define your routes here
 UserRouter.get("/", authMiddleware, isAdmin, UserController.getUser);
 UserRouter.get("/user", authMiddleware, userAuthorization, UserController.getUserById);
-UserRouter.post("/", UserController.insertUser);
+UserRouter.post("/", authMiddleware, UserController.insertUser);
 UserRouter.put("/:id", authMiddleware, userAuthorization, UserController.updateUser);
 UserRouter.delete("/:id", authMiddleware, userAuthorization, UserController.deleteUser);
 

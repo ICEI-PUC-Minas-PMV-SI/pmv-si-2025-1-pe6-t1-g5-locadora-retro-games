@@ -14,16 +14,16 @@ O projeto tem como finalidade desenvolver uma plataforma para gerenciar aluguéi
 O objetivo é criar uma ferramenta prática, segura e moderna, que facilite a gestão do negócio e proporcione um atendimento de qualidade aos apaixonados por jogos clássicos. A aplicação deve ser intuitiva tanto para os administradores quanto para os clientes. 
 
 - **Usuários**
-  - Administrador: Permitir erenciamento das contas de usuários.
+  - Administrador: Permitir gerenciamento das contas de usuários.
   - Cliente: Permitir criar e gerenciar a própria conta.
   
 - **Catálogo**
   - Administrador: Permitir adição, remoção e gerenciamento do controle de estoque dos jogos e consoles ofertados.
-  - Cliente: Permitir visualização e adição das unidades de interesse ao carrinho de reserva.
+  - Cliente: Permitir visualização dos jogos e consoles. Esses serão adicionados ao carrinho pelo frontend (localStorage).
     
 - **Reserva**
-  - Administrador: Permitir a aprovação e cancelamento da reserva.
-  - Cliente: Permitir a realização de reservas das unidades de interesse do catálogo.
+  - Administrador: Pode visualizar e cancelar as reservas (não há hard delete, nesse caso apenas muda seus status). Motivo: evitar perca de dados importantes de pagamentos.
+  - Cliente: Permitir a realização de reservas das unidades de interesse do catálogo e checkout.
 
 <br>
 
@@ -72,7 +72,13 @@ Para o desenvolvimento do sistema foram utilizadas as seguintes tecnologias:
 
 ## Considerações de Segurança
 
-[Discuta as considerações de segurança relevantes para a aplicação distribuída, como autenticação, autorização, proteção contra ataques, etc.]
+Na aplicação para acessar as rotas é preciso estar autenticado. Usamos tokens JWT para confirmarmos se o usuário está autenticado. 
+
+Na parte de autorização, os usuários possui uma relação com uma tabela de "role". Lá temos dois grandes grupos: administrador e usuário comum. Através de middlewares verificamos além da autenticação, o tipo de usuário para que certas ações no servidor sejam liberadas para o administrador e outras bloqueadas para usuários.
+
+Quanto a proteção de ataques, nosso servidor possui algumas travas importantes como limite de requisições e timeouts para evitar ataques que comprometam a disponibilidade da aplicação.
+
+Importante citar também que dados de senhas são encriptografados. Usamos hashes para salvar essas senhas no banco de dados e conferimos se o valor da senha bate com o hash para que os usuários se autentiquem. Tivemos o cuidado também de nunca retornar a senha criptografada pelas rotas, para evitar ataques de força bruta fora do servidor.
 
 ## Implantação
 
@@ -96,4 +102,16 @@ Para o desenvolvimento do sistema foram utilizadas as seguintes tecnologias:
 
 # Referências
 
-Inclua todas as referências (livros, artigos, sites, etc) utilizados no desenvolvimento do trabalho.
+As referências foram diretamente das documentações oficiais dos recursos que utilizamos. Alguns membros da equipe já possuíam certos conhecimentos que foram repassados durantes as reuniões internas.
+
+- https://github.com/kelektiv/node.bcrypt.js
+
+- https://github.com/auth0/node-jsonwebtoken
+
+- https://docs.asaas.com/
+
+- http://expressjs.com/
+
+- https://docs.docker.com/
+
+- https://nodejs.org/docs/latest/api/

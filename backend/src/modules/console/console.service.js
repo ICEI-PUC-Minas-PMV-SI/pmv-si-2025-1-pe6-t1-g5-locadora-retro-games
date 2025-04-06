@@ -22,37 +22,7 @@ ConsoleService.list = async (limit, offset) => {
 ConsoleService.create = async (body) => {
   await prisma.console.create({
     data: {
-      name: body.name,
-      ...(body.games && body.games.length > 0 && {
-        games: {
-          connect: body.games.map((gameId) => ({ id: gameId })),
-        },
-      }),
-    },
-  });
-  console.log("Body recebido:", body);
-};
-
-ConsoleService.create = async (body) => {
-  const createdConsole = await prisma.console.create({
-    data: {
-      name: body.name,
-      games: body.games,
-    },
-  });
-  return createdConsole;
-};
-
-ConsoleService.update = async (body) => {
-  await prisma.console.update({
-    where: { id: body.id },
-    data: {
-      name: body.name,
-      ...(body.games && body.games.length > 0 && {
-        games: {
-          connect: body.games.map((gameId) => ({ id: gameId })),
-        },
-      }),
+      name: body.name
     },
   });
 };
