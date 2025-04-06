@@ -1,0 +1,35 @@
+import prisma from "../../infra/prisma/prisma.js";
+import { Decimal } from '@prisma/client/runtime/library';
+const ConsoleService = {};
+
+ConsoleService.list = async (limit, offset) => {
+  const [consoles, total] = await Promise.all([
+    prisma.console.findMany({
+      take: limit,
+      skip: offset,
+      include: {
+        _count: {
+          select: { games: true }
+        }
+      }
+    }),
+    prisma.console.count()
+  ]);
+
+  return { consoles, total };
+};
+
+ConsoleService.create = async (body) => {
+  await prisma.console.create({
+    data: {
+      name: body.name
+    },
+  });
+};
+
+ConsoleService.delete = async (body) => {
+  await prisma.console.delete({
+    where: { id: body.id },
+  });
+};
+export default ConsoleService;
