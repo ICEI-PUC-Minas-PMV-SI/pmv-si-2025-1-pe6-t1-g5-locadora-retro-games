@@ -49,13 +49,15 @@ model Game {
 }
 
 model Reserve {
-  id              Int      @id @default(autoincrement())
+  id              String 
   userId          Int
-  gameId          Int
+  gameId          Int     
   statusReserveId Int
-  reserveDate     DateTime?
+  reserveDate     DateTime
   approveDate     DateTime?
   returnDate      DateTime?
+
+  @@id([id, userId, gameId])
 
   user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   game          Game          @relation(fields: [gameId], references: [id], onDelete: Cascade)
