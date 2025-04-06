@@ -6,7 +6,7 @@ const doc = {
     info: {
         version: "1.0.0",
         title: "Nintendin Backend",
-        description: "Backend da aplicação"     
+        description: "Backend da aplicação"
     },
     servers: [
         {

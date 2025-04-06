@@ -102,7 +102,7 @@ Importante citar também que dados de senhas são encriptografados. Usamos hashe
 
 # Referências
 
-As referências foram diretamente das documentações oficiais dos recursos que utilizamos. Alguns membros da equipe já possuíam certos conhecimentos que foram repassados durantes as reuniões internas.
+A maioria das referências foram diretamente das documentações oficiais dos recursos que utilizamos. Alguns membros da equipe já possuíam certos conhecimentos que foram repassados durantes as reuniões internas.
 
 - https://github.com/kelektiv/node.bcrypt.js
 
@@ -115,3 +115,5 @@ As referências foram diretamente das documentações oficiais dos recursos que 
 - https://docs.docker.com/
 
 - https://nodejs.org/docs/latest/api/
+
+- https://davibaltar.medium.com/documenta%C3%A7%C3%A3o-autom%C3%A1tica-de-apis-em-node-js-com-swagger-parte-2-usando-openapi-v3-cbc371d8c5ee
