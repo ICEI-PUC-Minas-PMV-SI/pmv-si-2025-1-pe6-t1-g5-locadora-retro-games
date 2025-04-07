@@ -28,7 +28,39 @@ O objetivo é criar uma ferramenta prática, segura e moderna, que facilite a ge
 <br>
 
 ## Modelagem da Aplicação
-[Descreva a modelagem da aplicação, incluindo a estrutura de dados, diagramas de classes ou entidades, e outras representações visuais relevantes.]
+A modelagem do projeto foi planejada para gerenciar um sistema de reservas de jogos, com sete entidades principais:
+
+**Usuários (User):** Armazena dados de autenticação e identificação dos usuários do sistema. A tabela "Usuário" contém informações como nome, email, CPF, senha e um campo de tipo de usuário (admin ou usuário comum), que permite diferentes permissões e comportamentos na aplicação.
+
+> **Relacionamentos:** Cada usuário tem endereços associados, armazenados na tabela "Address". Os usuários também podem fazer reservas de jogos, armazenadas na tabela "Reserve".
+
+**Papel (Role):** A tabela "Role" define os tipos de usuário no sistema, diferenciando administradores de usuários normais.
+
+> **Relacionamentos:** Um papel pode ser atribuído a múltiplos usuários.
+
+**Endereços (Address):** Armazena informações sobre o endereço de cada usuário, incluindo rua, número, bairro, cidade, estado e código postal.
+
+> **Relacionamentos:** Cada endereço pertence a um único usuário.
+
+**Consoles (Console):** A tabela "Console" armazena informações sobre os consoles de jogos disponíveis no sistema, incluindo nome.
+
+> **Relacionamentos:** Um console pode ter vários jogos associados.
+
+**Jogos (Game):** Armazena detalhes sobre os jogos disponíveis, incluindo nome, preço, descrição e o console ao qual pertence.
+
+> **Relacionamentos:** Cada jogo está associado a um único console. Os jogos podem ser reservados pelos usuários na tabela "Reserve".
+
+**Reservas (Reserve):** Representa uma reserva feita por um usuário para um jogo específico, contendo informações como a data da reserva, aprovação e retorno do jogo.
+
+> **Relacionamentos:** Cada reserva é feita por um usuário e refere-se a um jogo. O status da reserva é controlado por meio da tabela "StatusReserve".
+
+**Status da Reserva (StatusReserve):** Representa o status da reserva de um jogo, como "pendente", "aprovada", "devolvida", etc.
+
+> **Relacionamentos:** Cada status pode ser associado a múltiplas reservas.
+
+<br>
+
+![Modelagem](./img/Modelagem.png)
 
 <br>
 
@@ -47,6 +79,8 @@ Para acessar a documentação dos endpoints, basta acessar https://pmv-si-2025-1
 
 **IMPORTANTE: A primeira request demora aproximadamente 50s. Isso acontece por causa do Render deixar em stand-by quando a api não está sendo utilizada. Após a primeira request e o tempo esperado ela se normaliza. O Render é gratuito e disponibiliza banco de dados, por isso a sua escolha.**
 
+<br>
+
 ## Considerações de Segurança
 
 Na aplicação para acessar as rotas é preciso estar autenticado. Usamos tokens JWT para confirmarmos se o usuário está autenticado. 
@@ -57,6 +91,8 @@ Quanto a proteção de ataques, nosso servidor possui algumas travas importantes
 
 Importante citar também que dados de senhas são encriptografados. Usamos hashes para salvar essas senhas no banco de dados e conferimos se o valor da senha bate com o hash para que os usuários se autentiquem. Tivemos o cuidado também de nunca retornar a senha criptografada pelas rotas, para evitar ataques de força bruta fora do servidor.
 
+<br>
+
 ## Implantação
 
 Para subir a aplicação em produção, foi necessário usar o Render. Ele nos permite um ambiente gratuito assim como um banco de dados. Nesse caso, para acessar a nossa api, basta acessar o site https://pmv-si-2025-1-pe6-t1-g5-locadora-retro.onrender.com.
@@ -64,6 +100,8 @@ Para subir a aplicação em produção, foi necessário usar o Render. Ele nos p
 **IMPORTANTE: A primeira request demora aproximadamente 50s. Isso acontece por causa do Render deixar em stand-by quando a api não está sendo utilizada. Após a primeira request e o tempo esperado ela se normaliza. O Render é gratuito e disponibiliza banco de dados, por isso a sua escolha.**
 
 Usamos um ambiente de produção específico, com env de produção para acesso ao Sandbox do Asaas, nosso gateway de pagamentos, endpoint do banco de dados do Render e o nosso segredo do JWT. A aplicação foi subida com configurações do Dockerfile.prod.
+
+<br>
 
 ## Testes
 
@@ -74,6 +112,8 @@ Usamos um ambiente de produção específico, com env de produção para acesso 
 3. Realize testes de integração para verificar a interação correta entre os componentes da aplicação.
 4. Execute testes de carga para avaliar o desempenho da aplicação sob carga significativa.
 5. Utilize ferramentas de teste adequadas, como frameworks de teste e ferramentas de automação de teste, para agilizar o processo de teste.
+
+<br>
 
 # Referências
 
