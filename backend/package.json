@@ -4,7 +4,8 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "nodemon -L src/index.js",
-    "start:prod": "node src/index.js",
+    "start": "node src/index.js",
+    "start:prod": "npm run migrate:prod && npm run seed && npm run start",
     "migrate:prod": "prisma migrate deploy --schema=./schema.prisma",
     "migrate": "prisma migrate dev",
     "generate": "prisma generate",

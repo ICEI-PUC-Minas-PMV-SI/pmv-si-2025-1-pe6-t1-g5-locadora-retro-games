@@ -72,12 +72,8 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 | RF-002  | Permitir que o administrador cadastre, edite e exclua jogos do catálogo.                                   | ALTA       | Matheus      |
 | RF-003  | Permitir que o usuário visualize a lista de jogos disponíveis e utilize filtros por categoria, console ou ano. | ALTA       | Julia        |
 | RF-004  | Permitir que o usuário realize e cancele reservas de jogos disponíveis.                                    | ALTA       | Bianka       |
-| RF-005  | Garantir que, ao reservar um jogo, ele fique indisponível por até 24h até a aprovação do administrador. Se a reserva não for aprovada nesse período, ela será automaticamente cancelada. | ALTA       | Bayer        |
-| RF-006  | A reserva deve ser finalizada fisicamente na loja e aprovada pelo administrador no sistema.                | ALTA       | Guilherme    |
-| RF-007  | Notificar o usuário sobre o status de sua reserva (confirmação, cancelamento, etc.) e enviar lembretes sobre a data de devolução dos jogos. | MÉDIA       | Michael      |
-| RF-008  | Após a reserva, o usuário tem até X dias para usufruir da locação. Após isso, será enviado um e-mail de alerta. | MÉDIA       | Matheus      |
-| RF-009  | Permitir que o administrador visualize todas as reservas realizadas e gere relatórios de reservas.         | MÉDIA       | Bayer        |
-| RF-010  | Permitir que o usuário consiga prorrogar apenas uma vez sua entrega.                                       | BAIXA       | Guilherme    |
+| RF-005  | A reserva deve ser feita com um sistema de pagamento de cartão de crédito.                | ALTA       | Bayerl    |
+| RF-006  | Permitir que o administrador visualize todas as reservas realizadas.         | MÉDIA       | Bayer        |
 
 <br> 
 
@@ -85,13 +81,11 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 
 | ID      | Descrição do Requisito Não Funcional                                                                 | Prioridade | Nome                                     |
 |---------|------------------------------------------------------------------------------------------------------|------------|------------------------------------------|
-| RNF-001 | O tempo de resposta das páginas e ações do sistema não deve ultrapassar 5 segundos.                   | ALTA       | Guilherme Monteiro Barbosa de Jesus     |
-| RNF-002 | O banco de dados deve suportar pelo mais de 10.000 usuários e 5.000 jogos cadastrados simultaneamente.| ALTA       | Sarah Sousa Saud                        |
-| RNF-003 | A interface do sistema deve ser fácil de usar e adaptável para computadores e celulares.              | MÉDIA      | Matheus de Oliveira Souza Santos        |
-| RNF-004 | O sistema deve ser compatível com os navegadores Chrome, Firefox e Edge.                              | MÉDIA      | Guilherme Campos Bayerl Coelho          |
-| RNF-005 | O sistema deve utilizar autenticação segura com senha criptografada.                                  | ALTA       | Guilherme Monteiro Barbosa de Jesus     |
-| RNF-006 | O sistema deve ser intuitivo e de fácil uso, proporcionando uma experiência fluida para todos os usuários, garantindo compatibilidade com leitores de tela e contrastes adequados. | MÉDIA      | Michael Henrique Ferreira Dias          |
-| RNF-007 | O sistema deve bloquear a conta do usuário após 5 tentativas consecutivas de login mal-sucedidas.     | ALTA       | Bianka Dias Tenório D'Albuquerque       |
+| RNF-001 | A interface do sistema deve ser fácil de usar e adaptável para computadores e celulares.              | MÉDIA      | Matheus de Oliveira Souza Santos        |
+| RNF-002 | O sistema deve ser compatível com os navegadores Chrome, Firefox e Edge.                              | MÉDIA      | Guilherme Campos Bayerl Coelho          |
+| RNF-003 | O sistema deve utilizar autenticação segura com senha criptografada.                                  | ALTA       | Guilherme Monteiro Barbosa de Jesus     |
+| RNF-004 | O sistema deve ser intuitivo e de fácil uso, proporcionando uma experiência fluida para todos os usuários, garantindo compatibilidade com leitores de tela e contrastes adequados. | MÉDIA      | Michael Henrique Ferreira Dias          |
+| RNF-005 | O sistema deve possuir permissões diferentes para administrador e usuário comum.     | ALTA       | Bianka Dias Tenório D'Albuquerque       |
 
 
 <br>
