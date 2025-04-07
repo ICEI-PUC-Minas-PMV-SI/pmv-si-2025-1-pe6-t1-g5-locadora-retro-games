@@ -9,7 +9,7 @@ OrderController.getOrders = async (req, res) => {
     const limit = Number(req.query.limit) || 10;
     const page = Number(req.query.page) || 1;
     const offset = (page - 1) * limit;
-    const { reserves, total } = (data = await OrderService.list(limit, offset));
+    const { reserves, total } =  await OrderService.list(limit, offset);
     res.status(200).json({
       orders: reserves,
       currentPage: page,
