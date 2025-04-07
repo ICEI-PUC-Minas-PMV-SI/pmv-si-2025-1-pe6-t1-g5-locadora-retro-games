@@ -27,9 +27,19 @@ ConsoleService.create = async (body) => {
   });
 };
 
+ConsoleService.update = async (body) => {
+  await prisma.console.update({
+    where: { id: body.id },
+    data: {
+      name: body.name
+    },
+  });
+};
+
 ConsoleService.delete = async (body) => {
   await prisma.console.delete({
     where: { id: body.id },
   });
 };
+
 export default ConsoleService;
