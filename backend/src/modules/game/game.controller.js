@@ -28,7 +28,7 @@ GameController.insertGame = async (req, res) => {
       name: req.body.name,
       price: req.body.price,
       description: req.body.description,
-      console: req.body.console
+      console: req.body.consoleId
     };
     await GameService.create(body);
     res.status(200).json("Game created successfully");
