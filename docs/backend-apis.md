@@ -105,13 +105,9 @@ Usamos um ambiente de produção específico, com env de produção para acesso 
 
 ## Testes
 
-[Descreva a estratégia de teste, incluindo os tipos de teste a serem realizados (unitários, integração, carga, etc.) e as ferramentas a serem utilizadas.]
+Os testes foram de uso, estão evidenciados no Google Drive. Basta acessar e assistir os vídeos para conferir como nossa aplicação funciona caso todos os parâmetros das rotas estejam configurados corretamente.
 
-1. Crie casos de teste para cobrir todos os requisitos funcionais e não funcionais da aplicação.
-2. Implemente testes unitários para testar unidades individuais de código, como funções e classes.
-3. Realize testes de integração para verificar a interação correta entre os componentes da aplicação.
-4. Execute testes de carga para avaliar o desempenho da aplicação sob carga significativa.
-5. Utilize ferramentas de teste adequadas, como frameworks de teste e ferramentas de automação de teste, para agilizar o processo de teste.
+https://drive.google.com/drive/folders/1isUfbe3y5m5w7ze5F4Zm1rtoaPpqOdLy?usp=sharing
 
 <br>
 
