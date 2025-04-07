@@ -3,7 +3,7 @@ const userAuthorization = (req, res, next) => {
         if (!req.userData) {
             return res.status(401).json({ message: 'Authentication required' });
         }
-        if (req.userData.roleId === 2) {
+        if (req.userData.roleId === 1) {
             return next();
         }
         const requestedUserId = Number(req.params.id);
