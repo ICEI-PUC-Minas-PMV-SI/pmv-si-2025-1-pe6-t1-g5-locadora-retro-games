@@ -27,14 +27,6 @@ ConsoleService.create = async (body) => {
   });
 };
 
-ConsoleService.create = async (body) => {
-  await prisma.console.create({
-    data: {
-      name: body.name
-    },
-  });
-};
-
 ConsoleService.update = async (body) => {
   await prisma.console.update({
     where: { id: body.id },
