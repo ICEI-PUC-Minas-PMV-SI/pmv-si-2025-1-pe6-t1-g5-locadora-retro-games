@@ -24,7 +24,7 @@ GameService.create = async (body) => {
       price: new Decimal(body.price),
       description: body.description,
       console: {
-        connect: { id: body.console },
+        connect: { id: body.consoleId },
       },
     },
   });
@@ -38,7 +38,7 @@ GameService.update = async (body) => {
       description: body.description,
       ...(body.console && { 
         console: { 
-          connect: { id: body.console }
+          connect: { id: body.consoleId }
         } 
       }),
     },

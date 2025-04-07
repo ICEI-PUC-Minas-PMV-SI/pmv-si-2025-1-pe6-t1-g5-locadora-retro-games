@@ -7,24 +7,10 @@ async function main() {
   // Create Status Reserves
   await prisma.statusReserve.createMany({
     data: [
-      { name: 'Reservado' },
-      { name: 'Devolvido' },
-      { name: 'Cancelado' },
-      { name: 'Pendente' }
-    ],
-    skipDuplicates: true
-  })
-
-  await prisma.console.createMany({
-    data: [
-      { name: 'Playstation 2' },
-    ],
-    skipDuplicates: true
-  })
-
-  await prisma.game.createMany({
-    data: [
-      { name: "Devil May Cry 3: Dante's Awakening", consoleId: 1, price: 25 },
+      { id: 1, name: 'Reservado' },
+      { id: 2, name: 'Devolvido' },
+      { id: 3, name: 'Cancelado' },
+      { id: 4, name: 'Pendente' }
     ],
     skipDuplicates: true
   })
