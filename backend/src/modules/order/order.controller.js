@@ -106,4 +106,62 @@ OrderController.cancelOrder = async (req, res) => {
   }
 };
 
+OrderController.adminCreate = async (req, res) => {
+  try {
+    const { id, userId, gameId, statusReserveId, reserveDate, approveDate, returnDate } = req.body;
+    if (!userId || !gameId || !statusReserveId || !reserveDate) {
+      return res.status(400).json("Missing required fields");
+    }
+    const reserve = await OrderService.adminCreate({
+      id,
+      userId,
+      gameId,
+      statusReserveId,
+      reserveDate,
+      approveDate,
+      returnDate,
+    });
+    res.status(200).json(reserve);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("Internal Server Error");
+  }
+};
+
+OrderController.adminUpdate = async (req, res) => {
+  try {
+    const { id, userId, gameId, statusReserveId, reserveDate, approveDate, returnDate } = req.body;
+    if (!id || !userId || !gameId) {
+      return res.status(400).json("Missing required fields");
+    }
+    const reserve = await OrderService.adminUpdate({
+      id,
+      userId,
+      gameId,
+      statusReserveId,
+      reserveDate,
+      approveDate,
+      returnDate,
+    });
+    res.status(200).json(reserve);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("Internal Server Error");
+  }
+};
+
+OrderController.adminDelete = async (req, res) => {
+  try {
+    const { id, userId, gameId } = req.body;
+    if (!id || !userId || !gameId) {
+      return res.status(400).json("Missing required fields");
+    }
+    await OrderService.adminDelete({ id, userId, gameId });
+    res.status(200).json("Reserva excluída com sucesso");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("Internal Server Error");
+  }
+};
+
 export default OrderController;

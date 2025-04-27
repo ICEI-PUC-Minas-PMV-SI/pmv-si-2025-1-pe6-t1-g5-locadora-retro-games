@@ -12,6 +12,9 @@ OrderRouter.get('/', authMiddleware, isAdmin, OrderController.getOrders);
 OrderRouter.get('/user', authMiddleware, OrderController.getOrdersByUserId);
 OrderRouter.post('/', authMiddleware, OrderController.insertOrder);
 OrderRouter.post('/checkout/:id', authMiddleware, OrderController.checkout);
+OrderRouter.post('/admin', authMiddleware, isAdmin, OrderController.adminCreate);
+OrderRouter.put('/admin', authMiddleware, isAdmin, OrderController.adminUpdate);
+OrderRouter.delete('/admin', authMiddleware, isAdmin, OrderController.adminDelete);
 OrderRouter.delete('/:id', authMiddleware, isAdmin, OrderController.cancelOrder);
 OrderRouter.delete('/user/:id', authMiddleware, userAuthorization, OrderController.cancelOrder);
 

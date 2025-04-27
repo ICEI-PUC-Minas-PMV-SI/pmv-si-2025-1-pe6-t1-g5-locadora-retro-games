@@ -6,6 +6,7 @@
     "@mantine/core": "^7.17.5",
     "@mantine/form": "^7.17.5",
     "@mantine/hooks": "^7.17.5",
+    "@mantine/notifications": "^7.17.5",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
