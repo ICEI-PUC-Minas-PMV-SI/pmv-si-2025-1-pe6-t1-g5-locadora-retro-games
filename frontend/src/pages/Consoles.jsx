@@ -9,11 +9,14 @@ import {
   Stack,
   TextInput,
   Box,
+  Card,
+  SimpleGrid,
+  Text,
 } from "@mantine/core";
 import { AppWrapper } from "../components/AppWrapper";
 import { DataTable } from "../components/DataTable";
 import axios from "axios";
-import { IconEdit, IconEye, IconTrash, IconPlus } from "@tabler/icons-react";
+import { IconEdit, IconEye, IconTrash, IconPlus, IconDeviceGamepad2, IconStar } from "@tabler/icons-react";
 import { toast } from "../utils/Toast";
 
 export function Consoles() {
@@ -26,12 +29,12 @@ export function Consoles() {
   const [field, setField] = useState("id");
   const [order, setOrder] = useState("asc");
 
-  // Modal states
+  // modal states
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState("create"); // "create" | "edit" | "delete" | "view"
   const [selectedConsole, setSelectedConsole] = useState(null);
 
-  // Form states
+  // form states
   const [form, setForm] = useState({ name: "" });
 
   const headers = [
@@ -40,7 +43,7 @@ export function Consoles() {
     { label: "Qtd. Jogos", key: "gamesCount" },
   ];
 
-  // Função para abrir modal de criar/editar
+  // função para abrir modal de criar/editar
   const openModal = (type, consoleObj = null) => {
     setModalType(type);
     setSelectedConsole(consoleObj);
@@ -48,7 +51,7 @@ export function Consoles() {
     setModalOpen(true);
   };
 
-  // CRUD actions
+  // crud actions
   const handleCreateOrEdit = async () => {
     try {
       const payload = { name: form.name };
@@ -130,11 +133,38 @@ export function Consoles() {
     // eslint-disable-next-line
   }, [page, limit, search, field, order]);
 
+  // cards de resumo para consoles
+  const totalConsoles = consoles.length;
+  // console mais popular (pelo array atual, se houver campo de jogos)
+  const topConsole = consoles.reduce((acc, c) => (c.gamesCount > (acc?.gamesCount || 0) ? c : acc), null);
+
   return (
     <AppWrapper>
       <Container size="lg" pt="xl">
+        <Title order={2} mb="md" style={{ color: '#111' }}>Consoles</Title>
+        <Text size="lg" weight={600} mb="xs" style={{ color: '#111' }}>Resumo dos Consoles</Text>
+        <SimpleGrid cols={2} spacing="lg" mb="xl" breakpoints={[{ maxWidth: 900, cols: 1 }]}>
+          <Card shadow="sm" p="lg" radius="md" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{ background: '#ede7f6', borderRadius: 12, padding: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <IconDeviceGamepad2 size={32} color="#512da8" />
+            </div>
+            <div>
+              <Text size="sm" color="dimmed">Total de Consoles</Text>
+              <Text size="xl" weight={700}>{totalConsoles}</Text>
+            </div>
+          </Card>
+          <Card shadow="sm" p="lg" radius="md" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{ background: '#fffde7', borderRadius: 12, padding: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <IconStar size={32} color="#ffb300" />
+            </div>
+            <div>
+              <Text size="sm" color="dimmed">Console com mais jogos</Text>
+              <Text size="xl" weight={700}>{topConsole ? topConsole.name : '-'}</Text>
+            </div>
+          </Card>
+        </SimpleGrid>
+        <Text size="lg" weight={600} mb="xs" style={{ color: '#111' }}>Lista de Consoles</Text>
         <Group position="apart" mb="md">
-          <Title order={2} style={{ letterSpacing: 0.5 }}>Consoles</Title>
           <Button leftSection={<IconPlus size={16} />} onClick={() => openModal("create")}
             style={{ borderRadius: 8, fontWeight: 600 }}>
             Novo Console

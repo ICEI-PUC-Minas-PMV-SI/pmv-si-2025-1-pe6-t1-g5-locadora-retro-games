@@ -12,11 +12,21 @@ import {
   Select,
   Paper,
   Box,
+  Card,
+  SimpleGrid,
+  Text,
 } from "@mantine/core";
 import { AppWrapper } from "../components/AppWrapper";
 import { DataTable } from "../components/DataTable";
 import axios from "axios";
-import { IconEdit, IconEye, IconTrash, IconPlus } from "@tabler/icons-react";
+import {
+  IconEdit,
+  IconEye,
+  IconTrash,
+  IconPlus,
+  IconUser,
+  IconUsersGroup,
+} from "@tabler/icons-react";
 import { maskCpf } from "../utils/maskCpf"; // sua função de máscara
 import { toast } from "../utils/Toast";
 
@@ -30,15 +40,21 @@ export function Users() {
   const [field, setField] = useState("id");
   const [order, setOrder] = useState("asc");
 
-  // Modal states
+  // modal states
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState("create"); // "create" | "edit" | "delete" | "view"
   const [selectedUser, setSelectedUser] = useState(null);
 
-  // Form states
-  const [form, setForm] = useState({ name: "", email: "", cpf: "", password: "", roleId: "2" });
+  // gorm states
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    cpf: "",
+    password: "",
+    roleId: "2",
+  });
 
-  // Adicione as opções de role
+  // adicione as opções de role
   const roleOptions = [
     { value: "1", label: "Administrador" },
     { value: "2", label: "Usuário" },
@@ -52,30 +68,46 @@ export function Users() {
     { label: "Tipo", key: "roleLabel" },
   ];
 
-  // Função para abrir modal de criar/editar
+  // função para abrir modal de criar/editar
   const openModal = (type, user = null) => {
     setModalType(type);
     setSelectedUser(user);
     setForm(
       user
-        ? { name: user.name, email: user.email, cpf: user.cpf, password: "", roleId: String(user.roleId || "2") }
+        ? {
+            name: user.name,
+            email: user.email,
+            cpf: user.cpf,
+            password: "",
+            roleId: String(user.roleId || "2"),
+          }
         : { name: "", email: "", cpf: "", password: "", roleId: "2" }
     );
     setModalOpen(true);
   };
 
-  // CRUD actions
+  // cruds actions
   const handleCreateOrEdit = async () => {
     try {
-      const cleanForm = { ...form, cpf: form.cpf.replace(/\D/g, ""), roleId: Number(form.roleId) };
+      const cleanForm = {
+        ...form,
+        cpf: form.cpf.replace(/\D/g, ""),
+        roleId: Number(form.roleId),
+      };
       if (modalType === "create") {
         await axios.post("http://localhost:8080/users", cleanForm, {
           headers: { Authorization: "Bearer " + localStorage.getItem("token") },
         });
       } else if (modalType === "edit" && selectedUser) {
-        await axios.put(`http://localhost:8080/users/${selectedUser.id}`, cleanForm, {
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-        });
+        await axios.put(
+          `http://localhost:8080/users/${selectedUser.id}`,
+          cleanForm,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
       }
       setModalOpen(false);
       fetchUsers();
@@ -141,13 +173,88 @@ export function Users() {
     // eslint-disable-next-line
   }, [page, limit, search, field, order]);
 
+  // cards de resumo para usuários
+  const totalUsuarios = users.length;
+  // top 1 usuário com mais reservas (simples, só pelo array atual)
+  const topUser = users.reduce(
+    (acc, u) =>
+      u.reserves && u.reserves.length > (acc?.reserves?.length || 0) ? u : acc,
+    null
+  );
+
   return (
     <AppWrapper>
       <Container size="lg" pt="xl">
+        <Title order={2} mb="md">Usuários</Title>
+        <Text size="lg" weight={600} mb="xs">Resumo dos Usuários</Text>
+        <SimpleGrid
+          cols={2}
+          spacing="lg"
+          mb="xl"
+          breakpoints={[{ maxWidth: 900, cols: 1 }]}
+        >
+          <Card
+            shadow="sm"
+            p="lg"
+            radius="md"
+            style={{ display: "flex", alignItems: "center", gap: 16 }}
+          >
+            <div
+              style={{
+                background: "#ede7f6",
+                borderRadius: 12,
+                padding: 12,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <IconUsersGroup size={32} color="#512da8" />
+            </div>
+            <div>
+              <Text size="sm" color="dimmed">
+                Total de Usuários
+              </Text>
+              <Text size="xl" weight={700}>
+                {totalUsuarios}
+              </Text>
+            </div>
+          </Card>
+          <Card
+            shadow="sm"
+            p="lg"
+            radius="md"
+            style={{ display: "flex", alignItems: "center", gap: 16 }}
+          >
+            <div
+              style={{
+                background: "#e3f2fd",
+                borderRadius: 12,
+                padding: 12,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <IconUser size={32} color="#1976d2" />
+            </div>
+            <div>
+              <Text size="sm" color="dimmed">
+                Usuário com mais reservas
+              </Text>
+              <Text size="xl" weight={700}>
+                {topUser ? topUser.name : "-"}
+              </Text>
+            </div>
+          </Card>
+        </SimpleGrid>
+        <Text size="lg" weight={600} mb="xs">Lista de Usuários</Text>
         <Group position="apart" mb="md">
-          <Title order={2} style={{ letterSpacing: 0.5 }}>Usuários</Title>
-          <Button leftSection={<IconPlus size={16} />} onClick={() => openModal("create")}
-            style={{ borderRadius: 8, fontWeight: 600 }}>
+          <Button
+            leftSection={<IconPlus size={16} />}
+            onClick={() => openModal("create")}
+            style={{ borderRadius: 8, fontWeight: 600 }}
+          >
             Novo Usuário
           </Button>
         </Group>
@@ -170,7 +277,7 @@ export function Users() {
               data={users.map((u) => ({
                 ...u,
                 cpf: maskCpf(u.cpf),
-                roleLabel: u.roleId === 1 ? "Administrador" : "Usuário"
+                roleLabel: u.roleId === 1 ? "Administrador" : "Usuário",
               }))}
               total={total}
               limit={limit}
@@ -191,7 +298,13 @@ export function Users() {
         <Modal
           opened={modalOpen && ["create", "edit", "view"].includes(modalType)}
           onClose={() => setModalOpen(false)}
-          title={modalType === "create" ? "Novo Usuário" : modalType === "edit" ? "Editar Usuário" : "Visualizar Usuário"}
+          title={
+            modalType === "create"
+              ? "Novo Usuário"
+              : modalType === "edit"
+              ? "Editar Usuário"
+              : "Visualizar Usuário"
+          }
           centered
           radius={12}
         >
@@ -207,7 +320,9 @@ export function Users() {
             <TextInput
               label="Email"
               value={form.email}
-              onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, email: e.target.value }))
+              }
               required
               radius={8}
               readOnly={modalType === "view"}
@@ -224,9 +339,13 @@ export function Users() {
             <PasswordInput
               label="Senha"
               value={form.password}
-              onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, password: e.target.value }))
+              }
               required={modalType === "create"}
-              placeholder={modalType === "edit" ? "Deixe em branco para não alterar" : ""}
+              placeholder={
+                modalType === "edit" ? "Deixe em branco para não alterar" : ""
+              }
               radius={8}
               readOnly={modalType === "view"}
             />
@@ -242,7 +361,10 @@ export function Users() {
             />
             {modalType !== "view" && (
               <Group position="right" mt="md">
-                <Button onClick={handleCreateOrEdit} style={{ borderRadius: 8 }}>
+                <Button
+                  onClick={handleCreateOrEdit}
+                  style={{ borderRadius: 8 }}
+                >
                   {modalType === "create" ? "Criar" : "Salvar"}
                 </Button>
               </Group>
@@ -259,14 +381,22 @@ export function Users() {
         >
           <Stack>
             <div>
-              Tem certeza que deseja excluir o usuário {" "}
+              Tem certeza que deseja excluir o usuário{" "}
               <b>{selectedUser?.name}</b>?
             </div>
             <Group position="right" mt="md">
-              <Button variant="outline" onClick={() => setModalOpen(false)} style={{ borderRadius: 8 }}>
+              <Button
+                variant="outline"
+                onClick={() => setModalOpen(false)}
+                style={{ borderRadius: 8 }}
+              >
                 Cancelar
               </Button>
-              <Button color="red" onClick={handleDelete} style={{ borderRadius: 8 }}>
+              <Button
+                color="red"
+                onClick={handleDelete}
+                style={{ borderRadius: 8 }}
+              >
                 Excluir
               </Button>
             </Group>
