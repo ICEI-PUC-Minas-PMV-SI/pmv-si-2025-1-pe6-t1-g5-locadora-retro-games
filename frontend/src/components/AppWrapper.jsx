@@ -149,7 +149,7 @@ export function AppWrapper({ children }) {
               <Text size="md"><b>Nome:</b> {userInfo.name}</Text>
               <Text size="md"><b>Email:</b> {userInfo.email}</Text>
               <Text size="md"><b>CPF:</b> {userInfo.cpf?.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")}</Text>
-              <Text size="md"><b>Papel:</b> {userInfo.role?.name || "Admin"}</Text>
+              <Text size="md"><b>Tipo:</b> {userInfo.role?.name || "Admin"}</Text>
             </>
           ) : (
             <Text>Carregando...</Text>

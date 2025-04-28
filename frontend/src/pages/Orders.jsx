@@ -18,6 +18,7 @@ import axios from "axios";
 import { IconEdit, IconEye, IconTrash, IconPlus } from "@tabler/icons-react";
 import moment from "moment";
 import { ListItem, forwardRef } from "react";
+import { toast } from "../utils/Toast";
 
 export function Orders() {
   const [orders, setOrders] = useState([]);
@@ -31,7 +32,7 @@ export function Orders() {
 
   // Modal states
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalType, setModalType] = useState("create"); // "create" | "edit" | "delete"
+  const [modalType, setModalType] = useState("create"); // "create" | "edit" | "delete" | "view"
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   // Form states
@@ -122,7 +123,7 @@ export function Orders() {
       setModalOpen(false);
       fetchOrders();
     } catch (e) {
-      alert("Erro ao salvar reserva.");
+      toast.error("Erro ao salvar reserva.");
     }
   };
 
@@ -139,7 +140,7 @@ export function Orders() {
       setModalOpen(false);
       fetchOrders();
     } catch (e) {
-      alert("Erro ao deletar reserva.");
+      toast.error("Erro ao deletar reserva.");
     }
   };
 
@@ -159,7 +160,7 @@ export function Orders() {
       });
       fetchOrders();
     } catch (e) {
-      alert("Erro ao atualizar status.");
+      toast.error("Erro ao atualizar status.");
     }
   };
 
@@ -167,7 +168,7 @@ export function Orders() {
     {
       icon: <IconEye size={16} />,
       label: "Visualizar",
-      onClick: (row) => openModal("edit", row),
+      onClick: (row) => openModal("view", row),
     },
     {
       icon: <IconEdit size={16} />,
@@ -289,9 +290,9 @@ export function Orders() {
         </Box>
         {/* Modal de criar/editar */}
         <Modal
-          opened={modalOpen && (modalType === "create" || modalType === "edit")}
+          opened={modalOpen && ["create", "edit", "view"].includes(modalType)}
           onClose={() => setModalOpen(false)}
-          title={modalType === "create" ? "Nova Reserva" : "Editar Reserva"}
+          title={modalType === "create" ? "Nova Reserva" : modalType === "edit" ? "Editar Reserva" : "Visualizar Reserva"}
           centered
           radius={12}
         >
@@ -304,6 +305,8 @@ export function Orders() {
               required
               radius={8}
               placeholder="Selecione o usuário"
+              readOnly={modalType === "view"}
+              disabled={modalType === "view"}
             />
             <Select
               label="Jogo"
@@ -313,6 +316,8 @@ export function Orders() {
               required
               radius={8}
               placeholder="Selecione o jogo"
+              readOnly={modalType === "view"}
+              disabled={modalType === "view"}
             />
             <Select
               label="Status"
@@ -322,6 +327,8 @@ export function Orders() {
               required
               radius={8}
               placeholder="Selecione o status"
+              readOnly={modalType === "view"}
+              disabled={modalType === "view"}
               itemComponent={forwardRef(({ value, label, ...rest }, ref) => (
                 <div ref={ref} {...rest} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <Badge color={statusColors[value] || "gray"} variant="filled">{label}</Badge>
@@ -343,6 +350,7 @@ export function Orders() {
               onChange={(e) => setForm((f) => ({ ...f, reserveDate: e.target.value }))}
               required
               radius={8}
+              readOnly={modalType === "view"}
             />
             <TextInput
               label="Data de Aprovação"
@@ -350,6 +358,7 @@ export function Orders() {
               value={form.approveDate}
               onChange={(e) => setForm((f) => ({ ...f, approveDate: e.target.value }))}
               radius={8}
+              readOnly={modalType === "view"}
             />
             <TextInput
               label="Data de Devolução"
@@ -357,12 +366,15 @@ export function Orders() {
               value={form.returnDate}
               onChange={(e) => setForm((f) => ({ ...f, returnDate: e.target.value }))}
               radius={8}
+              readOnly={modalType === "view"}
             />
-            <Group position="right" mt="md">
-              <Button onClick={handleCreateOrEdit} style={{ borderRadius: 8 }}>
-                {modalType === "create" ? "Criar" : "Salvar"}
-              </Button>
-            </Group>
+            {modalType !== "view" && (
+              <Group position="right" mt="md">
+                <Button onClick={handleCreateOrEdit} style={{ borderRadius: 8 }}>
+                  {modalType === "create" ? "Criar" : "Salvar"}
+                </Button>
+              </Group>
+            )}
           </Stack>
         </Modal>
         {/* Modal de confirmação de exclusão */}

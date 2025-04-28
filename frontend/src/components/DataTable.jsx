@@ -142,10 +142,14 @@ export const DataTable = ({
         <MantineTable.Tr key={rowIndex}>
           {headers.map((header) => (
             <MantineTable.Td
-              style={{
-                width: header.width ? header.width : "auto",
-                textAlign: header.align ? header.align : "left",
-              }}
+            style={{
+              width: header.width ? header.width : "auto",
+              maxWidth: header.key === "description" ? 220 : undefined,
+              textAlign: header.align ? header.align : "left",
+              whiteSpace: header.key === "description" ? 'nowrap' : undefined,
+              overflow: header.key === "description" ? 'hidden' : undefined,
+              textOverflow: header.key === "description" ? 'ellipsis' : undefined,
+            }}
               key={String(header.key)}
               data-label={header.label}
             >

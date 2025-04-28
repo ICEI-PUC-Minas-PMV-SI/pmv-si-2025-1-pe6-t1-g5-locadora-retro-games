@@ -12,11 +12,14 @@ import {
   Select,
   Paper,
   Box,
+  Textarea,
+  Tooltip,
 } from "@mantine/core";
 import { AppWrapper } from "../components/AppWrapper";
 import { DataTable } from "../components/DataTable";
 import axios from "axios";
 import { IconEdit, IconEye, IconTrash, IconPlus } from "@tabler/icons-react";
+import { toast } from "../utils/Toast";
 
 export function Games() {
   const [games, setGames] = useState([]);
@@ -30,7 +33,7 @@ export function Games() {
 
   // Modal states
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalType, setModalType] = useState("create"); // "create" | "edit" | "delete"
+  const [modalType, setModalType] = useState("create"); // "create" | "edit" | "delete" | "view"
   const [selectedGame, setSelectedGame] = useState(null);
 
   // Form states
@@ -42,7 +45,13 @@ export function Games() {
     { label: "Nome", key: "name" },
     { label: "Console", key: "consoleName" },
     { label: "Preço", key: "price" },
-    { label: "Descrição", key: "description" },
+    { label: "Descrição", key: "description", render: (row) => (
+      <Tooltip label={row.description} multiline maw={400} position="top-start">
+        <span style={{ cursor: 'pointer', display: 'inline-block', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {row.description}
+        </span>
+      </Tooltip>
+    ) },
   ];
 
   // Função para abrir modal de criar/editar
@@ -83,7 +92,7 @@ export function Games() {
       setModalOpen(false);
       fetchGames();
     } catch (e) {
-      alert("Erro ao salvar jogo.");
+      toast.error("Erro ao salvar jogo.");
     }
   };
 
@@ -95,7 +104,7 @@ export function Games() {
       setModalOpen(false);
       fetchGames();
     } catch (e) {
-      alert("Erro ao deletar jogo.");
+      toast.error("Erro ao deletar jogo.");
     }
   };
 
@@ -103,7 +112,7 @@ export function Games() {
     {
       icon: <IconEye size={16} />,
       label: "Visualizar",
-      onClick: (row) => openModal("edit", row),
+      onClick: (row) => openModal("view", row),
     },
     {
       icon: <IconEdit size={16} />,
@@ -207,11 +216,11 @@ export function Games() {
             />
           )}
         </Box>
-        {/* Modal de criar/editar */}
+        {/* Modal de criar/editar/visualizar */}
         <Modal
-          opened={modalOpen && (modalType === "create" || modalType === "edit")}
+          opened={modalOpen && ["create", "edit", "view"].includes(modalType)}
           onClose={() => setModalOpen(false)}
-          title={modalType === "create" ? "Novo Jogo" : "Editar Jogo"}
+          title={modalType === "create" ? "Novo Jogo" : modalType === "edit" ? "Editar Jogo" : "Visualizar Jogo"}
           centered
           radius={12}
         >
@@ -222,6 +231,7 @@ export function Games() {
               onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
               required
               radius={8}
+              readOnly={modalType === "view"}
             />
             <NumberInput
               label="Preço"
@@ -238,6 +248,8 @@ export function Games() {
                   ? `R$ ${value}`
                   : ""
               }
+              readOnly={modalType === "view"}
+              disabled={modalType === "view"}
             />
             <Select
               label="Console"
@@ -247,18 +259,26 @@ export function Games() {
               required
               radius={8}
               placeholder="Selecione o console"
+              readOnly={modalType === "view"}
+              disabled={modalType === "view"}
             />
-            <TextInput
+            <Textarea
               label="Descrição"
               value={form.description}
               onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
               radius={8}
+              autosize
+              minRows={2}
+              maxRows={6}
+              readOnly={modalType === "view"}
             />
-            <Group position="right" mt="md">
-              <Button onClick={handleCreateOrEdit} style={{ borderRadius: 8 }}>
-                {modalType === "create" ? "Criar" : "Salvar"}
-              </Button>
-            </Group>
+            {modalType !== "view" && (
+              <Group position="right" mt="md">
+                <Button onClick={handleCreateOrEdit} style={{ borderRadius: 8 }}>
+                  {modalType === "create" ? "Criar" : "Salvar"}
+                </Button>
+              </Group>
+            )}
           </Stack>
         </Modal>
         {/* Modal de confirmação de exclusão */}

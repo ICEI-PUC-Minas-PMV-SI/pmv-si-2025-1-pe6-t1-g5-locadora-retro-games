@@ -9,6 +9,7 @@ import {
   Stack,
   TextInput,
   PasswordInput,
+  Select,
   Paper,
   Box,
 } from "@mantine/core";
@@ -17,6 +18,7 @@ import { DataTable } from "../components/DataTable";
 import axios from "axios";
 import { IconEdit, IconEye, IconTrash, IconPlus } from "@tabler/icons-react";
 import { maskCpf } from "../utils/maskCpf"; // sua função de máscara
+import { toast } from "../utils/Toast";
 
 export function Users() {
   const [users, setUsers] = useState([]);
@@ -30,17 +32,24 @@ export function Users() {
 
   // Modal states
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalType, setModalType] = useState("create"); // "create" | "edit" | "delete"
+  const [modalType, setModalType] = useState("create"); // "create" | "edit" | "delete" | "view"
   const [selectedUser, setSelectedUser] = useState(null);
 
   // Form states
-  const [form, setForm] = useState({ name: "", email: "", cpf: "", password: "" });
+  const [form, setForm] = useState({ name: "", email: "", cpf: "", password: "", roleId: "2" });
+
+  // Adicione as opções de role
+  const roleOptions = [
+    { value: "1", label: "Administrador" },
+    { value: "2", label: "Usuário" },
+  ];
 
   const headers = [
     { label: "ID", key: "id" },
     { label: "Nome", key: "name" },
     { label: "Email", key: "email" },
     { label: "CPF", key: "cpf" },
+    { label: "Tipo", key: "roleLabel" },
   ];
 
   // Função para abrir modal de criar/editar
@@ -49,8 +58,8 @@ export function Users() {
     setSelectedUser(user);
     setForm(
       user
-        ? { name: user.name, email: user.email, cpf: user.cpf, password: "" }
-        : { name: "", email: "", cpf: "", password: "" }
+        ? { name: user.name, email: user.email, cpf: user.cpf, password: "", roleId: String(user.roleId || "2") }
+        : { name: "", email: "", cpf: "", password: "", roleId: "2" }
     );
     setModalOpen(true);
   };
@@ -58,25 +67,32 @@ export function Users() {
   // CRUD actions
   const handleCreateOrEdit = async () => {
     try {
+      const cleanForm = { ...form, cpf: form.cpf.replace(/\D/g, ""), roleId: Number(form.roleId) };
       if (modalType === "create") {
-        await axios.post("http://localhost:8080/users", form);
+        await axios.post("http://localhost:8080/users", cleanForm, {
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        });
       } else if (modalType === "edit" && selectedUser) {
-        await axios.put(`http://localhost:8080/users/${selectedUser.id}`, form);
+        await axios.put(`http://localhost:8080/users/${selectedUser.id}`, cleanForm, {
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        });
       }
       setModalOpen(false);
       fetchUsers();
     } catch (e) {
-      alert("Erro ao salvar usuário.");
+      toast.error("Erro ao salvar usuário.");
     }
   };
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/users/${selectedUser.id}`);
+      await axios.delete(`http://localhost:8080/users/${selectedUser.id}`, {
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+      });
       setModalOpen(false);
       fetchUsers();
     } catch (e) {
-      alert("Erro ao deletar usuário.");
+      toast.error("Erro ao deletar usuário.");
     }
   };
 
@@ -84,7 +100,7 @@ export function Users() {
     {
       icon: <IconEye size={16} />,
       label: "Visualizar",
-      onClick: (row) => openModal("edit", row),
+      onClick: (row) => openModal("view", row),
     },
     {
       icon: <IconEdit size={16} />,
@@ -151,7 +167,11 @@ export function Users() {
           ) : (
             <DataTable
               headers={headers}
-              data={users.map((u) => ({ ...u, cpf: maskCpf(u.cpf) }))}
+              data={users.map((u) => ({
+                ...u,
+                cpf: maskCpf(u.cpf),
+                roleLabel: u.roleId === 1 ? "Administrador" : "Usuário"
+              }))}
               total={total}
               limit={limit}
               page={page}
@@ -167,11 +187,11 @@ export function Users() {
             />
           )}
         </Box>
-        {/* Modal de criar/editar */}
+        {/* Modal de criar/editar/visualizar */}
         <Modal
-          opened={modalOpen && (modalType === "create" || modalType === "edit")}
+          opened={modalOpen && ["create", "edit", "view"].includes(modalType)}
           onClose={() => setModalOpen(false)}
-          title={modalType === "create" ? "Novo Usuário" : "Editar Usuário"}
+          title={modalType === "create" ? "Novo Usuário" : modalType === "edit" ? "Editar Usuário" : "Visualizar Usuário"}
           centered
           radius={12}
         >
@@ -182,6 +202,7 @@ export function Users() {
               onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
               required
               radius={8}
+              readOnly={modalType === "view"}
             />
             <TextInput
               label="Email"
@@ -189,6 +210,7 @@ export function Users() {
               onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
               required
               radius={8}
+              readOnly={modalType === "view"}
             />
             <TextInput
               label="CPF"
@@ -197,6 +219,7 @@ export function Users() {
               required
               maxLength={14}
               radius={8}
+              readOnly={modalType === "view"}
             />
             <PasswordInput
               label="Senha"
@@ -205,12 +228,25 @@ export function Users() {
               required={modalType === "create"}
               placeholder={modalType === "edit" ? "Deixe em branco para não alterar" : ""}
               radius={8}
+              readOnly={modalType === "view"}
             />
-            <Group position="right" mt="md">
-              <Button onClick={handleCreateOrEdit} style={{ borderRadius: 8 }}>
-                {modalType === "create" ? "Criar" : "Salvar"}
-              </Button>
-            </Group>
+            <Select
+              label="Tipo de Usuário"
+              data={roleOptions}
+              value={form.roleId}
+              onChange={(value) => setForm((f) => ({ ...f, roleId: value }))}
+              required
+              radius={8}
+              readOnly={modalType === "view"}
+              disabled={modalType === "view"}
+            />
+            {modalType !== "view" && (
+              <Group position="right" mt="md">
+                <Button onClick={handleCreateOrEdit} style={{ borderRadius: 8 }}>
+                  {modalType === "create" ? "Criar" : "Salvar"}
+                </Button>
+              </Group>
+            )}
           </Stack>
         </Modal>
         {/* Modal de confirmação de exclusão */}

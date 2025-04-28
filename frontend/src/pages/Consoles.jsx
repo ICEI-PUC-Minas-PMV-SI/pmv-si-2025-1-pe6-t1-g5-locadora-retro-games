@@ -14,6 +14,7 @@ import { AppWrapper } from "../components/AppWrapper";
 import { DataTable } from "../components/DataTable";
 import axios from "axios";
 import { IconEdit, IconEye, IconTrash, IconPlus } from "@tabler/icons-react";
+import { toast } from "../utils/Toast";
 
 export function Consoles() {
   const [consoles, setConsoles] = useState([]);
@@ -27,7 +28,7 @@ export function Consoles() {
 
   // Modal states
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalType, setModalType] = useState("create"); // "create" | "edit" | "delete"
+  const [modalType, setModalType] = useState("create"); // "create" | "edit" | "delete" | "view"
   const [selectedConsole, setSelectedConsole] = useState(null);
 
   // Form states
@@ -63,7 +64,7 @@ export function Consoles() {
       setModalOpen(false);
       fetchConsoles();
     } catch (e) {
-      alert("Erro ao salvar console.");
+      toast.error("Erro ao salvar console.");
     }
   };
 
@@ -75,7 +76,7 @@ export function Consoles() {
       setModalOpen(false);
       fetchConsoles();
     } catch (e) {
-      alert("Erro ao deletar console.");
+      toast.error("Erro ao deletar console.");
     }
   };
 
@@ -83,7 +84,7 @@ export function Consoles() {
     {
       icon: <IconEye size={16} />,
       label: "Visualizar",
-      onClick: (row) => openModal("edit", row),
+      onClick: (row) => openModal("view", row),
     },
     {
       icon: <IconEdit size={16} />,
@@ -171,11 +172,11 @@ export function Consoles() {
             />
           )}
         </Box>
-        {/* Modal de criar/editar */}
+        {/* Modal de criar/editar/visualizar */}
         <Modal
-          opened={modalOpen && (modalType === "create" || modalType === "edit")}
+          opened={modalOpen && ["create", "edit", "view"].includes(modalType)}
           onClose={() => setModalOpen(false)}
-          title={modalType === "create" ? "Novo Console" : "Editar Console"}
+          title={modalType === "create" ? "Novo Console" : modalType === "edit" ? "Editar Console" : "Visualizar Console"}
           centered
           radius={12}
         >
@@ -186,12 +187,15 @@ export function Consoles() {
               onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
               required
               radius={8}
+              readOnly={modalType === "view"}
             />
-            <Group position="right" mt="md">
-              <Button onClick={handleCreateOrEdit} style={{ borderRadius: 8 }}>
-                {modalType === "create" ? "Criar" : "Salvar"}
-              </Button>
-            </Group>
+            {modalType !== "view" && (
+              <Group position="right" mt="md">
+                <Button onClick={handleCreateOrEdit} style={{ borderRadius: 8 }}>
+                  {modalType === "create" ? "Criar" : "Salvar"}
+                </Button>
+              </Group>
+            )}
           </Stack>
         </Modal>
         {/* Modal de confirmação de exclusão */}
