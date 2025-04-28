@@ -21,6 +21,8 @@ const statusColors = {
   Pendente: "yellow",
 };
 
+const purple = '#9333ea';
+
 export const DataTable = ({
   headers,
   data,
@@ -112,16 +114,16 @@ export const DataTable = ({
               textAlign: header.align ? header.align : "left",
               cursor: "pointer",
               fontWeight: "bold",
-              color: field === header.key ? "#0366d6" : "inherit",
+              color: field === header.key ? purple : "inherit",
             }}
           >
             {header.label}
             {field === header.key && (
               <span style={{ marginLeft: 4 }}>
                 {order === "asc" ? (
-                  <IconArrowUp size={12} color="#0366d6" />
+                  <IconArrowUp size={12} color={purple} />
                 ) : (
-                  <IconArrowDown size={12} color="#0366d6" />
+                  <IconArrowDown size={12} color={purple} />
                 )}
               </span>
             )}
@@ -196,7 +198,7 @@ export const DataTable = ({
             <div
               style={{ display: "flex", alignItems: "center", paddingLeft: 8 }}
             >
-              <IconSearch size={18} color="#999" />
+              <IconSearch size={18} color={purple} />
             </div>
           }
           style={{ flex: 1 }}
@@ -213,7 +215,7 @@ export const DataTable = ({
             <MantineTable.Tr>
               <MantineTable.Td
                 colSpan={headers.length}
-                style={{ textAlign: "center" }}
+                style={{ textAlign: "center", color: purple }}
               >
                 Nenhum registro encontrado
               </MantineTable.Td>
@@ -231,6 +233,11 @@ export const DataTable = ({
           onChange={setPage}
           size="xs"
           pr={30}
+          color="purple"
+          styles={{
+            control: { borderColor: purple },
+            active: { backgroundColor: purple, color: '#fff' },
+          }}
         />
       </Box>
       <style>{`

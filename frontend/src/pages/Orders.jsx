@@ -11,11 +11,14 @@ import {
   Box,
   TextInput,
   Badge,
+  Card,
+  SimpleGrid,
+  Text,
 } from "@mantine/core";
 import { AppWrapper } from "../components/AppWrapper";
 import { DataTable } from "../components/DataTable";
 import axios from "axios";
-import { IconEdit, IconEye, IconTrash, IconPlus } from "@tabler/icons-react";
+import { IconEdit, IconEye, IconTrash, IconPlus, IconCalendar, IconClock, IconAlertTriangle } from "@tabler/icons-react";
 import moment from "moment";
 import { ListItem, forwardRef } from "react";
 import { toast } from "../utils/Toast";
@@ -30,12 +33,12 @@ export function Orders() {
   const [field, setField] = useState("id");
   const [order, setOrder] = useState("asc");
 
-  // Modal states
+  // modal states
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState("create"); // "create" | "edit" | "delete" | "view"
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  // Form states
+  // form states
   const [form, setForm] = useState({
     id: "",
     userId: "",
@@ -71,7 +74,7 @@ export function Orders() {
     { label: "Devolução", key: "returnDate", type: "date" },
   ];
 
-  // Função para abrir modal de criar/editar
+  // função para abrir modal de criar/editar
   const openModal = (type, order = null) => {
     setModalType(type);
     setSelectedOrder(order);
@@ -99,7 +102,7 @@ export function Orders() {
     setModalOpen(true);
   };
 
-  // CRUD actions
+  // crud actions
   const handleCreateOrEdit = async () => {
     try {
       const payload = {
@@ -144,7 +147,7 @@ export function Orders() {
     }
   };
 
-  // Atualiza status diretamente na tabela
+  // atualiza status diretamente na tabela
   const handleStatusChange = async (row, newStatusLabel) => {
     try {
       const statusMap = { Reservado: 1, Devolvido: 2, Cancelado: 3, Pendente: 4 };
@@ -245,11 +248,47 @@ export function Orders() {
     fetchGames();
   }, [fetchUsers, fetchGames]);
 
+  // cards de resumo para reservas
+  const totalReservas = orders.length;
+  const pendentes = orders.filter(o => o.statusReserveId === 4).length;
+  const atrasadas = orders.filter(o => o.statusReserveId === 4 && o.returnDate && new Date(o.returnDate) < new Date()).length;
+
   return (
     <AppWrapper>
       <Container size="lg" pt="xl">
+        <Title order={2} mb="md" style={{ color: '#111' }}>Reservas</Title>
+        <Text size="lg" weight={600} mb="xs" style={{ color: '#111' }}>Resumo das Reservas</Text>
+        <SimpleGrid cols={3} spacing="lg" mb="xl" breakpoints={[{ maxWidth: 900, cols: 1 }]}>
+          <Card shadow="sm" p="lg" radius="md" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{ background: '#e3f2fd', borderRadius: 12, padding: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <IconCalendar size={32} color="#1976d2" />
+            </div>
+            <div>
+              <Text size="sm" color="dimmed">Total de Reservas</Text>
+              <Text size="xl" weight={700}>{totalReservas}</Text>
+            </div>
+          </Card>
+          <Card shadow="sm" p="lg" radius="md" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{ background: '#fffde7', borderRadius: 12, padding: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <IconClock size={32} color="#ffb300" />
+            </div>
+            <div>
+              <Text size="sm" color="dimmed">Reservas Pendentes</Text>
+              <Text size="xl" weight={700}>{pendentes}</Text>
+            </div>
+          </Card>
+          <Card shadow="sm" p="lg" radius="md" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{ background: '#ffebee', borderRadius: 12, padding: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <IconAlertTriangle size={32} color="#e53935" />
+            </div>
+            <div>
+              <Text size="sm" color="dimmed">Reservas Atrasadas</Text>
+              <Text size="xl" weight={700}>{atrasadas}</Text>
+            </div>
+          </Card>
+        </SimpleGrid>
+        <Text size="lg" weight={600} mb="xs" style={{ color: '#111' }}>Lista de Reservas</Text>
         <Group position="apart" mb="md">
-          <Title order={2} style={{ letterSpacing: 0.5 }}>Reservas</Title>
           <Button leftSection={<IconPlus size={16} />} onClick={() => openModal("create")}
             style={{ borderRadius: 8, fontWeight: 600 }}>
             Nova Reserva

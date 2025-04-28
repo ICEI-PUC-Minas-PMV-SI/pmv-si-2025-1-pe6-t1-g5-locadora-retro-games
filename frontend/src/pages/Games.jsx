@@ -14,11 +14,14 @@ import {
   Box,
   Textarea,
   Tooltip,
+  Card,
+  SimpleGrid,
+  Text,
 } from "@mantine/core";
 import { AppWrapper } from "../components/AppWrapper";
 import { DataTable } from "../components/DataTable";
 import axios from "axios";
-import { IconEdit, IconEye, IconTrash, IconPlus } from "@tabler/icons-react";
+import { IconEdit, IconEye, IconTrash, IconPlus, IconDeviceGamepad2, IconStar } from "@tabler/icons-react";
 import { toast } from "../utils/Toast";
 
 export function Games() {
@@ -31,12 +34,12 @@ export function Games() {
   const [field, setField] = useState("id");
   const [order, setOrder] = useState("asc");
 
-  // Modal states
+  // modal states
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState("create"); // "create" | "edit" | "delete" | "view"
   const [selectedGame, setSelectedGame] = useState(null);
 
-  // Form states
+  // form states
   const [form, setForm] = useState({ name: "", price: "", description: "", consoleId: "" });
   const [consoles, setConsoles] = useState([]);
 
@@ -54,7 +57,7 @@ export function Games() {
     ) },
   ];
 
-  // Função para abrir modal de criar/editar
+  // função para abrir modal de criar/editar
   const openModal = (type, game = null) => {
     setModalType(type);
     setSelectedGame(game);
@@ -71,7 +74,7 @@ export function Games() {
     setModalOpen(true);
   };
 
-  // CRUD actions
+  // crud actions
   const handleCreateOrEdit = async () => {
     try {
       const payload = {
@@ -174,11 +177,38 @@ export function Games() {
     fetchConsoles();
   }, [fetchConsoles]);
 
+  // cards de resumo para jogos
+  const totalJogos = games.length;
+  // jogo mais alugado (pelo array atual, se houver campo de reservas)
+  const topGame = games.reduce((acc, g) => (g.reserves && g.reserves.length > (acc?.reserves?.length || 0) ? g : acc), null);
+
   return (
     <AppWrapper>
       <Container size="lg" pt="xl">
+        <Title order={2} mb="md" style={{ color: '#111' }}>Jogos</Title>
+        <Text size="lg" weight={600} mb="xs" style={{ color: '#111' }}>Resumo dos Jogos</Text>
+        <SimpleGrid cols={2} spacing="lg" mb="xl" breakpoints={[{ maxWidth: 900, cols: 1 }]}>
+          <Card shadow="sm" p="lg" radius="md" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{ background: '#e3f2fd', borderRadius: 12, padding: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <IconDeviceGamepad2 size={32} color="#1976d2" />
+            </div>
+            <div>
+              <Text size="sm" color="dimmed">Total de Jogos</Text>
+              <Text size="xl" weight={700}>{totalJogos}</Text>
+            </div>
+          </Card>
+          <Card shadow="sm" p="lg" radius="md" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{ background: '#fffde7', borderRadius: 12, padding: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <IconStar size={32} color="#ffb300" />
+            </div>
+            <div>
+              <Text size="sm" color="dimmed">Jogo mais alugado</Text>
+              <Text size="xl" weight={700}>{topGame ? topGame.name : '-'}</Text>
+            </div>
+          </Card>
+        </SimpleGrid>
+        <Text size="lg" weight={600} mb="xs" style={{ color: '#111' }}>Lista de Jogos</Text>
         <Group position="apart" mb="md">
-          <Title order={2} style={{ letterSpacing: 0.5 }}>Jogos</Title>
           <Button leftSection={<IconPlus size={16} />} onClick={() => openModal("create")}
             style={{ borderRadius: 8, fontWeight: 600 }}>
             Novo Jogo

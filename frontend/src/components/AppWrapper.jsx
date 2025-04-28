@@ -35,7 +35,7 @@ export function AppWrapper({ children }) {
 
   useEffect(() => {
     if (userModalOpen && !userInfo) {
-      // Busca dados do usuário logado
+      // busca dados do usuário logado
       axios
         .get("http://localhost:8080/users/user", {
           headers: { Authorization: "Bearer " + localStorage.getItem("token") },
@@ -78,7 +78,13 @@ export function AppWrapper({ children }) {
             <Image src={logo} w={128}></Image>
           </Center>
           <Center w={60}>
-            <ActionIcon w={30} bd={100} justify="center" onClick={handleUserClick} style={{ cursor: 'pointer' }}>
+            <ActionIcon
+              w={30}
+              bd={100}
+              justify="center"
+              onClick={handleUserClick}
+              style={{ cursor: "pointer" }}
+            >
               <IconUser size={16} stroke={1.5} />
             </ActionIcon>
           </Center>
@@ -129,12 +135,32 @@ export function AppWrapper({ children }) {
         </AppShell.Section>
       </AppShell.Navbar>
 
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main
+        style={{
+          background: "linear-gradient(120deg,rgb(255, 255, 255) 0%,rgb(250, 248, 252) 100%)",
+        }}
+      >
+        <div
+          style={{
+            width: "100%",
+            maxWidth: 1200,
+            marginLeft: 48,
+            marginRight: "auto",
+            marginTop: 0,
+          }}
+        >
+          {children}
+        </div>
+      </AppShell.Main>
 
       <Modal
         opened={userModalOpen}
         onClose={() => setUserModalOpen(false)}
-        title={<span style={{ color: '#9333ea', fontWeight: 'bold', fontSize: 20 }}>Minha Conta</span>}
+        title={
+          <span style={{ color: "#9333ea", fontWeight: "bold", fontSize: 20 }}>
+            Minha Conta
+          </span>
+        }
         centered
         radius={16}
         padding={24}
@@ -146,10 +172,22 @@ export function AppWrapper({ children }) {
         <Stack gap={8} style={{ padding: 8 }}>
           {userInfo ? (
             <>
-              <Text size="md"><b>Nome:</b> {userInfo.name}</Text>
-              <Text size="md"><b>Email:</b> {userInfo.email}</Text>
-              <Text size="md"><b>CPF:</b> {userInfo.cpf?.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")}</Text>
-              <Text size="md"><b>Tipo:</b> {userInfo.role?.name || "Admin"}</Text>
+              <Text size="md">
+                <b>Nome:</b> {userInfo.name}
+              </Text>
+              <Text size="md">
+                <b>Email:</b> {userInfo.email}
+              </Text>
+              <Text size="md">
+                <b>CPF:</b>{" "}
+                {userInfo.cpf?.replace(
+                  /(\d{3})(\d{3})(\d{3})(\d{2})/,
+                  "$1.$2.$3-$4"
+                )}
+              </Text>
+              <Text size="md">
+                <b>Tipo:</b> {userInfo.role?.name || "Admin"}
+              </Text>
             </>
           ) : (
             <Text>Carregando...</Text>

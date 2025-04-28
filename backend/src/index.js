@@ -11,6 +11,7 @@ import UserRouter from "./modules/user/user.route.js";
 import GameRouter from "./modules/game/game.route.js";
 import ConsoleRouter from "./modules/console/console.route.js";
 import OrderRouter from "./modules/order/order.route.js";
+import DashboardRouter from "./modules/dashboard/dashboard.route.js";
 
 const envFile = process.env.NODE_ENV === 'production' ? '.env.prod' : '.env';
 dotenv.config({ path: path.resolve(process.cwd(), envFile) });
@@ -33,7 +34,8 @@ app.use("/auth", AuthRouter);
 app.use("/users", UserRouter);
 app.use("/games", GameRouter);
 app.use("/consoles", ConsoleRouter);
-app.use("/orders", OrderRouter)
+app.use("/orders", OrderRouter);
+app.use("/dashboard", DashboardRouter)
 
 // gracefully shutdown
 process.on("SIGINT", () => {
