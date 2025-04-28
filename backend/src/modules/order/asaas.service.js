@@ -68,4 +68,45 @@ AsaasService.payment = async (cardInfo, customer, value) => {
     return responseBody.id;
 }
 
+AsaasService.getDashboardSummary = async () => {
+    const url = `https://api-sandbox.asaas.com/v3/payments?limit=1000`;
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            accept: 'application/json',
+            access_token: API_KEY
+        }
+    });
+    const responseBody = await response.json();
+    const payments = responseBody.data || [];
+
+    let totalReceita = 0;
+    let receitaMesAtual = 0;
+    let statusPagamentos = { pagos: 0, pendentes: 0, cancelados: 0 };
+    const now = new Date();
+    const mesAtual = now.getMonth();
+    const anoAtual = now.getFullYear();
+
+    payments.forEach(p => {
+        if (p.status === 'RECEIVED') {
+            totalReceita += p.value;
+            const dataRecebimento = new Date(p.paymentDate || p.dueDate);
+            if (dataRecebimento.getMonth() === mesAtual && dataRecebimento.getFullYear() === anoAtual) {
+                receitaMesAtual += p.value;
+            }
+            statusPagamentos.pagos++;
+        } else if (p.status === 'PENDING') {
+            statusPagamentos.pendentes++;
+        } else if (p.status === 'CANCELED') {
+            statusPagamentos.cancelados++;
+        }
+    });
+
+    return {
+        totalReceita,
+        receitaMesAtual,
+        statusPagamentos
+    };
+};
+
 export default AsaasService;
