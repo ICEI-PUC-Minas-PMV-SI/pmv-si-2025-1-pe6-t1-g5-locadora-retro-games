@@ -17,7 +17,7 @@ import {
 } from "@mantine/core";
 import { AppWrapper } from "../components/AppWrapper";
 import { DataTable } from "../components/DataTable";
-import axios from "axios";
+import api from "../http/api";
 import { IconEdit, IconEye, IconTrash, IconPlus, IconCalendar, IconClock, IconAlertTriangle } from "@tabler/icons-react";
 import moment from "moment";
 import { ListItem, forwardRef } from "react";
@@ -115,13 +115,9 @@ export function Orders() {
         returnDate: form.returnDate ? new Date(form.returnDate) : null,
       };
       if (modalType === "create") {
-        await axios.post("http://localhost:8080/orders/admin", payload, {
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-        });
+        await api.post("/orders/admin", payload);
       } else if (modalType === "edit" && selectedOrder) {
-        await axios.put("http://localhost:8080/orders/admin", payload, {
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-        });
+        await api.put("/orders/admin", payload);
       }
       setModalOpen(false);
       fetchOrders();
@@ -132,13 +128,12 @@ export function Orders() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete("http://localhost:8080/orders/admin", {
+      await api.delete("/orders/admin", {
         data: {
           id: selectedOrder.id,
           userId: selectedOrder.userId,
           gameId: selectedOrder.gameId,
-        },
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        }
       });
       setModalOpen(false);
       fetchOrders();
@@ -158,9 +153,7 @@ export function Orders() {
         returnDate: row.returnDate,
         reserveDate: row.reserveDate,
       };
-      await axios.put("http://localhost:8080/orders/admin", payload, {
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-      });
+      await api.put("/orders/admin", payload);
       fetchOrders();
     } catch (e) {
       toast.error("Erro ao atualizar status.");
@@ -193,9 +186,8 @@ export function Orders() {
   const fetchOrders = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:8080/orders", {
+      const res = await api.get("/orders", {
         params: { page, limit, search, field, order },
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
       });
       setOrders(
         (res.data.orders || []).map((o) => ({
@@ -216,9 +208,8 @@ export function Orders() {
 
   const fetchUsers = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:8080/users", {
+      const res = await api.get("/users", {
         params: { limit: 100, page: 1 },
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
       });
       setUsers((res.data.users || []).map((u) => ({ value: u.id + "", label: u.name })));
     } catch (e) {
@@ -228,9 +219,8 @@ export function Orders() {
 
   const fetchGames = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:8080/games", {
+      const res = await api.get("/games", {
         params: { limit: 100, page: 1 },
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
       });
       setGames((res.data.games || []).map((g) => ({ value: g.id + "", label: g.name })));
     } catch (e) {

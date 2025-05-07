@@ -2,7 +2,7 @@ import { Container, Title, Button } from "@mantine/core";
 import { AppWrapper } from "../components/AppWrapper";
 import { useEffect, useState } from "react";
 import { Group, Card, Text, SimpleGrid, Loader, Badge, Table, Stack } from "@mantine/core";
-import axios from "axios";
+import api from "../http/api";
 import { toast } from "../utils/Toast";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { IconCalendar, IconCurrencyDollar, IconUser, IconClock, IconAlertTriangle } from '@tabler/icons-react';
@@ -29,9 +29,7 @@ export function Dashboard() {
     async function fetchData() {
       setLoading(true);
       try {
-        const res = await axios.get("http://localhost:8080/dashboard/summary", {
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-        });
+        const res = await api.get("/dashboard/summary");
         setData(res.data);
       } catch (e) {
         toast.error("Erro ao carregar dados do dashboard");

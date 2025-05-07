@@ -15,8 +15,15 @@ import {
 } from "@mantine/core";
 import { AppWrapper } from "../components/AppWrapper";
 import { DataTable } from "../components/DataTable";
-import axios from "axios";
-import { IconEdit, IconEye, IconTrash, IconPlus, IconDeviceGamepad2, IconStar } from "@tabler/icons-react";
+import api from "../http/api";
+import {
+  IconEdit,
+  IconEye,
+  IconTrash,
+  IconPlus,
+  IconDeviceGamepad2,
+  IconStar,
+} from "@tabler/icons-react";
 import { toast } from "../utils/Toast";
 
 export function Consoles() {
@@ -56,13 +63,9 @@ export function Consoles() {
     try {
       const payload = { name: form.name };
       if (modalType === "create") {
-        await axios.post("http://localhost:8080/consoles", payload, {
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-        });
+        await api.post("/consoles", payload);
       } else if (modalType === "edit" && selectedConsole) {
-        await axios.put(`http://localhost:8080/consoles/${selectedConsole.id}`, payload, {
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-        });
+        await api.put(`/consoles/${selectedConsole.id}`, payload);
       }
       setModalOpen(false);
       fetchConsoles();
@@ -73,9 +76,7 @@ export function Consoles() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/consoles/${selectedConsole.id}`, {
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-      });
+      await api.delete(`/consoles/${selectedConsole.id}`);
       setModalOpen(false);
       fetchConsoles();
     } catch (e) {
@@ -109,9 +110,8 @@ export function Consoles() {
   const fetchConsoles = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:8080/consoles", {
+      const res = await api.get("/consoles", {
         params: { page, limit, search, field, order },
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
       });
       setConsoles(
         (res.data.consoles || []).map((c) => ({
@@ -136,37 +136,90 @@ export function Consoles() {
   // cards de resumo para consoles
   const totalConsoles = consoles.length;
   // console mais popular (pelo array atual, se houver campo de jogos)
-  const topConsole = consoles.reduce((acc, c) => (c.gamesCount > (acc?.gamesCount || 0) ? c : acc), null);
+  const topConsole = consoles.reduce(
+    (acc, c) => (c.gamesCount > (acc?.gamesCount || 0) ? c : acc),
+    null
+  );
 
   return (
     <AppWrapper>
       <Container size="lg" pt="xl">
-        <Title order={2} mb="md" style={{ color: '#111' }}>Consoles</Title>
-        <Text size="lg" weight={600} mb="xs" style={{ color: '#111' }}>Resumo dos Consoles</Text>
-        <SimpleGrid cols={2} spacing="lg" mb="xl" breakpoints={[{ maxWidth: 900, cols: 1 }]}>
-          <Card shadow="sm" p="lg" radius="md" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <div style={{ background: '#ede7f6', borderRadius: 12, padding: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Title order={2} mb="md" style={{ color: "#111" }}>
+          Consoles
+        </Title>
+        <Text size="lg" weight={600} mb="xs" style={{ color: "#111" }}>
+          Resumo dos Consoles
+        </Text>
+        <SimpleGrid
+          cols={2}
+          spacing="lg"
+          mb="xl"
+          breakpoints={[{ maxWidth: 900, cols: 1 }]}
+        >
+          <Card
+            shadow="sm"
+            p="lg"
+            radius="md"
+            style={{ display: "flex", alignItems: "center", gap: 16 }}
+          >
+            <div
+              style={{
+                background: "#ede7f6",
+                borderRadius: 12,
+                padding: 12,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <IconDeviceGamepad2 size={32} color="#512da8" />
             </div>
             <div>
-              <Text size="sm" color="dimmed">Total de Consoles</Text>
-              <Text size="xl" weight={700}>{totalConsoles}</Text>
+              <Text size="sm" color="dimmed">
+                Total de Consoles
+              </Text>
+              <Text size="xl" weight={700}>
+                {totalConsoles}
+              </Text>
             </div>
           </Card>
-          <Card shadow="sm" p="lg" radius="md" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <div style={{ background: '#fffde7', borderRadius: 12, padding: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Card
+            shadow="sm"
+            p="lg"
+            radius="md"
+            style={{ display: "flex", alignItems: "center", gap: 16 }}
+          >
+            <div
+              style={{
+                background: "#fffde7",
+                borderRadius: 12,
+                padding: 12,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <IconStar size={32} color="#ffb300" />
             </div>
             <div>
-              <Text size="sm" color="dimmed">Console com mais jogos</Text>
-              <Text size="xl" weight={700}>{topConsole ? topConsole.name : '-'}</Text>
+              <Text size="sm" color="dimmed">
+                Console com mais jogos
+              </Text>
+              <Text size="xl" weight={700}>
+                {topConsole ? topConsole.name : "-"}
+              </Text>
             </div>
           </Card>
         </SimpleGrid>
-        <Text size="lg" weight={600} mb="xs" style={{ color: '#111' }}>Lista de Consoles</Text>
+        <Text size="lg" weight={600} mb="xs" style={{ color: "#111" }}>
+          Lista de Consoles
+        </Text>
         <Group position="apart" mb="md">
-          <Button leftSection={<IconPlus size={16} />} onClick={() => openModal("create")}
-            style={{ borderRadius: 8, fontWeight: 600 }}>
+          <Button
+            leftSection={<IconPlus size={16} />}
+            onClick={() => openModal("create")}
+            style={{ borderRadius: 8, fontWeight: 600 }}
+          >
             Novo Console
           </Button>
         </Group>
@@ -206,7 +259,13 @@ export function Consoles() {
         <Modal
           opened={modalOpen && ["create", "edit", "view"].includes(modalType)}
           onClose={() => setModalOpen(false)}
-          title={modalType === "create" ? "Novo Console" : modalType === "edit" ? "Editar Console" : "Visualizar Console"}
+          title={
+            modalType === "create"
+              ? "Novo Console"
+              : modalType === "edit"
+              ? "Editar Console"
+              : "Visualizar Console"
+          }
           centered
           radius={12}
         >
@@ -221,7 +280,10 @@ export function Consoles() {
             />
             {modalType !== "view" && (
               <Group position="right" mt="md">
-                <Button onClick={handleCreateOrEdit} style={{ borderRadius: 8 }}>
+                <Button
+                  onClick={handleCreateOrEdit}
+                  style={{ borderRadius: 8 }}
+                >
                   {modalType === "create" ? "Criar" : "Salvar"}
                 </Button>
               </Group>
@@ -238,14 +300,22 @@ export function Consoles() {
         >
           <Stack>
             <div>
-              Tem certeza que deseja excluir o console {" "}
+              Tem certeza que deseja excluir o console{" "}
               <b>{selectedConsole?.name}</b>?
             </div>
             <Group position="right" mt="md">
-              <Button variant="outline" onClick={() => setModalOpen(false)} style={{ borderRadius: 8 }}>
+              <Button
+                variant="outline"
+                onClick={() => setModalOpen(false)}
+                style={{ borderRadius: 8 }}
+              >
                 Cancelar
               </Button>
-              <Button color="red" onClick={handleDelete} style={{ borderRadius: 8 }}>
+              <Button
+                color="red"
+                onClick={handleDelete}
+                style={{ borderRadius: 8 }}
+              >
                 Excluir
               </Button>
             </Group>

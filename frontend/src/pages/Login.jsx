@@ -11,7 +11,7 @@ import {
   Paper,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import axios from "axios";
+import api from "../http/api";
 import logo from "../images/logo.png";
 import bg from "../images/background.jpg";
 import { toast } from "../utils/Toast";
@@ -28,7 +28,7 @@ export function Login() {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:8080/auth/login", {
+      const response = await api.post("/auth/login", {
         email,
         password,
       });
