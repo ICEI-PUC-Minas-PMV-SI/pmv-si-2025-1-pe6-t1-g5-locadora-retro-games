@@ -18,7 +18,7 @@ import {
 } from "@mantine/core";
 import { AppWrapper } from "../components/AppWrapper";
 import { DataTable } from "../components/DataTable";
-import axios from "axios";
+import api from "../http/api";
 import {
   IconEdit,
   IconEye,
@@ -95,18 +95,11 @@ export function Users() {
         roleId: Number(form.roleId),
       };
       if (modalType === "create") {
-        await axios.post("http://localhost:8080/users", cleanForm, {
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-        });
+        await api.post("/users", cleanForm);
       } else if (modalType === "edit" && selectedUser) {
-        await axios.put(
-          `http://localhost:8080/users/${selectedUser.id}`,
-          cleanForm,
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          }
+        await api.put(
+          `/users/${selectedUser.id}`,
+          cleanForm
         );
       }
       setModalOpen(false);
@@ -118,9 +111,7 @@ export function Users() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/users/${selectedUser.id}`, {
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-      });
+      await api.delete(`/users/${selectedUser.id}`);
       setModalOpen(false);
       fetchUsers();
     } catch (e) {
@@ -154,9 +145,8 @@ export function Users() {
   const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:8080/users", {
+      const res = await api.get("/users", {
         params: { page, limit, search, field, order },
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
       });
       setUsers(res.data.users || []);
       setTotal(res.data.total || 0);

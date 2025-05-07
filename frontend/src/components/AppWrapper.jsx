@@ -24,7 +24,7 @@ import {
 import logo from "../images/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../http/api";
 
 export function AppWrapper({ children }) {
   const [opened, { toggle }] = useDisclosure();
@@ -36,10 +36,8 @@ export function AppWrapper({ children }) {
   useEffect(() => {
     if (userModalOpen && !userInfo) {
       // busca dados do usuário logado
-      axios
-        .get("http://localhost:8080/users/user", {
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-        })
+      api
+        .get("/users/user")
         .then((res) => setUserInfo(res.data))
         .catch(() => setUserInfo(null));
     }
