@@ -20,7 +20,7 @@ import {
 } from "@mantine/core";
 import { AppWrapper } from "../components/AppWrapper";
 import { DataTable } from "../components/DataTable";
-import axios from "axios";
+import api from "../http/api";
 import { IconEdit, IconEye, IconTrash, IconPlus, IconDeviceGamepad2, IconStar } from "@tabler/icons-react";
 import { toast } from "../utils/Toast";
 
@@ -84,13 +84,9 @@ export function Games() {
         consoleId: Number(form.consoleId),
       };
       if (modalType === "create") {
-        await axios.post("http://localhost:8080/games", payload, {
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-        });
+        await api.post("/games", payload,);
       } else if (modalType === "edit" && selectedGame) {
-        await axios.put(`http://localhost:8080/games/${selectedGame.id}`, payload, {
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-        });
+        await api.put(`/games/${selectedGame.id}`, payload);
       }
       setModalOpen(false);
       fetchGames();
@@ -101,9 +97,7 @@ export function Games() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/games/${selectedGame.id}`, {
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-      });
+      await api.delete(`/games/${selectedGame.id}`);
       setModalOpen(false);
       fetchGames();
     } catch (e) {
@@ -137,9 +131,8 @@ export function Games() {
   const fetchGames = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:8080/games", {
+      const res = await api.get("/games", {
         params: { page, limit, search, field, order },
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
       });
       setGames(
         (res.data.games || []).map((g) => ({
@@ -158,9 +151,8 @@ export function Games() {
 
   const fetchConsoles = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:8080/consoles", {
+      const res = await api.get("/consoles", {
         params: { limit: 100, page: 1 },
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
       });
       setConsoles((res.data.consoles || []).map((c) => ({ value: c.id + "", label: c.name })));
     } catch (e) {
