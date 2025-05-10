@@ -19,7 +19,24 @@
 [Diagrama ou descrição do fluxo de dados na aplicação.]
 
 ## Tecnologias Utilizadas
-[Lista das tecnologias principais que serão utilizadas no projeto.]
+
+Essas são as tecnologias utilizadas para o desenvolvimento de nosso sistema de aluguel de jogos, **Nintendin**:  
+
+| Atuação | Linguagem / Biblioteca | Descrição |                                  
+|---------|------------------------|-----------|
+| **Front-End**  | **`React`** <br><br> **`JavaScript`** <br><br> **`React Router DOM`** | Para a aplicação web, garantindo uma experiência interativa e responsiva. <br><br> Como linguagem principal para o frontend. <br><br> Para gerenciamento de rotas SPA (Single Page Application). | 
+| **Estilização e UI** | **`Mantine`** <br><br> **`@tabler/icons-react`** | Biblioteca de componentes e hooks para criação de UI moderna e acessível. <br><br> Ícones SVG integrados à interface com Mantine. |
+| **APIs e Utilitários**  | **`Axios`** <br><br> **`Moment.js`** | Biblioteca para realizar requisições HTTP de maneira simplificada, permitindo chamadas à API do backend. <br><br> Para manipulação e formatação de datas. | 
+| **Gráficos e Visualização** | **`Recharts`** | Biblioteca de gráficos baseada em componentes React para visualização de dados. |
+| **Testes** | **`Testing Library (React, DOM, User Event, Jest DOM)`** | Conjunto de ferramentas para testes unitários e de comportamento em componentes React. |
+| **Back-End**  | **`Node.js + Express`** <br><br> **`PostgreSQL`** | Para o desenvolvimento da API backend. <br><br> Utilizado como banco de dados relacional. |
+| **Roteamento e Monitoramento** | **`Web Vitals`** | Para medir e reportar métricas de performance da aplicação. |
+
+| Atuação | Ferramenta de Desenvolvimento | Descrição |                                  
+|---------|-------------------------------|-----------|
+| **IDE** | **`Visual Studio Code (VSCode)`** | Principal IDE utilizada no desenvolvimento, devido à sua versatilidade e ampla compatibilidade com extensões. |
+| **Gerenciador de Pacotes** | **`Yarn`** | Utilizado para instalar e gerenciar dependências do projeto de forma rápida e eficiente. |
+
 
 ## Considerações de Segurança
 
