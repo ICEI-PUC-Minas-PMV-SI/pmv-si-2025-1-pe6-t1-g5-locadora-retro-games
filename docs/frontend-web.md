@@ -1,8 +1,9 @@
 # Front-end Web
+A NintendIN é uma plataforma de aluguel de jogos e consoles retrô com o objetivo de tornar acessível essa coletânia para os entusiastas da cultura pop e diferentes públicos. Sua plataforma Front-End é voltada para o uso administrativo da empresa, permitindo o gerenciamento dos aluguéis realizados pelos clientes, jogos e consoles em estoque e o acompanhamento das métricas da plataforma.
 
-[Inclua uma breve descrição do projeto e seus objetivos.]
+<br>
 
-## Projeto da Interface Web
+# Projeto da Interface Web
 
 [Descreva o projeto da interface Web da aplicação, incluindo o design visual, layout das páginas, interações do usuário e outros aspectos relevantes.]
 
@@ -14,9 +15,10 @@
 
 [Descreva o estilo visual da interface, incluindo paleta de cores, tipografia, ícones e outros elementos gráficos.]
 
-## Fluxo de Dados
+# Fluxo de Dados
 
-[Diagrama ou descrição do fluxo de dados na aplicação.]
+![Userflow](./img/UserFlow.png)
+<br>
 
 ## Tecnologias Utilizadas
 
@@ -37,12 +39,13 @@ Essas são as tecnologias utilizadas para o desenvolvimento de nosso sistema de 
 | **IDE** | **`Visual Studio Code (VSCode)`** | Principal IDE utilizada no desenvolvimento, devido à sua versatilidade e ampla compatibilidade com extensões. |
 | **Gerenciador de Pacotes** | **`Yarn`** | Utilizado para instalar e gerenciar dependências do projeto de forma rápida e eficiente. |
 
+<br>
 
-## Considerações de Segurança
+# Considerações de Segurança
 
 [Discuta as considerações de segurança relevantes para a aplicação distribuída, como autenticação, autorização, proteção contra ataques, etc.]
 
-## Implantação
+# Implantação
 
 [Instruções para implantar a aplicação distribuída em um ambiente de produção.]
 
@@ -52,7 +55,7 @@ Essas são as tecnologias utilizadas para o desenvolvimento de nosso sistema de 
 4. Faça o deploy da aplicação no ambiente escolhido, seguindo as instruções específicas da plataforma de hospedagem.
 5. Realize testes para garantir que a aplicação esteja funcionando corretamente no ambiente de produção.
 
-## Testes
+# Testes
 
 [Descreva a estratégia de teste, incluindo os tipos de teste a serem realizados (unitários, integração, carga, etc.) e as ferramentas a serem utilizadas.]
 
@@ -64,4 +67,5 @@ Essas são as tecnologias utilizadas para o desenvolvimento de nosso sistema de 
 
 # Referências
 
-Inclua todas as referências (livros, artigos, sites, etc) utilizados no desenvolvimento do trabalho.
+* Criação de Wireframes: https://www.figma.com/
+* Criação do Fluxo de Dados:  https://www.Canva.com/
