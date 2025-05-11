@@ -143,7 +143,7 @@ export function Consoles() {
 
   return (
     <AppWrapper>
-      <Container size="lg" pt="xl">
+      <Container size="xl" pt="xl">
         <Title order={2} mb="md" style={{ color: "#111" }}>
           Consoles
         </Title>

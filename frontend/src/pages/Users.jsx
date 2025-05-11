@@ -97,10 +97,7 @@ export function Users() {
       if (modalType === "create") {
         await api.post("/users", cleanForm);
       } else if (modalType === "edit" && selectedUser) {
-        await api.put(
-          `/users/${selectedUser.id}`,
-          cleanForm
-        );
+        await api.put(`/users/${selectedUser.id}`, cleanForm);
       }
       setModalOpen(false);
       fetchUsers();
@@ -174,9 +171,13 @@ export function Users() {
 
   return (
     <AppWrapper>
-      <Container size="lg" pt="xl">
-        <Title order={2} mb="md">Usuários</Title>
-        <Text size="lg" weight={600} mb="xs">Resumo dos Usuários</Text>
+      <Container size="xl" pt="xl">
+        <Title order={2} mb="md">
+          Usuários
+        </Title>
+        <Text size="lg" weight={600} mb="xs">
+          Resumo dos Usuários
+        </Text>
         <SimpleGrid
           cols={2}
           spacing="lg"
@@ -238,7 +239,9 @@ export function Users() {
             </div>
           </Card>
         </SimpleGrid>
-        <Text size="lg" weight={600} mb="xs">Lista de Usuários</Text>
+        <Text size="lg" weight={600} mb="xs">
+          Lista de Usuários
+        </Text>
         <Group position="apart" mb="md">
           <Button
             leftSection={<IconPlus size={16} />}

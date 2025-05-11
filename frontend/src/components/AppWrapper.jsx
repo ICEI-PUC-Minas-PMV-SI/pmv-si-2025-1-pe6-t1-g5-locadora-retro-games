@@ -141,10 +141,6 @@ export function AppWrapper({ children }) {
         <div
           style={{
             width: "100%",
-            maxWidth: 1200,
-            marginLeft: 48,
-            marginRight: "auto",
-            marginTop: 0,
           }}
         >
           {children}
