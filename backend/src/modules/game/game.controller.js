@@ -28,6 +28,7 @@ GameController.insertGame = async (req, res) => {
       name: req.body.name,
       price: req.body.price,
       description: req.body.description,
+      amount: req.body.amount,
       console: req.body.consoleId
     };
     await GameService.create(body);
@@ -43,6 +44,7 @@ GameController.updateGame = async (req, res) => {
       id: Number(req.params.id),
       name: req.body.name,
       price: req.body.price,
+      amount: req.body.amount,
       description: req.body.description,
       console: req.body.consoleId
     };
