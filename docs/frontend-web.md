@@ -4,8 +4,97 @@ A NintendIN é uma plataforma de aluguel de jogos e consoles retrô com o objeti
 <br>
 
 # Projeto da Interface Web
+A aplicação apresenta uma interface moderna, funcional e intuitiva, com foco na usabilidade e na organização das informações para uma experiência agradável ao usuário. As cores utilizadas seguem com predominância dos tons amarelo, rosa, roxo e laranja para o login e os tons branco e roxo para as telas de visualização, contrastando com elementos em cores vibrantes para destacar ações e informações importantes.
 
-[Descreva o projeto da interface Web da aplicação, incluindo o design visual, layout das páginas, interações do usuário e outros aspectos relevantes.]
+1. Tela de Login
+Design Visual: Interface simples e direta, com fundo colorido e campos destacados em branco para entrada de dados.
+
+Layout: Centralizado com campos para usuário e senha, botão de login e logo no topo.
+
+Interações:
+
+Validação de campos obrigatórios (e-mail e senha).
+
+Redirecionamento para o dashboard após login bem-sucedido.
+
+Usabilidade: Foco total na ação de login, sem elementos distrativos.
+
+2. Dashboard (Painel Principal)
+Design Visual: A interface do dashboard é moderna e intuitiva, com cards coloridos e ícones bem definidos, proporcionando uma navegação rápida e agradável. As cores seguem o padrão visual da aplicação — com fundo branco, e elementos visuais em tons que destacam a hierarquia da informação. Ícones minimalistas ajudam na identificação rápida das seções.
+
+Layout: Barra lateral fixa à esquerda, com ícones verticais para acesso rápido às seções principais: Jogos, Reservas, Usuários e Consoles. Ícones possuem destaque visual ao serem selecionados (fundo com leve sombra e mudança de cor).
+
+Área principal dividida em cards grandes e interativos, centralizados ou em grade, representando cada seção.
+
+Cada card exibe:
+
+Ícone ilustrativo.
+
+Nome da seção.
+
+Um contador ou resumo (ex: “15 jogos cadastrados”).
+
+Efeito de realce ao passar o cursor (hover).
+
+Interações:
+
+Cada card exibe um contador.
+
+Itens da barra lateral redirecionam para uma tela específica.
+
+Feedback visual claro ao interagir com qualquer item (ex: animação suave, sombra ao clicar).
+
+Usabilidade: A estrutura é planejada para proporcionar acesso rápido, informações visuais resumidas e experiência agradável.
+
+3. Tela de Usuário
+Design Visual: Estrutura em tabela com cabeçalho destacado e fundo claro, contendo também cards com resumo de usuários cadastrados e usuários com mais reservas.
+
+Layout: Tabela centralizada listando usuários com colunas como nome, e-mail e ações (editar/excluir).
+
+Interações:
+
+Botão de “Adicionar novo usuário”.
+
+Ações de editar e excluir ao lado de cada registro.
+
+Usabilidade: Fácil gerenciamento de usuários com ações claras e diretas.
+
+4. Tela de Jogos
+Design Visual: Estrutura em tabela, contendo a lista exibindo os jogos cadastrados, contendo também cards com resumo dos jogos, com contador de total de jogos e jogos mais alugados.
+
+Layout: Tabela centralizada listando jogos com colunas como nome, console, preço, descrição e com botão de ação (editar/excluir).
+
+Interações:
+
+Inclusão de novo jogo.
+
+Visualização e edição rápida de dados.
+
+Usabilidade: Interface visualmente atrativa com foco na identificação rápida dos jogos.
+
+5. Tela de Consoles
+Design Visual: Estrutura em tabela, utilizando lista e cards com resumo do total de consoles e console com mais jogos.
+
+Layout: Tabela centralizada listando consoles com colunas como nome e quantidade de jogos, e com botão de ação (editar/excluir).
+
+Interações:
+
+Cadastro, edição e exclusão de consoles.
+
+Usabilidade: Organização clara para manter o controle dos dispositivos disponíveis.
+
+6. Tela de Reservas
+Design Visual: Estrutura em tabela, utilizando lista e cards com resumo do total de reservas, reservas pendentes e reservas atrasadas.
+
+Layout: Apresenta uma tabela de reservas com colunas como usuário, jogo, status, data e horário da reserva, data e horário da aprovação, data e horário da devolução. Estrutura de tabela bem definida com botões de ação (editar/excluir).
+
+Interações:
+
+Criação de nova reserva.
+
+Edição/cancelamento de reservas existentes.
+
+Usabilidade: Permite gestão eficiente das reservas com clareza das informações.
 
 ### Wireframes
 
