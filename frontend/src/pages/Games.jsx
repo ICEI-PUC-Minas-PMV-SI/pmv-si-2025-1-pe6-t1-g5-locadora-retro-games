@@ -52,6 +52,7 @@ export function Games() {
     price: "",
     description: "",
     consoleId: "",
+    amount: 0,
   });
   const [consoles, setConsoles] = useState([]);
 
@@ -59,6 +60,8 @@ export function Games() {
     { label: "ID", key: "id" },
     { label: "Nome", key: "name" },
     { label: "Console", key: "consoleName" },
+    { label: "Qtd.", key: "amount" },
+    // { label: "Disponíveis", key: "amount" },
     {
       label: "Preço",
       key: "price",
@@ -82,8 +85,9 @@ export function Games() {
             price: game.price,
             description: game.description || "",
             consoleId: game.consoleId || (game.console ? game.console.id : ""),
+            amount: game.amount || 0,
           }
-        : { name: "", price: "", description: "", consoleId: "" }
+        : { name: "", price: "", description: "", consoleId: "", amount: 0 }
     );
     setModalOpen(true);
   };
@@ -96,6 +100,7 @@ export function Games() {
         price: form.price,
         description: form.description,
         consoleId: Number(form.consoleId),
+        amount: form.amount,
       };
       if (modalType === "create") {
         await api.post("/games", payload);
@@ -154,7 +159,7 @@ export function Games() {
           consoleName: g.console ? g.console.name : "",
         }))
       );
-      setTotal(res.data.total || 0);
+      setTotal(res.data.totalItems || 0);
     } catch (e) {
       setGames([]);
       setTotal(0);
@@ -181,16 +186,12 @@ export function Games() {
 
   useEffect(() => {
     fetchGames();
-    // eslint-disable-next-line
-  }, [page, limit, search, field, order]);
+  }, [fetchGames]);
 
   useEffect(() => {
     fetchConsoles();
   }, [fetchConsoles]);
 
-  // cards de resumo para jogos
-  const totalJogos = games.length;
-  // jogo mais alugado (pelo array atual, se houver campo de reservas)
   const topGame = games.reduce(
     (acc, g) =>
       g.reserves && g.reserves.length > (acc?.reserves?.length || 0) ? g : acc,
@@ -235,7 +236,7 @@ export function Games() {
                 Total de Jogos
               </Text>
               <Text size="xl" weight={700}>
-                {totalJogos}
+                {total}
               </Text>
             </div>
           </Card>
@@ -290,26 +291,24 @@ export function Games() {
             marginBottom: 16,
           }}
         >
-          {loading ? (
-            <Loader />
-          ) : (
-            <DataTable
-              headers={headers}
-              data={games}
-              total={total}
-              limit={limit}
-              page={page}
-              setPage={setPage}
-              setLimit={setLimit}
-              setSearch={setSearch}
-              setField={setField}
-              setOrder={setOrder}
-              field={field}
-              order={order}
-              placeholder="Buscar por nome"
-              actions={actions}
-            />
-          )}
+          <DataTable
+            headers={headers}
+            data={games}
+            total={total}
+            limit={limit}
+            page={page}
+            setPage={setPage}
+            setLimit={setLimit}
+            setSearch={setSearch}
+            setField={setField}
+            setOrder={setOrder}
+            field={field}
+            order={order}
+            placeholder="Buscar por nome ou console"
+            actions={actions}
+            fetchData={fetchGames}
+            loading={loading}
+          />
         </Box>
         {/* Modal de criar/editar/visualizar */}
         <Modal
@@ -344,7 +343,19 @@ export function Games() {
               step={0.01}
               radius={8}
               prefix="R$ "
+              allowedDecimalSeparators={[","]}
               decimalSeparator=","
+              readOnly={modalType === "view"}
+              disabled={modalType === "view"}
+            />
+            <NumberInput
+              label="Quantidade"
+              value={form.amount}
+              onChange={(value) => setForm((f) => ({ ...f, amount: value }))}
+              required
+              min={0}
+              step={1}
+              radius={8}
               readOnly={modalType === "view"}
               disabled={modalType === "view"}
             />

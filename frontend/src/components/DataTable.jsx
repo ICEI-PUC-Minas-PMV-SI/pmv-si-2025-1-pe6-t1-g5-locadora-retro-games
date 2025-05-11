@@ -11,6 +11,8 @@ import {
   Menu,
   Tooltip,
   NumberFormatter,
+  Loader,
+  Flex,
 } from "@mantine/core";
 import moment from "moment";
 import { IconArrowUp, IconArrowDown, IconSearch } from "@tabler/icons-react";
@@ -41,6 +43,7 @@ export const DataTable = ({
   setOrder,
   actions = [],
   onStatusChange,
+  loading,
 }) => {
   const [searchValue, setSearchValue] = useState("");
   const [debouncedSearch] = useDebouncedValue(searchValue, 500);
@@ -50,9 +53,9 @@ export const DataTable = ({
     setSearch(debouncedSearch);
   }, [debouncedSearch, setSearch]);
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, [page, limit, fetchData]);
+  useEffect(() => {
+    fetchData();
+  }, [page, limit, fetchData]);
 
   const format = (row, header) => {
     if (header.key === "cpf") {
@@ -63,9 +66,13 @@ export const DataTable = ({
     }
     if (header.type === "currency") {
       return row[header.key] ? (
-        <NumberFormatter prefix="R$ " value={row[header.key]} />
+        <NumberFormatter
+          prefix="R$ "
+          decimalSeparator=","
+          value={row[header.key]}
+        />
       ) : (
-        <NumberFormatter prefix="R$ " value={0} />
+        <NumberFormatter prefix="R$ " decimalSeparator="," value={0} />
       );
     }
     if (header.type === "longText") {
@@ -220,7 +227,11 @@ export const DataTable = ({
     [data, headers, onStatusChange]
   );
 
-  return (
+  return loading ? (
+    <Flex align="center" justify="center">
+      <Loader />
+    </Flex>
+  ) : (
     <Box style={{ overflowX: "auto", width: "100%" }}>
       <Group mb="md">
         <TextInput
