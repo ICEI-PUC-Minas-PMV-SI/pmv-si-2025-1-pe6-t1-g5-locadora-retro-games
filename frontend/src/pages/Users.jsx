@@ -141,7 +141,7 @@ export function Users() {
 
   const fetchUsers = useCallback(async () => {
     try {
-      setLoading(true);
+      //setLoading(true);
       const res = await api.get("/users", {
         params: { page, limit, search, field, order },
       });
@@ -280,6 +280,7 @@ export function Users() {
               setSearch={setSearch}
               setField={setField}
               setOrder={setOrder}
+              fetchData={fetchUsers}
               field={field}
               order={order}
               placeholder="Buscar por nome ou email"

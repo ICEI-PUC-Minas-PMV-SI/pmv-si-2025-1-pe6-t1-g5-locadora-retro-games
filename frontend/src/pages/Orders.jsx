@@ -51,7 +51,7 @@ export function Orders() {
     id: "",
     userId: "",
     gameId: "",
-    statusReserveId: "",
+    statusReserveId: 4,
     reserveDate: "",
     approveDate: "",
     returnDate: "",
@@ -204,7 +204,7 @@ export function Orders() {
 
   const fetchOrders = useCallback(async () => {
     try {
-      setLoading(true);
+      //setLoading(true);
       const res = await api.get("/orders", {
         params: { page, limit, search, field, order },
       });
@@ -408,6 +408,7 @@ export function Orders() {
               setSearch={setSearch}
               setField={setField}
               setOrder={setOrder}
+              fetchData={fetchOrders}
               field={field}
               order={order}
               placeholder="Buscar por usuário ou jogo"
@@ -452,41 +453,6 @@ export function Orders() {
               placeholder="Selecione o jogo"
               readOnly={modalType === "view"}
               disabled={modalType === "view"}
-            />
-            <Select
-              label="Status"
-              data={statuses}
-              value={form.statusReserveId}
-              onChange={(value) =>
-                setForm((f) => ({ ...f, statusReserveId: value }))
-              }
-              required
-              radius={8}
-              placeholder="Selecione o status"
-              readOnly={modalType === "view"}
-              disabled={modalType === "view"}
-              itemComponent={forwardRef(({ value, label, ...rest }, ref) => (
-                <div
-                  ref={ref}
-                  {...rest}
-                  style={{ display: "flex", alignItems: "center", gap: 8 }}
-                >
-                  <Badge color={statusColors[value] || "gray"} variant="filled">
-                    {label}
-                  </Badge>
-                </div>
-              ))}
-              renderValue={(selected) => {
-                const status = statuses.find((s) => s.value === selected);
-                return (
-                  <Badge
-                    color={statusColors[selected] || "gray"}
-                    variant="filled"
-                  >
-                    {status ? status.label : selected}
-                  </Badge>
-                );
-              }}
             />
             <TextInput
               label="Data da Reserva"

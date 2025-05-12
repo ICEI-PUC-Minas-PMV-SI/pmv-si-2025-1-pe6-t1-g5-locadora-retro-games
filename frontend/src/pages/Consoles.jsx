@@ -109,7 +109,7 @@ export function Consoles() {
 
   const fetchConsoles = useCallback(async () => {
     try {
-      setLoading(true);
+      //setLoading(true);
       const res = await api.get("/consoles", {
         params: { page, limit, search, field, order },
       });
@@ -251,6 +251,7 @@ export function Consoles() {
               field={field}
               order={order}
               placeholder="Buscar por nome"
+              fetchData={fetchConsoles}
               actions={actions}
             />
           )}

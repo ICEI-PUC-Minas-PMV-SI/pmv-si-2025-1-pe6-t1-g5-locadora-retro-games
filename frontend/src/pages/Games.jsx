@@ -159,7 +159,7 @@ export function Games() {
           consoleName: g.console ? g.console.name : "",
         }))
       );
-      setTotal(res.data.totalItems || 0);
+      setTotal(res.data.games?.reduce((total, game) => total + game.amount, 0) || 0);
     } catch (e) {
       setGames([]);
       setTotal(0);
