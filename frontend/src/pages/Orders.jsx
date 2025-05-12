@@ -107,7 +107,7 @@ export function Orders() {
             id: "",
             userId: "",
             gameId: "",
-            statusReserveId: 4,
+            statusReserveId: "4",
             reserveDate: moment().format("YYYY-MM-DDTHH:mm"),
             approveDate: "",
             returnDate: "",
@@ -219,7 +219,7 @@ export function Orders() {
             )?.label || o.statusReserveId,
         }))
       );
-      setTotal(res.data.total || 0);
+      setTotal(res.data.totalItems || 0);
     } catch (e) {
       setOrders([]);
       setTotal(0);
@@ -230,10 +230,10 @@ export function Orders() {
 
   const fetchUserName = async (userId) => {
     try {
-      const res = await api.get(`/users/${userId}`)
+      const res = await api.get(`/users/${userId}`);
 
       return res.data.name;
-    } catch(e) {
+    } catch (e) {
       return userId;
     }
   };
@@ -241,13 +241,13 @@ export function Orders() {
   const fetchGameName = async (gameId) => {
     try {
       const res = await api.get("/games");
-      const game = res.data.games.find(item => item.id == gameId);
+      const game = res.data.games.find((item) => item.id == gameId);
 
       return game.name;
-    } catch(e) {
+    } catch (e) {
       return gameId;
     }
-  }
+  };
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -475,6 +475,46 @@ export function Orders() {
               readOnly={modalType === "view"}
               disabled={modalType === "view"}
             />
+            {modalType !== "create" && (
+              <Select
+                label="Status"
+                data={statuses}
+                value={form.statusReserveId}
+                onChange={(value) =>
+                  setForm((f) => ({ ...f, statusReserveId: value }))
+                }
+                required
+                radius={8}
+                placeholder="Selecione o status"
+                readOnly={modalType === "view"}
+                disabled={modalType === "view"}
+                itemComponent={forwardRef(({ value, label, ...rest }, ref) => (
+                  <div
+                    ref={ref}
+                    {...rest}
+                    style={{ display: "flex", alignItems: "center", gap: 8 }}
+                  >
+                    <Badge
+                      color={statusColors[value] || "gray"}
+                      variant="filled"
+                    >
+                      {label}
+                    </Badge>
+                  </div>
+                ))}
+                renderValue={(selected) => {
+                  const status = statuses.find((s) => s.value === selected);
+                  return (
+                    <Badge
+                      color={statusColors[selected] || "gray"}
+                      variant="filled"
+                    >
+                      {status ? status.label : selected}
+                    </Badge>
+                  );
+                }}
+              />
+            )}
             <TextInput
               label="Data da Reserva"
               type="datetime-local"
@@ -486,26 +526,30 @@ export function Orders() {
               radius={8}
               readOnly={modalType === "view"}
             />
-            <TextInput
-              label="Data de Aprovação"
-              type="datetime-local"
-              value={form.approveDate}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, approveDate: e.target.value }))
-              }
-              radius={8}
-              readOnly={modalType === "view"}
-            />
-            <TextInput
-              label="Data de Devolução"
-              type="datetime-local"
-              value={form.returnDate}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, returnDate: e.target.value }))
-              }
-              radius={8}
-              readOnly={modalType === "view"}
-            />
+            {(modalType !== "create" ) && (
+              <TextInput
+                label="Data de Aprovação"
+                type="datetime-local"
+                value={form.approveDate}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, approveDate: e.target.value }))
+                }
+                radius={8}
+                readOnly={modalType === "view"}
+              />
+            )}
+            {modalType !== "create" && (
+              <TextInput
+                label="Data de Devolução"
+                type="datetime-local"
+                value={form.returnDate}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, returnDate: e.target.value }))
+                }
+                radius={8}
+                readOnly={modalType === "view"}
+              />
+            )}
             {modalType !== "view" && (
               <Group position="right" mt="md">
                 <Button

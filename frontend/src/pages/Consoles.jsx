@@ -119,7 +119,7 @@ export function Consoles() {
           gamesCount: c._count ? c._count.games : 0,
         }))
       );
-      setTotal(res.data.total || 0);
+      setTotal(res.data.totalItems || 0);
     } catch (e) {
       setConsoles([]);
       setTotal(0);

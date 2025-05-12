@@ -146,7 +146,7 @@ export function Users() {
         params: { page, limit, search, field, order },
       });
       setUsers(res.data.users || []);
-      setTotal(res.data.total || 0);
+      setTotal(res.data.totalItems || 0);
     } catch (e) {
       setUsers([]);
       setTotal(0);
