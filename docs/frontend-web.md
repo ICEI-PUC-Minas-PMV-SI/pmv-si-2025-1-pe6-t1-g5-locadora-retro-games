@@ -150,17 +150,17 @@ Essas são as tecnologias utilizadas para o desenvolvimento de nosso sistema de 
 
 # Considerações de Segurança
 
-[Discuta as considerações de segurança relevantes para a aplicação distribuída, como autenticação, autorização, proteção contra ataques, etc.]
+Autenticação: é usado JWT para autenticação das requisições. Apenas após se autenticar o usuário conseguirá usar as aplicação. O token fica salvo no localStorage.
+
+Autorização: apenas usuários com o cargo de administrador conseguem acessar essa aplicação. Os demais usuários de cargo comum, não conseguem acessar a aplicação.
+
+É utilizado CORS para que apenas essa aplicação web se comunique com o servidor backend.
 
 # Implantação
 
-[Instruções para implantar a aplicação distribuída em um ambiente de produção.]
+O sistema está hospedado na Vercel. A Vercel fornece ferramentas de desenvolvedor e infraestrutura de nuvem para criar, dimensionar e proteger uma web mais rápida e personalizada. Toda a infraestrutura é abstraída e nos é servida um domínio gratuito .vercel.app, basta escolher o repositório e fazer certas configurações. A hospedagem é linkada ao repositório e o deploy é feito automaticamente a cada mudança na branch main.
 
-1. Defina os requisitos de hardware e software necessários para implantar a aplicação em um ambiente de produção.
-2. Escolha uma plataforma de hospedagem adequada, como um provedor de nuvem ou um servidor dedicado.
-3. Configure o ambiente de implantação, incluindo a instalação de dependências e configuração de variáveis de ambiente.
-4. Faça o deploy da aplicação no ambiente escolhido, seguindo as instruções específicas da plataforma de hospedagem.
-5. Realize testes para garantir que a aplicação esteja funcionando corretamente no ambiente de produção.
+https://nintendin.vercel.app/login
 
 # Testes
 
@@ -175,4 +175,4 @@ Essas são as tecnologias utilizadas para o desenvolvimento de nosso sistema de 
 # Referências
 
 * Criação de Wireframes: https://www.figma.com/
-* Criação do Fluxo de Dados:  https://www.Canva.com/
+* Criação do Fluxo de Dados:  https://www.canva.com/
