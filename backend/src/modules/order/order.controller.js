@@ -9,13 +9,24 @@ OrderController.getOrders = async (req, res) => {
     const limit = Number(req.query.limit) || 10;
     const page = Number(req.query.page) || 1;
     const offset = (page - 1) * limit;
-    const { reserves, total } =  await OrderService.list(limit, offset);
+    const field = req.query?.field || "name";
+    const order = req.query?.order || "asc";
+    const search = req.query?.search;
+    const { reserves, total, pendingCount, totalOverdueCount } =  await OrderService.list(
+      limit,
+      offset,
+      field,
+      order,
+      search
+    );
     res.status(200).json({
       orders: reserves,
       currentPage: page,
       totalPages: Math.ceil(total / limit),
       totalItems: total,
       itemsPerPage: limit,
+      totalPeding: pendingCount,
+      totalOverdue: totalOverdueCount,
     });
   } catch (error) {
     console.log(error);
@@ -108,7 +119,7 @@ OrderController.cancelOrder = async (req, res) => {
 
 OrderController.adminCreate = async (req, res) => {
   try {
-    const { id, userId, gameId, statusReserveId, reserveDate, approveDate, returnDate } = req.body;
+    const { id, userId, gameId, statusReserveId, reserveDate } = req.body;
     if (!userId || !gameId || !statusReserveId || !reserveDate) {
       return res.status(400).json("Missing required fields");
     }
@@ -116,10 +127,7 @@ OrderController.adminCreate = async (req, res) => {
       id,
       userId,
       gameId,
-      statusReserveId,
       reserveDate,
-      approveDate,
-      returnDate,
     });
     res.status(200).json(reserve);
   } catch (error) {

@@ -1,9 +1,8 @@
 import prisma from "../../infra/prisma/prisma.js";
-import { Decimal } from '@prisma/client/runtime/library';
 const ConsoleService = {};
 
-ConsoleService.list = async (limit, offset, search) => {
-  const [consoles, total] = await Promise.all([
+ConsoleService.list = async (limit, offset, field, order, search) => {
+  const [consoles, total, consoleWithMoreGames] = await Promise.all([
     prisma.console.findMany({
       take: limit,
       skip: offset,
@@ -14,12 +13,25 @@ ConsoleService.list = async (limit, offset, search) => {
       },
       where: {
         name: { contains: search || "", mode: "insensitive" }
-      }
+      },
+      orderBy: field === "gamesCount" ? { games: { _count: order } } : { [field]: order },
     }),
-    prisma.console.count()
+    prisma.console.count(),
+    prisma.console.findFirst({
+      include: {
+        _count: {
+          select: { games: true },
+        },
+      },
+      orderBy: {
+        games: {
+          _count: "desc",
+        },
+      },
+    }),
   ]);
 
-  return { consoles, total };
+  return { consoles, total, consoleWithMoreGames };
 };
 
 ConsoleService.create = async (body) => {

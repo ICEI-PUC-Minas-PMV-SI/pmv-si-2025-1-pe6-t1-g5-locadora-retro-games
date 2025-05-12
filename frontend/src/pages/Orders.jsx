@@ -9,11 +9,12 @@ import {
   Stack,
   Select,
   Box,
-  TextInput,
   Badge,
   Card,
   SimpleGrid,
   Text,
+  TextInput,
+  Flex,
 } from "@mantine/core";
 import { AppWrapper } from "../components/AppWrapper";
 import { DataTable } from "../components/DataTable";
@@ -28,13 +29,15 @@ import {
   IconAlertTriangle,
 } from "@tabler/icons-react";
 import moment from "moment";
-import { ListItem, forwardRef } from "react";
+import { forwardRef } from "react";
 import { toast } from "../utils/Toast";
 
 export function Orders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
+  const [totalPending, setTotalPending] = useState(0);
+  const [totalOverdue, setTotalOverdue] = useState(0);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
@@ -77,9 +80,9 @@ export function Orders() {
     { label: "Usuário", key: "userName" },
     { label: "Jogo", key: "gameName" },
     { label: "Status", key: "statusName" },
-    { label: "Data Reserva", key: "reserveDate", type: "date" },
-    { label: "Aprovação", key: "approveDate", type: "date" },
-    { label: "Devolução", key: "returnDate", type: "date" },
+    { label: "Dt. Reserva", key: "reserveDate", type: "date" },
+    { label: "Dt. Aprovação", key: "approveDate", type: "date" },
+    { label: "Dt. Devolução", key: "returnDate", type: "date" },
   ];
 
   // função para abrir modal de criar/editar
@@ -92,7 +95,7 @@ export function Orders() {
             id: order.id,
             userId: order.userId + "",
             gameId: order.gameId + "",
-            statusReserveId: 4,
+            statusReserveId: order.statusReserveId, // Ensure correct status is set
             reserveDate: order.reserveDate
               ? moment(order.reserveDate).format("YYYY-MM-DDTHH:mm")
               : "",
@@ -107,7 +110,7 @@ export function Orders() {
             id: "",
             userId: "",
             gameId: "",
-            statusReserveId: "4",
+            statusReserveId: "4", // Default to pending
             reserveDate: moment().format("YYYY-MM-DDTHH:mm"),
             approveDate: "",
             returnDate: "",
@@ -116,8 +119,54 @@ export function Orders() {
     setModalOpen(true);
   };
 
+  const validateForm = () => {
+    if (!form.userId) {
+      toast.error("Usuário é obrigatório.");
+      return false;
+    }
+    if (!form.gameId) {
+      toast.error("Jogo é obrigatório.");
+      return false;
+    }
+    if (!form.reserveDate) {
+      toast.error("Data de Reserva é obrigatória.");
+      return false;
+    }
+    if (
+      (form.statusReserveId === 1 || form.statusReserveId === 2) &&
+      !form.approveDate
+    ) {
+      toast.error("Data de Aprovação é obrigatória para o status selecionado.");
+      return false;
+    }
+    if (
+      (form.statusReserveId === 1 || form.statusReserveId === 2) &&
+      form.approveDate &&
+      moment(form.approveDate).isBefore(moment(form.reserveDate))
+    ) {
+      toast.error("Data de Aprovação deve ser maior que a Data de Reserva.");
+      return false;
+    }
+    if (form.statusReserveId === 2 && !form.returnDate) {
+      toast.error("Data de Devolução é obrigatória para o status selecionado.");
+      return false;
+    }
+
+    if (
+      form.statusReserveId === 2 &&
+      form.returnDate &&
+      moment(form.returnDate).isBefore(moment(form.approveDate))
+    ) {
+      toast.error("Data de Devolução deve ser maior que a Data de Reserva.");
+      return false;
+    }
+    return true;
+  };
+
   // crud actions
   const handleCreateOrEdit = async () => {
+    if (!validateForm()) return;
+
     try {
       const payload = {
         ...form,
@@ -133,6 +182,11 @@ export function Orders() {
       } else if (modalType === "edit" && selectedOrder) {
         await api.put("/orders/admin", payload);
       }
+      toast.success(
+        modalType === "create"
+          ? "Reserva criada com sucesso!"
+          : "Reserva atualizada com sucesso!"
+      );
       setModalOpen(false);
       fetchOrders();
     } catch (e) {
@@ -149,6 +203,7 @@ export function Orders() {
           gameId: selectedOrder.gameId,
         },
       });
+      toast.success("Reserva excluída com sucesso!");
       setModalOpen(false);
       fetchOrders();
     } catch (e) {
@@ -156,27 +211,21 @@ export function Orders() {
     }
   };
 
-  // atualiza status diretamente na tabela
-  const handleStatusChange = async (row, newStatusLabel) => {
-    try {
-      const statusMap = {
-        Reservado: 1,
-        Devolvido: 2,
-        Cancelado: 3,
-        Pendente: 4,
-      };
-      const payload = {
-        ...row,
-        statusReserveId: statusMap[newStatusLabel],
-        approveDate: row.approveDate,
-        returnDate: row.returnDate,
-        reserveDate: row.reserveDate,
-      };
-      await api.put("/orders/admin", payload);
-      fetchOrders();
-    } catch (e) {
-      toast.error("Erro ao atualizar status.");
-    }
+  const handleStatusChangeInModal = (newStatusId) => {
+    setForm((prevForm) => {
+      const updatedForm = { ...prevForm, statusReserveId: newStatusId };
+
+      if (newStatusId === 4) {
+        // Pendente
+        updatedForm.approveDate = "";
+        updatedForm.returnDate = "";
+      } else if (newStatusId === 1) {
+        // Reservado
+        updatedForm.returnDate = "";
+      }
+
+      return updatedForm;
+    });
   };
 
   const actions = [
@@ -204,15 +253,14 @@ export function Orders() {
 
   const fetchOrders = useCallback(async () => {
     try {
-      //setLoading(true);
       const res = await api.get("/orders", {
         params: { page, limit, search, field, order },
       });
       setOrders(
         (res.data.orders || []).map((o) => ({
           ...o,
-          userName: fetchUserName(o.userId),
-          gameName: fetchGameName(o.gameId),
+          userName: o.user.name,
+          gameName: o.game.name,
           statusName:
             statuses.find(
               (s) => s.value == (o.statusReserveId || o.statusReserveId)
@@ -220,6 +268,8 @@ export function Orders() {
         }))
       );
       setTotal(res.data.totalItems || 0);
+      setTotalOverdue(res.data.totalOverdue || 0);
+      setTotalPending(res.data.totalPeding || 0);
     } catch (e) {
       setOrders([]);
       setTotal(0);
@@ -227,27 +277,6 @@ export function Orders() {
       setLoading(false);
     }
   }, [page, limit, search, field, order, statuses]);
-
-  const fetchUserName = async (userId) => {
-    try {
-      const res = await api.get(`/users/${userId}`);
-
-      return res.data.name;
-    } catch (e) {
-      return userId;
-    }
-  };
-
-  const fetchGameName = async (gameId) => {
-    try {
-      const res = await api.get("/games");
-      const game = res.data.games.find((item) => item.id == gameId);
-
-      return game.name;
-    } catch (e) {
-      return gameId;
-    }
-  };
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -272,8 +301,10 @@ export function Orders() {
       );
     } catch (e) {
       setGames([]);
+    } finally {
+      setLoading(false);
     }
-  }, []);
+  }, [page, limit, search, field, order]);
 
   useEffect(() => {
     fetchOrders();
@@ -285,15 +316,59 @@ export function Orders() {
     fetchGames();
   }, [fetchUsers, fetchGames]);
 
-  // cards de resumo para reservas
-  const totalReservas = orders.length;
-  const pendentes = orders.filter((o) => o.statusReserveId === 4).length;
-  const atrasadas = orders.filter(
-    (o) =>
-      o.statusReserveId === 4 &&
-      o.returnDate &&
-      new Date(o.returnDate) < new Date()
-  ).length;
+  const renderDateInputs = () => {
+    const isPending = form.statusReserveId === 4;
+    const isCancelled = form.statusReserveId === 3;
+    const isReturned = form.statusReserveId === 2;
+    const isReserved = form.statusReserveId === 1;
+
+    return (
+      <>
+        {/* Data de Reserva - Sempre exibida e obrigatória */}
+        <TextInput
+          label="Data de Reserva"
+          type="datetime-local"
+          value={form.reserveDate}
+          onChange={(event) =>
+            setForm((f) => ({ ...f, reserveDate: event.target.value }))
+          }
+          required
+          radius={8}
+          readOnly={modalType === "view"}
+        />
+
+        {/* Data de Aprovação - Exibida para Reservado e Devolvido */}
+        {(isReserved || isCancelled || isReturned) && (
+          <TextInput
+            label="Data de Aprovação"
+            type="datetime-local"
+            value={form.approveDate}
+            onChange={(event) =>
+              setForm((f) => ({ ...f, approveDate: event.target.value }))
+            }
+            required={isReserved || isReturned}
+            radius={8}
+            readOnly={modalType === "view"}
+          />
+        )}
+
+        {/* Data de Devolução - Exibida para Cancelado e Devolvido */}
+        {(isCancelled || isReturned) && (
+          <TextInput
+            label="Data de Devolução"
+            type="datetime-local"
+            value={form.returnDate}
+            onChange={(event) =>
+              setForm((f) => ({ ...f, returnDate: event.target.value }))
+            }
+            required={isReturned}
+            radius={8}
+            readOnly={modalType === "view"}
+          />
+        )}
+      </>
+    );
+  };
 
   return (
     <AppWrapper>
@@ -333,7 +408,7 @@ export function Orders() {
                 Total de Reservas
               </Text>
               <Text size="xl" weight={700}>
-                {totalReservas}
+                {total}
               </Text>
             </div>
           </Card>
@@ -360,7 +435,7 @@ export function Orders() {
                 Reservas Pendentes
               </Text>
               <Text size="xl" weight={700}>
-                {pendentes}
+                {totalPending}
               </Text>
             </div>
           </Card>
@@ -387,7 +462,7 @@ export function Orders() {
                 Reservas Atrasadas
               </Text>
               <Text size="xl" weight={700}>
-                {atrasadas}
+                {totalOverdue}
               </Text>
             </div>
           </Card>
@@ -416,7 +491,9 @@ export function Orders() {
           }}
         >
           {loading ? (
-            <Loader />
+            <Flex justify="center" align="center">
+              <Loader />
+            </Flex>
           ) : (
             <DataTable
               headers={headers}
@@ -429,12 +506,11 @@ export function Orders() {
               setSearch={setSearch}
               setField={setField}
               setOrder={setOrder}
-              fetchData={fetchOrders}
               field={field}
               order={order}
               placeholder="Buscar por usuário ou jogo"
               actions={actions}
-              onStatusChange={handleStatusChange}
+              fetchData={fetchOrders}
             />
           )}
         </Box>
@@ -461,8 +537,8 @@ export function Orders() {
               required
               radius={8}
               placeholder="Selecione o usuário"
-              readOnly={modalType === "view"}
-              disabled={modalType === "view"}
+              readOnly={modalType === "view" || modalType === "edit"}
+              disabled={modalType === "view" || modalType === "edit"}
             />
             <Select
               label="Jogo"
@@ -472,17 +548,15 @@ export function Orders() {
               required
               radius={8}
               placeholder="Selecione o jogo"
-              readOnly={modalType === "view"}
-              disabled={modalType === "view"}
+              readOnly={modalType === "view" || modalType === "edit"}
+              disabled={modalType === "view" || modalType === "edit"}
             />
             {modalType !== "create" && (
               <Select
                 label="Status"
                 data={statuses}
-                value={form.statusReserveId}
-                onChange={(value) =>
-                  setForm((f) => ({ ...f, statusReserveId: value }))
-                }
+                value={form.statusReserveId + ""}
+                onChange={(value) => handleStatusChangeInModal(Number(value))}
                 required
                 radius={8}
                 placeholder="Selecione o status"
@@ -515,41 +589,7 @@ export function Orders() {
                 }}
               />
             )}
-            <TextInput
-              label="Data da Reserva"
-              type="datetime-local"
-              value={form.reserveDate}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, reserveDate: e.target.value }))
-              }
-              required
-              radius={8}
-              readOnly={modalType === "view"}
-            />
-            {(modalType !== "create" ) && (
-              <TextInput
-                label="Data de Aprovação"
-                type="datetime-local"
-                value={form.approveDate}
-                onChange={(e) =>
-                  setForm((f) => ({ ...f, approveDate: e.target.value }))
-                }
-                radius={8}
-                readOnly={modalType === "view"}
-              />
-            )}
-            {modalType !== "create" && (
-              <TextInput
-                label="Data de Devolução"
-                type="datetime-local"
-                value={form.returnDate}
-                onChange={(e) =>
-                  setForm((f) => ({ ...f, returnDate: e.target.value }))
-                }
-                radius={8}
-                readOnly={modalType === "view"}
-              />
-            )}
+            {renderDateInputs()}
             {modalType !== "view" && (
               <Group position="right" mt="md">
                 <Button

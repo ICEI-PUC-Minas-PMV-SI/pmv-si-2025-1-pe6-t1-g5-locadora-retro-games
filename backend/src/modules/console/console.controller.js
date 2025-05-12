@@ -8,14 +8,23 @@ ConsoleController.getConsole = async (req, res) => {
     const limit = Number(req.query.limit) || 10;
     const page = Number(req.query.page) || 1;
     const offset = (page - 1) * limit;
+    const field = req.query?.field || "name";
+    const order = req.query?.order || "asc";
     const search = req.query?.search;
-    const { consoles, total } = await ConsoleService.list(limit, offset, search);
+    const { consoles, total, consoleWithMoreGames } = await ConsoleService.list(
+      limit,
+      offset,
+      field,
+      order,
+      search
+    );
     res.status(200).json({
       consoles,
       currentPage: page,
       totalPages: Math.ceil(total / limit),
       totalItems: total,
-      itemsPerPage: limit
+      itemsPerPage: limit,
+      consoleWithMoreGames,
     });
   } catch (error) {
     console.error(error);
@@ -26,7 +35,7 @@ ConsoleController.getConsole = async (req, res) => {
 ConsoleController.insertConsole = async (req, res) => {
   try {
     const body = {
-      name: req.body.name
+      name: req.body.name,
     };
     await ConsoleService.create(body);
     res.status(200).json("Console created successfully");
@@ -39,7 +48,7 @@ ConsoleController.updateConsole = async (req, res) => {
   try {
     const body = {
       id: Number(req.params.id),
-      name: req.body.name
+      name: req.body.name,
     };
     await ConsoleService.update(body);
     res.status(200).json("Console updated successfully");
@@ -48,7 +57,7 @@ ConsoleController.updateConsole = async (req, res) => {
     res.status(500).json("Internal server error");
   }
 };
-  
+
 ConsoleController.deleteConsole = async (req, res) => {
   try {
     const body = {

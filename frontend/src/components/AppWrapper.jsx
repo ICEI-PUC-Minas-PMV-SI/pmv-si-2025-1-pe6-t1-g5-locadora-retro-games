@@ -25,6 +25,7 @@ import logo from "../images/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import api from "../http/api";
+import { toast } from "../utils/Toast";
 
 export function AppWrapper({ children }) {
   const [opened, { toggle }] = useDisclosure();
@@ -37,13 +38,14 @@ export function AppWrapper({ children }) {
     if (userModalOpen && !userInfo) {
       // busca dados do usuário logado
       api
-        .get("/users/user")
+        .get("/users/userAdmin")
         .then((res) => setUserInfo(res.data))
         .catch(() => setUserInfo(null));
     }
   }, [userModalOpen, userInfo]);
 
   function logout() {
+    toast.success("Até a próxima!");
     if (localStorage.getItem("token")) {
       localStorage.removeItem("token");
     }
@@ -52,11 +54,6 @@ export function AppWrapper({ children }) {
 
   function handleUserClick() {
     setUserModalOpen(true);
-  }
-
-  function handleLogout() {
-    logout();
-    setUserModalOpen(false);
   }
 
   return (
