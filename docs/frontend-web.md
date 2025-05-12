@@ -6,103 +6,189 @@ A NintendIN é uma plataforma de aluguel de jogos e consoles retrô com o objeti
 # Projeto da Interface Web
 A aplicação apresenta uma interface moderna, funcional e intuitiva, com foco na usabilidade e na organização das informações para uma experiência agradável ao usuário. As cores utilizadas seguem com predominância dos tons amarelo, rosa, roxo e laranja para o login e os tons branco e roxo para as telas de visualização, contrastando com elementos em cores vibrantes para destacar ações e informações importantes.
 
-1. Tela de Login
-Design Visual: Interface simples e direta, com fundo colorido e campos destacados em branco para entrada de dados.
-
-Layout: Centralizado com campos para usuário e senha, botão de login e logo no topo.
-
-Interações:
-
-Validação de campos obrigatórios (e-mail e senha).
-
-Redirecionamento para o dashboard após login bem-sucedido.
-
-Usabilidade: Foco total na ação de login, sem elementos distrativos.
-
-2. Dashboard (Painel Principal)
-Design Visual: A interface do dashboard é moderna e intuitiva, com cards coloridos e ícones bem definidos, proporcionando uma navegação rápida e agradável. As cores seguem o padrão visual da aplicação — com fundo branco, e elementos visuais em tons que destacam a hierarquia da informação. Ícones minimalistas ajudam na identificação rápida das seções.
-
-Layout: Barra lateral fixa à esquerda, com ícones verticais para acesso rápido às seções principais: Jogos, Reservas, Usuários e Consoles. Ícones possuem destaque visual ao serem selecionados (fundo com leve sombra e mudança de cor).
-
-Área principal dividida em cards grandes e interativos, centralizados ou em grade, representando cada seção.
-
-Cada card exibe:
-
-Ícone ilustrativo.
-
-Nome da seção.
-
-Um contador ou resumo (ex: “15 jogos cadastrados”).
-
-Efeito de realce ao passar o cursor (hover).
-
-Interações:
-
-Cada card exibe um contador.
-
-Itens da barra lateral redirecionam para uma tela específica.
-
-Feedback visual claro ao interagir com qualquer item (ex: animação suave, sombra ao clicar).
-
-Usabilidade: A estrutura é planejada para proporcionar acesso rápido, informações visuais resumidas e experiência agradável.
-
-3. Tela de Usuário
-Design Visual: Estrutura em tabela com cabeçalho destacado e fundo claro, contendo também cards com resumo de usuários cadastrados e usuários com mais reservas.
-
-Layout: Tabela centralizada listando usuários com colunas como nome, e-mail e ações (editar/excluir).
-
-Interações:
-
-Botão de “Adicionar novo usuário”.
-
-Ações de editar e excluir ao lado de cada registro.
-
-Usabilidade: Fácil gerenciamento de usuários com ações claras e diretas.
-
-4. Tela de Jogos
-Design Visual: Estrutura em tabela, contendo a lista exibindo os jogos cadastrados, contendo também cards com resumo dos jogos, com contador de total de jogos e jogos mais alugados.
-
-Layout: Tabela centralizada listando jogos com colunas como nome, console, preço, descrição e com botão de ação (editar/excluir).
-
-Interações:
-
-Inclusão de novo jogo.
-
-Visualização e edição rápida de dados.
-
-Usabilidade: Interface visualmente atrativa com foco na identificação rápida dos jogos.
-
-5. Tela de Consoles
-Design Visual: Estrutura em tabela, utilizando lista e cards com resumo do total de consoles e console com mais jogos.
-
-Layout: Tabela centralizada listando consoles com colunas como nome e quantidade de jogos, e com botão de ação (editar/excluir).
-
-Interações:
-
-Cadastro, edição e exclusão de consoles.
-
-Usabilidade: Organização clara para manter o controle dos dispositivos disponíveis.
-
-6. Tela de Reservas
-Design Visual: Estrutura em tabela, utilizando lista e cards com resumo do total de reservas, reservas pendentes e reservas atrasadas.
-
-Layout: Apresenta uma tabela de reservas com colunas como usuário, jogo, status, data e horário da reserva, data e horário da aprovação, data e horário da devolução. Estrutura de tabela bem definida com botões de ação (editar/excluir).
-
-Interações:
-
-Criação de nova reserva.
-
-Edição/cancelamento de reservas existentes.
-
-Usabilidade: Permite gestão eficiente das reservas com clareza das informações.
-
-### Wireframes
-
-[Inclua os wireframes das páginas principais da interface, mostrando a disposição dos elementos na página.]
+## 🔐 Tela de Login
 
 ### Design Visual
+Interface simples e direta, com fundo colorido e campos destacados em branco para entrada de dados.
 
-[Descreva o estilo visual da interface, incluindo paleta de cores, tipografia, ícones e outros elementos gráficos.]
+### Layout
+- Centralizado com campos para usuário e senha.
+- Botão de login.
+- Logo no topo.
+
+### Interações
+- Validação de campos obrigatórios (e-mail e senha).
+- Redirecionamento para o dashboard após login bem-sucedido.
+
+### Usabilidade
+Foco total na ação de login, sem elementos distrativos.
+
+---
+
+## 🧭 Dashboard (Painel Principal)
+
+### Design Visual
+A interface do dashboard é moderna e intuitiva, com cards coloridos e ícones bem definidos, proporcionando uma navegação rápida e agradável. As cores seguem o padrão visual da aplicação — com fundo branco, e elementos visuais em tons que destacam a hierarquia da informação. Ícones minimalistas ajudam na identificação rápida das seções.
+
+### Layout
+- Barra lateral fixa à esquerda, com ícones verticais para acesso rápido às seções principais: Jogos, Reservas, Usuários e Consoles.
+- Ícones possuem destaque visual ao serem selecionados (fundo com leve sombra e mudança de cor).
+- Área principal dividida em cards grandes e interativos, centralizados ou em grade, representando cada seção.
+
+#### Cada card exibe:
+- Ícone ilustrativo.
+- Nome da seção.
+- Um contador ou resumo (ex: “15 jogos cadastrados”).
+- Efeito de realce ao passar o cursor (hover).
+
+### Interações
+- Cada card exibe um contador.
+- Itens da barra lateral redirecionam para uma tela específica.
+- Feedback visual claro ao interagir com qualquer item (ex: animação suave, sombra ao clicar).
+
+### Usabilidade
+A estrutura é planejada para proporcionar acesso rápido, informações visuais resumidas e experiência agradável.
+
+---
+
+## 👤 Tela de Usuário
+
+### Design Visual
+Estrutura em tabela com cabeçalho destacado e fundo claro, contendo também cards com resumo de usuários cadastrados e usuários com mais reservas.
+
+### Layout
+- Tabela centralizada listando usuários com colunas como nome, e-mail e ações (editar/excluir).
+
+### Interações
+- Botão de “Adicionar novo usuário”.
+- Ações de editar e excluir ao lado de cada registro.
+
+### Usabilidade
+Fácil gerenciamento de usuários com ações claras e diretas.
+
+---
+
+## 🎮 Tela de Jogos
+
+### Design Visual
+Estrutura em tabela, contendo a lista exibindo os jogos cadastrados, contendo também cards com resumo dos jogos, com contador de total de jogos e jogos mais alugados.
+
+### Layout
+- Tabela centralizada listando jogos com colunas como nome, console, preço, descrição e com botão de ação (editar/excluir).
+
+### Interações
+- Inclusão de novo jogo.
+- Visualização e edição rápida de dados.
+
+### Usabilidade
+Interface visualmente atrativa com foco na identificação rápida dos jogos.
+
+---
+
+## 🕹️ Tela de Consoles
+
+### Design Visual
+Estrutura em tabela, utilizando lista e cards com resumo do total de consoles e console com mais jogos.
+
+### Layout
+- Tabela centralizada listando consoles com colunas como nome e quantidade de jogos, e com botão de ação (editar/excluir).
+
+### Interações
+- Cadastro, edição e exclusão de consoles.
+
+### Usabilidade
+Organização clara para manter o controle dos dispositivos disponíveis.
+
+---
+
+## 📅 Tela de Reservas
+
+### Design Visual
+Estrutura em tabela, utilizando lista e cards com resumo do total de reservas, reservas pendentes e reservas atrasadas.
+
+### Layout
+- Apresenta uma tabela de reservas com colunas como usuário, jogo, status, data e horário da reserva, data e horário da aprovação, data e horário da devolução.
+- Estrutura de tabela bem definida com botões de ação (editar/excluir).
+
+### Interações
+- Criação de nova reserva.
+- Edição/cancelamento de reservas existentes.
+
+### Usabilidade
+Permite gestão eficiente das reservas com clareza das informações.
+### Wireframes
+
+
+## 1. Tela de Login
+![Tela de Login](./img/Wireframe%20-%20Login.png)
+
+## 2. Tela de Dashboard
+![Tela de Dashboard](./img/Wireframe%20-%20Dashboard.png)
+
+## 3. Tela de Usuários
+![Tela de Usuários](./img/Wireframe%20-%20Tela%20Usuários.png)
+
+## 4. Tela de Reservas
+![Tela de Reservas](./img/Wireframe%20-%20Tela%20Reservas.png)
+
+## 5. Tela de Jogos
+![Tela de Jogos](./img/Wireframe%20-%20Tela%20Jogos.png)
+
+## 6. Tela de Consoles
+![Tela de Consoles](./img/Wireframe_Tela_consoles.png)
+
+
+## Design Visual
+
+O design visual da interface é moderno, vibrante e acessível. A seguir estão os principais elementos que compõem o estilo do sistema:
+
+### 🎨 Paleta de Cores
+
+A identidade visual é baseada principalmente em tons de **roxo (purple)** como cor primária e **laranja (orange)** como cor de destaque.
+
+#### Roxo (Purple)
+- `#f3e8ff`
+- `#e9d5ff`
+- `#d8b4fe`
+- `#c084fc`
+- `#a855f7` ← cor primária
+- `#9333ea`
+- `#7e22ce`
+- `#6b21a8`
+- `#581c87`
+- `#3b0764`
+
+#### Laranja (Orange)
+- `#fff7ed`
+- `#ffedd5`
+- `#fed7aa`
+- `#fdba74`
+- `#fb923c`
+- `#f97316`
+- `#ea580c`
+- `#c2410c`
+- `#9a3412`
+- `#7c2d12`
+- #### Branco (White)
+- `#ffffff`
+  
+### 🔤 Tipografia
+
+- **Fonte principal:** `Poppins, sans-serif`
+
+### 🧩 Ícones
+
+- Utilizamos a biblioteca **[@tabler/icons-react](https://tabler.io/icons)** para ícones vetoriais com estilo clean e alinhados à linguagem visual moderna.
+- Os ícones são aplicados com consistência em botões, navegação e componentes de feedback.
+
+### 🧱 Elementos Gráficos
+
+- **Botões:** Cores sólidas com cantos levemente arredondados, sombras sutis e animações suaves de hover.
+- **Cards:** Layouts com bordas arredondadas e sombreamento leve para destacar blocos de conteúdo.
+- **Inputs e Selects:** Estilo minimalista.
+- **Responsividade:** O layout é flexível e adaptável.
+
+---
 
 # Fluxo de Dados
 
@@ -132,17 +218,17 @@ Essas são as tecnologias utilizadas para o desenvolvimento de nosso sistema de 
 
 # Considerações de Segurança
 
-[Discuta as considerações de segurança relevantes para a aplicação distribuída, como autenticação, autorização, proteção contra ataques, etc.]
+Autenticação: é usado JWT para autenticação das requisições. Apenas após se autenticar o usuário conseguirá usar as aplicação. O token fica salvo no localStorage.
+
+Autorização: apenas usuários com o cargo de administrador conseguem acessar essa aplicação. Os demais usuários de cargo comum, não conseguem acessar a aplicação.
+
+É utilizado CORS para que apenas essa aplicação web se comunique com o servidor backend.
 
 # Implantação
 
-[Instruções para implantar a aplicação distribuída em um ambiente de produção.]
+O sistema está hospedado na Vercel. A Vercel fornece ferramentas de desenvolvedor e infraestrutura de nuvem para criar, dimensionar e proteger uma web mais rápida e personalizada. Toda a infraestrutura é abstraída e nos é servida um domínio gratuito .vercel.app, basta escolher o repositório e fazer certas configurações. A hospedagem é linkada ao repositório e o deploy é feito automaticamente a cada mudança na branch main.
 
-1. Defina os requisitos de hardware e software necessários para implantar a aplicação em um ambiente de produção.
-2. Escolha uma plataforma de hospedagem adequada, como um provedor de nuvem ou um servidor dedicado.
-3. Configure o ambiente de implantação, incluindo a instalação de dependências e configuração de variáveis de ambiente.
-4. Faça o deploy da aplicação no ambiente escolhido, seguindo as instruções específicas da plataforma de hospedagem.
-5. Realize testes para garantir que a aplicação esteja funcionando corretamente no ambiente de produção.
+https://nintendin.vercel.app/login
 
 # Testes
 
@@ -157,4 +243,4 @@ Essas são as tecnologias utilizadas para o desenvolvimento de nosso sistema de 
 # Referências
 
 * Criação de Wireframes: https://www.figma.com/
-* Criação do Fluxo de Dados:  https://www.Canva.com/
+* Criação do Fluxo de Dados:  https://www.canva.com/
