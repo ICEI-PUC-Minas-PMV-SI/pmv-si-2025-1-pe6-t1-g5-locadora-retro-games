@@ -18,7 +18,15 @@ import {
 import { AppWrapper } from "../components/AppWrapper";
 import { DataTable } from "../components/DataTable";
 import api from "../http/api";
-import { IconEdit, IconEye, IconTrash, IconPlus, IconCalendar, IconClock, IconAlertTriangle } from "@tabler/icons-react";
+import {
+  IconEdit,
+  IconEye,
+  IconTrash,
+  IconPlus,
+  IconCalendar,
+  IconClock,
+  IconAlertTriangle,
+} from "@tabler/icons-react";
 import moment from "moment";
 import { ListItem, forwardRef } from "react";
 import { toast } from "../utils/Toast";
@@ -43,7 +51,7 @@ export function Orders() {
     id: "",
     userId: "",
     gameId: "",
-    statusReserveId: "",
+    statusReserveId: 4,
     reserveDate: "",
     approveDate: "",
     returnDate: "",
@@ -58,10 +66,10 @@ export function Orders() {
   ]);
 
   const statusColors = {
-    "1": "blue",
-    "2": "green",
-    "3": "red",
-    "4": "yellow",
+    1: "blue",
+    2: "green",
+    3: "red",
+    4: "yellow",
   };
 
   const headers = [
@@ -84,16 +92,22 @@ export function Orders() {
             id: order.id,
             userId: order.userId + "",
             gameId: order.gameId + "",
-            statusReserveId: order.statusReserveId + "",
-            reserveDate: order.reserveDate ? moment(order.reserveDate).format("YYYY-MM-DDTHH:mm") : "",
-            approveDate: order.approveDate ? moment(order.approveDate).format("YYYY-MM-DDTHH:mm") : "",
-            returnDate: order.returnDate ? moment(order.returnDate).format("YYYY-MM-DDTHH:mm") : "",
+            statusReserveId: 4,
+            reserveDate: order.reserveDate
+              ? moment(order.reserveDate).format("YYYY-MM-DDTHH:mm")
+              : "",
+            approveDate: order.approveDate
+              ? moment(order.approveDate).format("YYYY-MM-DDTHH:mm")
+              : "",
+            returnDate: order.returnDate
+              ? moment(order.returnDate).format("YYYY-MM-DDTHH:mm")
+              : "",
           }
         : {
             id: "",
             userId: "",
             gameId: "",
-            statusReserveId: "",
+            statusReserveId: "4",
             reserveDate: moment().format("YYYY-MM-DDTHH:mm"),
             approveDate: "",
             returnDate: "",
@@ -133,7 +147,7 @@ export function Orders() {
           id: selectedOrder.id,
           userId: selectedOrder.userId,
           gameId: selectedOrder.gameId,
-        }
+        },
       });
       setModalOpen(false);
       fetchOrders();
@@ -145,7 +159,12 @@ export function Orders() {
   // atualiza status diretamente na tabela
   const handleStatusChange = async (row, newStatusLabel) => {
     try {
-      const statusMap = { Reservado: 1, Devolvido: 2, Cancelado: 3, Pendente: 4 };
+      const statusMap = {
+        Reservado: 1,
+        Devolvido: 2,
+        Cancelado: 3,
+        Pendente: 4,
+      };
       const payload = {
         ...row,
         statusReserveId: statusMap[newStatusLabel],
@@ -185,19 +204,22 @@ export function Orders() {
 
   const fetchOrders = useCallback(async () => {
     try {
-      setLoading(true);
+      //setLoading(true);
       const res = await api.get("/orders", {
         params: { page, limit, search, field, order },
       });
       setOrders(
         (res.data.orders || []).map((o) => ({
           ...o,
-          userName: o.user?.name || o.userName || o.userId,
-          gameName: o.game?.name || o.gameName || o.gameId,
-          statusName: statuses.find((s) => s.value == (o.statusReserveId || o.statusReserveId))?.label || o.statusReserveId,
+          userName: fetchUserName(o.userId),
+          gameName: fetchGameName(o.gameId),
+          statusName:
+            statuses.find(
+              (s) => s.value == (o.statusReserveId || o.statusReserveId)
+            )?.label || o.statusReserveId,
         }))
       );
-      setTotal(res.data.total || 0);
+      setTotal(res.data.totalItems || 0);
     } catch (e) {
       setOrders([]);
       setTotal(0);
@@ -206,12 +228,35 @@ export function Orders() {
     }
   }, [page, limit, search, field, order, statuses]);
 
+  const fetchUserName = async (userId) => {
+    try {
+      const res = await api.get(`/users/${userId}`);
+
+      return res.data.name;
+    } catch (e) {
+      return userId;
+    }
+  };
+
+  const fetchGameName = async (gameId) => {
+    try {
+      const res = await api.get("/games");
+      const game = res.data.games.find((item) => item.id == gameId);
+
+      return game.name;
+    } catch (e) {
+      return gameId;
+    }
+  };
+
   const fetchUsers = useCallback(async () => {
     try {
       const res = await api.get("/users", {
         params: { limit: 100, page: 1 },
       });
-      setUsers((res.data.users || []).map((u) => ({ value: u.id + "", label: u.name })));
+      setUsers(
+        (res.data.users || []).map((u) => ({ value: u.id + "", label: u.name }))
+      );
     } catch (e) {
       setUsers([]);
     }
@@ -222,7 +267,9 @@ export function Orders() {
       const res = await api.get("/games", {
         params: { limit: 100, page: 1 },
       });
-      setGames((res.data.games || []).map((g) => ({ value: g.id + "", label: g.name })));
+      setGames(
+        (res.data.games || []).map((g) => ({ value: g.id + "", label: g.name }))
+      );
     } catch (e) {
       setGames([]);
     }
@@ -240,47 +287,120 @@ export function Orders() {
 
   // cards de resumo para reservas
   const totalReservas = orders.length;
-  const pendentes = orders.filter(o => o.statusReserveId === 4).length;
-  const atrasadas = orders.filter(o => o.statusReserveId === 4 && o.returnDate && new Date(o.returnDate) < new Date()).length;
+  const pendentes = orders.filter((o) => o.statusReserveId === 4).length;
+  const atrasadas = orders.filter(
+    (o) =>
+      o.statusReserveId === 4 &&
+      o.returnDate &&
+      new Date(o.returnDate) < new Date()
+  ).length;
 
   return (
     <AppWrapper>
-      <Container size="lg" pt="xl">
-        <Title order={2} mb="md" style={{ color: '#111' }}>Reservas</Title>
-        <Text size="lg" weight={600} mb="xs" style={{ color: '#111' }}>Resumo das Reservas</Text>
-        <SimpleGrid cols={3} spacing="lg" mb="xl" breakpoints={[{ maxWidth: 900, cols: 1 }]}>
-          <Card shadow="sm" p="lg" radius="md" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <div style={{ background: '#e3f2fd', borderRadius: 12, padding: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Container size="xl" pt="xl">
+        <Title order={2} mb="md" style={{ color: "#111" }}>
+          Reservas
+        </Title>
+        <Text size="lg" weight={600} mb="xs" style={{ color: "#111" }}>
+          Resumo das Reservas
+        </Text>
+        <SimpleGrid
+          cols={3}
+          spacing="lg"
+          mb="xl"
+          breakpoints={[{ maxWidth: 900, cols: 1 }]}
+        >
+          <Card
+            shadow="sm"
+            p="lg"
+            radius="md"
+            style={{ display: "flex", alignItems: "center", gap: 16 }}
+          >
+            <div
+              style={{
+                background: "#e3f2fd",
+                borderRadius: 12,
+                padding: 12,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <IconCalendar size={32} color="#1976d2" />
             </div>
             <div>
-              <Text size="sm" color="dimmed">Total de Reservas</Text>
-              <Text size="xl" weight={700}>{totalReservas}</Text>
+              <Text size="sm" color="dimmed">
+                Total de Reservas
+              </Text>
+              <Text size="xl" weight={700}>
+                {totalReservas}
+              </Text>
             </div>
           </Card>
-          <Card shadow="sm" p="lg" radius="md" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <div style={{ background: '#fffde7', borderRadius: 12, padding: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Card
+            shadow="sm"
+            p="lg"
+            radius="md"
+            style={{ display: "flex", alignItems: "center", gap: 16 }}
+          >
+            <div
+              style={{
+                background: "#fffde7",
+                borderRadius: 12,
+                padding: 12,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <IconClock size={32} color="#ffb300" />
             </div>
             <div>
-              <Text size="sm" color="dimmed">Reservas Pendentes</Text>
-              <Text size="xl" weight={700}>{pendentes}</Text>
+              <Text size="sm" color="dimmed">
+                Reservas Pendentes
+              </Text>
+              <Text size="xl" weight={700}>
+                {pendentes}
+              </Text>
             </div>
           </Card>
-          <Card shadow="sm" p="lg" radius="md" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <div style={{ background: '#ffebee', borderRadius: 12, padding: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Card
+            shadow="sm"
+            p="lg"
+            radius="md"
+            style={{ display: "flex", alignItems: "center", gap: 16 }}
+          >
+            <div
+              style={{
+                background: "#ffebee",
+                borderRadius: 12,
+                padding: 12,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <IconAlertTriangle size={32} color="#e53935" />
             </div>
             <div>
-              <Text size="sm" color="dimmed">Reservas Atrasadas</Text>
-              <Text size="xl" weight={700}>{atrasadas}</Text>
+              <Text size="sm" color="dimmed">
+                Reservas Atrasadas
+              </Text>
+              <Text size="xl" weight={700}>
+                {atrasadas}
+              </Text>
             </div>
           </Card>
         </SimpleGrid>
-        <Text size="lg" weight={600} mb="xs" style={{ color: '#111' }}>Lista de Reservas</Text>
+        <Text size="lg" weight={600} mb="xs" style={{ color: "#111" }}>
+          Lista de Reservas
+        </Text>
         <Group position="apart" mb="md">
-          <Button leftSection={<IconPlus size={16} />} onClick={() => openModal("create")}
-            style={{ borderRadius: 8, fontWeight: 600 }}>
+          <Button
+            leftSection={<IconPlus size={16} />}
+            onClick={() => openModal("create")}
+            style={{ borderRadius: 8, fontWeight: 600 }}
+          >
             Nova Reserva
           </Button>
         </Group>
@@ -309,6 +429,7 @@ export function Orders() {
               setSearch={setSearch}
               setField={setField}
               setOrder={setOrder}
+              fetchData={fetchOrders}
               field={field}
               order={order}
               placeholder="Buscar por usuário ou jogo"
@@ -321,7 +442,13 @@ export function Orders() {
         <Modal
           opened={modalOpen && ["create", "edit", "view"].includes(modalType)}
           onClose={() => setModalOpen(false)}
-          title={modalType === "create" ? "Nova Reserva" : modalType === "edit" ? "Editar Reserva" : "Visualizar Reserva"}
+          title={
+            modalType === "create"
+              ? "Nova Reserva"
+              : modalType === "edit"
+              ? "Editar Reserva"
+              : "Visualizar Reserva"
+          }
           centered
           radius={12}
         >
@@ -348,58 +475,87 @@ export function Orders() {
               readOnly={modalType === "view"}
               disabled={modalType === "view"}
             />
-            <Select
-              label="Status"
-              data={statuses}
-              value={form.statusReserveId}
-              onChange={(value) => setForm((f) => ({ ...f, statusReserveId: value }))}
-              required
-              radius={8}
-              placeholder="Selecione o status"
-              readOnly={modalType === "view"}
-              disabled={modalType === "view"}
-              itemComponent={forwardRef(({ value, label, ...rest }, ref) => (
-                <div ref={ref} {...rest} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <Badge color={statusColors[value] || "gray"} variant="filled">{label}</Badge>
-                </div>
-              ))}
-              renderValue={(selected) => {
-                const status = statuses.find((s) => s.value === selected);
-                return (
-                  <Badge color={statusColors[selected] || "gray"} variant="filled">
-                    {status ? status.label : selected}
-                  </Badge>
-                );
-              }}
-            />
+            {modalType !== "create" && (
+              <Select
+                label="Status"
+                data={statuses}
+                value={form.statusReserveId}
+                onChange={(value) =>
+                  setForm((f) => ({ ...f, statusReserveId: value }))
+                }
+                required
+                radius={8}
+                placeholder="Selecione o status"
+                readOnly={modalType === "view"}
+                disabled={modalType === "view"}
+                itemComponent={forwardRef(({ value, label, ...rest }, ref) => (
+                  <div
+                    ref={ref}
+                    {...rest}
+                    style={{ display: "flex", alignItems: "center", gap: 8 }}
+                  >
+                    <Badge
+                      color={statusColors[value] || "gray"}
+                      variant="filled"
+                    >
+                      {label}
+                    </Badge>
+                  </div>
+                ))}
+                renderValue={(selected) => {
+                  const status = statuses.find((s) => s.value === selected);
+                  return (
+                    <Badge
+                      color={statusColors[selected] || "gray"}
+                      variant="filled"
+                    >
+                      {status ? status.label : selected}
+                    </Badge>
+                  );
+                }}
+              />
+            )}
             <TextInput
               label="Data da Reserva"
               type="datetime-local"
               value={form.reserveDate}
-              onChange={(e) => setForm((f) => ({ ...f, reserveDate: e.target.value }))}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, reserveDate: e.target.value }))
+              }
               required
               radius={8}
               readOnly={modalType === "view"}
             />
-            <TextInput
-              label="Data de Aprovação"
-              type="datetime-local"
-              value={form.approveDate}
-              onChange={(e) => setForm((f) => ({ ...f, approveDate: e.target.value }))}
-              radius={8}
-              readOnly={modalType === "view"}
-            />
-            <TextInput
-              label="Data de Devolução"
-              type="datetime-local"
-              value={form.returnDate}
-              onChange={(e) => setForm((f) => ({ ...f, returnDate: e.target.value }))}
-              radius={8}
-              readOnly={modalType === "view"}
-            />
+            {(modalType !== "create" ) && (
+              <TextInput
+                label="Data de Aprovação"
+                type="datetime-local"
+                value={form.approveDate}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, approveDate: e.target.value }))
+                }
+                radius={8}
+                readOnly={modalType === "view"}
+              />
+            )}
+            {modalType !== "create" && (
+              <TextInput
+                label="Data de Devolução"
+                type="datetime-local"
+                value={form.returnDate}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, returnDate: e.target.value }))
+                }
+                radius={8}
+                readOnly={modalType === "view"}
+              />
+            )}
             {modalType !== "view" && (
               <Group position="right" mt="md">
-                <Button onClick={handleCreateOrEdit} style={{ borderRadius: 8 }}>
+                <Button
+                  onClick={handleCreateOrEdit}
+                  style={{ borderRadius: 8 }}
+                >
                   {modalType === "create" ? "Criar" : "Salvar"}
                 </Button>
               </Group>
@@ -416,13 +572,23 @@ export function Orders() {
         >
           <Stack>
             <div>
-              Tem certeza que deseja excluir a reserva de <b>{selectedOrder?.userName}</b> para o jogo <b>{selectedOrder?.gameName}</b>?
+              Tem certeza que deseja excluir a reserva de{" "}
+              <b>{selectedOrder?.userName}</b> para o jogo{" "}
+              <b>{selectedOrder?.gameName}</b>?
             </div>
             <Group position="right" mt="md">
-              <Button variant="outline" onClick={() => setModalOpen(false)} style={{ borderRadius: 8 }}>
+              <Button
+                variant="outline"
+                onClick={() => setModalOpen(false)}
+                style={{ borderRadius: 8 }}
+              >
                 Cancelar
               </Button>
-              <Button color="red" onClick={handleDelete} style={{ borderRadius: 8 }}>
+              <Button
+                color="red"
+                onClick={handleDelete}
+                style={{ borderRadius: 8 }}
+              >
                 Excluir
               </Button>
             </Group>

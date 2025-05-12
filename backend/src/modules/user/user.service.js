@@ -13,12 +13,20 @@ UserService.findByEmailAndPassword = async (email, password) => {
   return null;
 };
 
-UserService.list = async (limit, offset) => {
+UserService.list = async (limit, offset, search) => {
   const [users, total] = await Promise.all([
     prisma.user.findMany({
       take: limit,
       skip: offset,
-      omit: { password: true }
+      omit: { password: true },
+      where: {
+        OR: [
+          { name: { contains: search || "", mode: "insensitive" } },
+          {
+            email: { contains: search || "", mode: "insensitive" } ,
+          },
+        ],
+      },
     }),
     prisma.user.count()
   ]);
@@ -26,7 +34,7 @@ UserService.list = async (limit, offset) => {
 };
 
 UserService.getUserById = async (userId) => {
-  const result = await prisma.user.findUnique({ where: { id: userId }, omit: { password: true }})
+  const result = await prisma.user.findUnique({ where: { id: Number(userId) }, omit: { password: true }})
   return result;
 };
 

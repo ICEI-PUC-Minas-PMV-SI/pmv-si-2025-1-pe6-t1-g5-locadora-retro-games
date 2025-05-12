@@ -9,6 +9,10 @@ import {
   Button,
   Badge,
   Menu,
+  Tooltip,
+  NumberFormatter,
+  Loader,
+  Flex,
 } from "@mantine/core";
 import moment from "moment";
 import { IconArrowUp, IconArrowDown, IconSearch } from "@tabler/icons-react";
@@ -21,7 +25,7 @@ const statusColors = {
   Pendente: "yellow",
 };
 
-const purple = '#9333ea';
+const purple = "#9333ea";
 
 export const DataTable = ({
   headers,
@@ -39,6 +43,7 @@ export const DataTable = ({
   setOrder,
   actions = [],
   onStatusChange,
+  loading,
 }) => {
   const [searchValue, setSearchValue] = useState("");
   const [debouncedSearch] = useDebouncedValue(searchValue, 500);
@@ -48,9 +53,9 @@ export const DataTable = ({
     setSearch(debouncedSearch);
   }, [debouncedSearch, setSearch]);
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, [page, limit, fetchData]);
+  useEffect(() => {
+    fetchData();
+  }, [page, limit, fetchData]);
 
   const format = (row, header) => {
     if (header.key === "cpf") {
@@ -59,14 +64,53 @@ export const DataTable = ({
     if (header.type === "boolean") {
       return row[header.key] ? "Sim" : "Não";
     }
+    if (header.type === "currency") {
+      return row[header.key] ? (
+        <NumberFormatter
+          prefix="R$ "
+          decimalSeparator=","
+          value={row[header.key]}
+        />
+      ) : (
+        <NumberFormatter prefix="R$ " decimalSeparator="," value={0} />
+      );
+    }
+    if (header.type === "longText") {
+      return (
+        <Tooltip
+          label={row[header.key]}
+          multiline
+          maw={400}
+          position="top-start"
+        >
+          <span
+            style={{
+              cursor: "pointer",
+              display: "inline-block",
+              maxWidth: 300,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {row[header.key]}
+          </span>
+        </Tooltip>
+      );
+    }
     if (header.type === "date") {
       if (!row[header.key] || row[header.key] === "Invalid date") {
         return <span style={{ color: "#bbb" }}>–</span>;
       }
       const date = moment(String(row[header.key]));
-      return date.isValid()
-        ? date.format("DD/MM/YYYY HH:mm:ss")
-        : <span style={{ color: "#bbb" }}>–</span>;
+      const isPast = header.key == "returnDate" && date.isBefore(moment());
+      return date.isValid() ? (
+        <span style={{ color: isPast ? "red" : "inherit" }}>
+          {date.format("DD/MM/YYYY HH:mm:ss")}
+        </span>
+      ) : (
+        <span style={{ color: "#bbb" }}>–</span>
+      );
     }
     if (header.key === "statusName" && row.statusName) {
       const color = statusColors[row.statusName] || "gray";
@@ -82,9 +126,7 @@ export const DataTable = ({
               <Menu.Item
                 key={label}
                 color={c}
-                onClick={() =>
-                  row.onStatusChange && row.onStatusChange(label)
-                }
+                onClick={() => row.onStatusChange && row.onStatusChange(label)}
               >
                 {label}
               </Menu.Item>
@@ -144,14 +186,15 @@ export const DataTable = ({
         <MantineTable.Tr key={rowIndex}>
           {headers.map((header) => (
             <MantineTable.Td
-            style={{
-              width: header.width ? header.width : "auto",
-              maxWidth: header.key === "description" ? 220 : undefined,
-              textAlign: header.align ? header.align : "left",
-              whiteSpace: header.key === "description" ? 'nowrap' : undefined,
-              overflow: header.key === "description" ? 'hidden' : undefined,
-              textOverflow: header.key === "description" ? 'ellipsis' : undefined,
-            }}
+              style={{
+                width: header.width ? header.width : "auto",
+                maxWidth: header.key === "description" ? 220 : undefined,
+                textAlign: header.align ? header.align : "left",
+                whiteSpace: header.key === "description" ? "nowrap" : undefined,
+                overflow: header.key === "description" ? "hidden" : undefined,
+                textOverflow:
+                  header.key === "description" ? "ellipsis" : undefined,
+              }}
               key={String(header.key)}
               data-label={header.label}
             >
@@ -187,8 +230,12 @@ export const DataTable = ({
     [data, headers, onStatusChange]
   );
 
-  return (
-    <Box style={{ overflowX: 'auto', width: '100%' }}>
+  return loading ? (
+    <Flex align="center" justify="center">
+      <Loader />
+    </Flex>
+  ) : (
+    <Box style={{ overflowX: "auto", width: "100%" }}>
       <Group mb="md">
         <TextInput
           placeholder={placeholder}
@@ -236,7 +283,7 @@ export const DataTable = ({
           color="purple"
           styles={{
             control: { borderColor: purple },
-            active: { backgroundColor: purple, color: '#fff' },
+            active: { backgroundColor: purple, color: "#fff" },
           }}
         />
       </Box>

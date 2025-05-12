@@ -109,7 +109,7 @@ export function Consoles() {
 
   const fetchConsoles = useCallback(async () => {
     try {
-      setLoading(true);
+      //setLoading(true);
       const res = await api.get("/consoles", {
         params: { page, limit, search, field, order },
       });
@@ -119,7 +119,7 @@ export function Consoles() {
           gamesCount: c._count ? c._count.games : 0,
         }))
       );
-      setTotal(res.data.total || 0);
+      setTotal(res.data.totalItems || 0);
     } catch (e) {
       setConsoles([]);
       setTotal(0);
@@ -143,7 +143,7 @@ export function Consoles() {
 
   return (
     <AppWrapper>
-      <Container size="lg" pt="xl">
+      <Container size="xl" pt="xl">
         <Title order={2} mb="md" style={{ color: "#111" }}>
           Consoles
         </Title>
@@ -251,6 +251,7 @@ export function Consoles() {
               field={field}
               order={order}
               placeholder="Buscar por nome"
+              fetchData={fetchConsoles}
               actions={actions}
             />
           )}

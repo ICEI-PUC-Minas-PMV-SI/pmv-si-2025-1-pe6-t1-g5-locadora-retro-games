@@ -8,13 +8,23 @@ GameController.getGame = async (req, res) => {
     const limit = Number(req.query.limit) || 10;
     const page = Number(req.query.page) || 1;
     const offset = (page - 1) * limit;
-    const { games, total } = await GameService.list(limit, offset);
+    const field = req.query?.field || "name";
+    const order = req.query?.order || "asc";
+    const search = req.query?.search;
+    const { games, total, gameWithMoreOrders } = await GameService.list(
+      limit,
+      offset,
+      field,
+      order,
+      search
+    );
     res.status(200).json({
       games,
       currentPage: page,
       totalPages: Math.ceil(total / limit),
       totalItems: total,
-      itemsPerPage: limit
+      itemsPerPage: limit,
+      gameWithMoreOrders,
     });
   } catch (error) {
     console.error(error);
@@ -28,7 +38,8 @@ GameController.insertGame = async (req, res) => {
       name: req.body.name,
       price: req.body.price,
       description: req.body.description,
-      console: req.body.consoleId
+      amount: req.body.amount,
+      console: req.body.consoleId,
     };
     await GameService.create(body);
     res.status(200).json("Game created successfully");
@@ -43,8 +54,9 @@ GameController.updateGame = async (req, res) => {
       id: Number(req.params.id),
       name: req.body.name,
       price: req.body.price,
+      amount: req.body.amount,
       description: req.body.description,
-      console: req.body.consoleId
+      console: req.body.consoleId,
     };
     await GameService.update(body);
     res.status(200).json("Game updated successfully");
@@ -53,7 +65,7 @@ GameController.updateGame = async (req, res) => {
     res.status(500).json("Internal server error");
   }
 };
-  
+
 GameController.deleteGame = async (req, res) => {
   try {
     const body = {

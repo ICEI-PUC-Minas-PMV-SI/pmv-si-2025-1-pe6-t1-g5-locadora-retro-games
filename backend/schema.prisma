@@ -43,6 +43,7 @@ model Game {
   consoleId   Int
   name        String  @db.VarChar(100)
   price       Decimal @db.Decimal(10, 2)
+  amount      Int
   description String?
 
   console  Console   @relation(fields: [consoleId], references: [id], onDelete: Cascade)
@@ -52,17 +53,17 @@ model Game {
 model Reserve {
   id              String
   userId          Int
-  gameId          Int     
+  gameId          Int
   statusReserveId Int
   reserveDate     DateTime
   approveDate     DateTime?
   returnDate      DateTime?
 
-  @@id([id, userId, gameId])
-
   user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   game          Game          @relation(fields: [gameId], references: [id], onDelete: Cascade)
   statusReserve StatusReserve @relation(fields: [statusReserveId], references: [id])
+
+  @@id([id, userId, gameId])
 }
 
 model StatusReserve {
