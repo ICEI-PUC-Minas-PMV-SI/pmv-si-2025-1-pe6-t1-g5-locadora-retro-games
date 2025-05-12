@@ -98,11 +98,26 @@ Usabilidade: Permite gestão eficiente das reservas com clareza das informaçõe
 
 ### Wireframes
 
-[Inclua os wireframes das páginas principais da interface, mostrando a disposição dos elementos na página.]
+![Wireframe - Login](https://github.com/user-attachments/assets/af2571f0-887f-4d9a-8ccf-86b3563ee88f)
+
 
 ### Design Visual
 
-[Descreva o estilo visual da interface, incluindo paleta de cores, tipografia, ícones e outros elementos gráficos.]
+A interface da aplicação foi cuidadosamente desenhada para evocar uma sensação de nostalgia e aconchego, alinhada ao propósito de conectar o usuário ao universo dos jogos antigos. As escolhas estéticas buscam resgatar memórias afetivas e transportar o usuário para uma experiência sensorial que remete aos tempos analógicos, dos cartuchos, locadoras de bairro e tardes de diversão em casa. 
+
+A paleta de cores é marcada por tons intensos e expressivos de amarelo vibrante, rosa chiclete, roxo neon, laranja queimado e branco puro. Essas cores, características do universo pop e arcade dos anos 80, evocam a estética das fitas VHS, cartazes de festas retrô, fliperamas e consoles clássicos, criando uma atmosfera divertida, calorosa e acolhedora.
+
+O amarelo e o laranja trazem calor e luminosidade, transmitindo alegria e entusiasmo. O rosa e o roxo, em tons vivos, criam contrastes modernos e provocam uma sensação de fantasia e irreverência. Já o branco entra como ponto de equilíbrio, permitindo que as cores se destaquem sem sobrecarregar a interface.
+
+Essa paleta proporciona uma experiência visual que combina o saudosismo do passado com a energia vibrante da cultura pop, criando uma ponte entre gerações e resgatando o prazer de explorar, alugar e redescobrir jogos clássicos.
+
+A tipografia segue uma linha retrô-contemporânea, utilizando fontes com características levemente arredondadas e serifadas discretas, inspiradas em manuais antigos, capas de revistas de games dos anos 80 e 90 e propagandas de época. Essa escolha proporciona uma leitura confortável, ao mesmo tempo em que reforça a identidade nostálgica e acolhedora da aplicação.
+
+O design gráfico traz elementos inspirados em adesivos antigos, letreiros de neon, molduras geométricas e ícones estilizados que remetem ao universo arcade. Texturas lisas, efeitos de brilho controlados e sombras suaves reforçam a estética retrô-pop, mantendo uma interface limpa, mas carregada de personalidade. Os ícones possuem traços simples e diretos, com cores chapadas e sem excesso de detalhes, remetendo aos jogos de 8 e 16 bits.
+
+Toda a composição visual foi pensada para ser um convite ao resgate das boas memórias da infância e adolescência, em uma época onde alugar um jogo era um ritual social e cheio de expectativa. A interface busca não apenas entregar uma navegação funcional, mas criar uma experiência sensorial, vibrante e afetiva, onde as cores e formas transportam o usuário para um universo lúdico, divertido e cheio de histórias.
+
+É uma aplicação que celebra o passado com uma paleta vibrante e ousada, convidando os usuários a reviverem suas aventuras de infância em uma plataforma moderna, mas carregada de alma vintage.
 
 # Fluxo de Dados
 
