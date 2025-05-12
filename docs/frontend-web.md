@@ -98,7 +98,25 @@ Usabilidade: Permite gestão eficiente das reservas com clareza das informaçõe
 
 ### Wireframes
 
-[Inclua os wireframes das páginas principais da interface, mostrando a disposição dos elementos na página.]
+
+## 1. Tela de Login
+![Tela de Login](./img/Wireframe%20-%20Login.png)
+
+## 2. Tela de Dashboard
+![Tela de Dashboard](./img/Wireframe%20-%20Dashboard.png)
+
+## 3. Tela de Usuários
+![Tela de Usuários](./img/Wireframe%20-%20Tela%20Usuários.png)
+
+## 4. Tela de Reservas
+![Tela de Reservas](./img/Wireframe%20-%20Tela%20Reservas.png)
+
+## 5. Tela de Jogos
+![Tela de Jogos](./img/Wireframe%20-%20Tela%20Jogos.png)
+
+## 6. Tela de Consoles
+![Tela de Consoles](./img/Wireframe_Tela_consoles.png)
+
 
 ### Design Visual
 
