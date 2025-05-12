@@ -26,7 +26,7 @@ UserService.list = async (limit, offset) => {
 };
 
 UserService.getUserById = async (userId) => {
-  const result = await prisma.user.findUnique({ where: { id: userId }, omit: { password: true }})
+  const result = await prisma.user.findUnique({ where: { id: Number(userId) }, omit: { password: true }})
   return result;
 };
 

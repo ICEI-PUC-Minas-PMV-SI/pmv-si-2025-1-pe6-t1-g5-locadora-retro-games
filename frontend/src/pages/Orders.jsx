@@ -92,7 +92,7 @@ export function Orders() {
             id: order.id,
             userId: order.userId + "",
             gameId: order.gameId + "",
-            statusReserveId: order.statusReserveId + "",
+            statusReserveId: 4,
             reserveDate: order.reserveDate
               ? moment(order.reserveDate).format("YYYY-MM-DDTHH:mm")
               : "",
@@ -107,7 +107,7 @@ export function Orders() {
             id: "",
             userId: "",
             gameId: "",
-            statusReserveId: "",
+            statusReserveId: 4,
             reserveDate: moment().format("YYYY-MM-DDTHH:mm"),
             approveDate: "",
             returnDate: "",
@@ -211,8 +211,8 @@ export function Orders() {
       setOrders(
         (res.data.orders || []).map((o) => ({
           ...o,
-          userName: o.user?.name || o.userName || o.userId,
-          gameName: o.game?.name || o.gameName || o.gameId,
+          userName: fetchUserName(o.userId),
+          gameName: fetchGameName(o.gameId),
           statusName:
             statuses.find(
               (s) => s.value == (o.statusReserveId || o.statusReserveId)
@@ -227,6 +227,27 @@ export function Orders() {
       setLoading(false);
     }
   }, [page, limit, search, field, order, statuses]);
+
+  const fetchUserName = async (userId) => {
+    try {
+      const res = await api.get(`/users/${userId}`)
+
+      return res.data.name;
+    } catch(e) {
+      return userId;
+    }
+  };
+
+  const fetchGameName = async (gameId) => {
+    try {
+      const res = await api.get("/games");
+      const game = res.data.games.find(item => item.id == gameId);
+
+      return game.name;
+    } catch(e) {
+      return gameId;
+    }
+  }
 
   const fetchUsers = useCallback(async () => {
     try {

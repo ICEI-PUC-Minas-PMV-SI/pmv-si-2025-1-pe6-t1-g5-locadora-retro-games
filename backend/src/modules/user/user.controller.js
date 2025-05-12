@@ -32,6 +32,16 @@ UserController.getUserById = async (req, res) => {
   }
 };
 
+UserController.getUserFromRequest = async (req, res) => {
+  try {
+    const data = await UserService.getUserById(req.params.id);
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json("Internal server error");
+  }
+};
+
 UserController.insertUser = async (req, res) => {
   try {
     const body = {

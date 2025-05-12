@@ -103,8 +103,11 @@ export const DataTable = ({
         return <span style={{ color: "#bbb" }}>–</span>;
       }
       const date = moment(String(row[header.key]));
+      const isPast = header.key == "returnDate" && date.isBefore(moment());
       return date.isValid() ? (
-        date.format("DD/MM/YYYY HH:mm:ss")
+        <span style={{ color: isPast ? "red" : "inherit" }}>
+          {date.format("DD/MM/YYYY HH:mm:ss")}
+        </span>
       ) : (
         <span style={{ color: "#bbb" }}>–</span>
       );
