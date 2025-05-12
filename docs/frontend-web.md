@@ -236,6 +236,7 @@ https://nintendin.vercel.app/login
 
 1. [Login](./videos/Login/2025-05-10%2019-25-28.mkv) - O usuário deve entrar  com e-mail e senha.
 
+
 2. [Consoles Criar  Editar  Visualizar  Deletar](./videos/Consoles/2025-05-10%2019-38-54.mkv) - É possivel criar, editar, visualizar e deletar os consoles.
 
 3. [Jogos Criar  Editar  Visualizar  Deletar](./videos/Jogos/2025-05-10%2019-41-03.mkv) - É possível criar, editar, visualizar e deletar jogos. 
