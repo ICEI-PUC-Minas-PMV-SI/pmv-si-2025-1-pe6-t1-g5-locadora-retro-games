@@ -8,7 +8,8 @@ ConsoleController.getConsole = async (req, res) => {
     const limit = Number(req.query.limit) || 10;
     const page = Number(req.query.page) || 1;
     const offset = (page - 1) * limit;
-    const { consoles, total } = await ConsoleService.list(limit, offset);
+    const search = req.query?.search;
+    const { consoles, total } = await ConsoleService.list(limit, offset, search);
     res.status(200).json({
       consoles,
       currentPage: page,
