@@ -234,11 +234,21 @@ https://nintendin.vercel.app/login
 
 [Descreva a estratégia de teste, incluindo os tipos de teste a serem realizados (unitários, integração, carga, etc.) e as ferramentas a serem utilizadas.]
 
-1. Crie casos de teste para cobrir todos os requisitos funcionais e não funcionais da aplicação.
-2. Implemente testes unitários para testar unidades individuais de código, como funções e classes.
-3. Realize testes de integração para verificar a interação correta entre os componentes da aplicação.
-4. Execute testes de carga para avaliar o desempenho da aplicação sob carga significativa.
-5. Utilize ferramentas de teste adequadas, como frameworks de teste e ferramentas de automação de teste, para agilizar o processo de teste.
+1. [Login](./videos/Login/2025-05-10%2019-25-28.mkv) - O usuário deve entrar  com e-mail e senha.
+
+2. [Consoles Criar  Editar  Visualizar  Deletar](./videos/Consoles/2025-05-10%2019-38-54.mkv) - É possivel criar, editar, visualizar e deletar os consoles.
+
+3. [Jogos Criar  Editar  Visualizar  Deletar](./videos/Jogos/2025-05-10%2019-41-03.mkv) - É possível criar, editar, visualizar e deletar jogos. 
+
+4. [Reservas Criar  Editar  Visualizar  Deletar](./videos/Reservas/2025-05-12%2000-52-56.mkv) - É possível criar, editar, visualizar e deletar uma reserva.
+
+5. [Usuário Criar  Editar  Visualizar  Deletar](./videos/Usuário/2025-05-10%2019-29-00.mkv) - Para cirar, basta inserir os dados do usário no formulário, é possivel também edidar o cadastro, visualizar e deletar caso necessário.
+
+6. [Testar ordenacao de paginas](./videos/Ordenacao/2025-05-12%2000-44-00.mkv) - A ordenação é feita de acordo com a necessidade do usuário, basta clicar na coluna que deseja ordenar.
+
+7. [Testas as buscas de páginas](./videos/Buscas/2025-05-12%2000-47-36.mkv) - Para fazer a busca, basta digitar a informação.
+
+7. [Testar o Logout](./videos/Logout/2025-05-12%2000-57-17.mkv) - Clicar em sair para fazer o logout.
 
 # Referências
 
