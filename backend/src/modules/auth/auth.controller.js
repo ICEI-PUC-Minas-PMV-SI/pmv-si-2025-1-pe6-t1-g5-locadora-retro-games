@@ -8,7 +8,7 @@ AuthController.login = async (req, res) => {
     const { email, password } = req.body;
     const user = await UserService.findByEmailAndPassword(email, password);
     if (!user) {
-      return res.status(404).json({ message: "Usuário e senha incorretos." });
+      return res.status(400).json({ message: "Usuário e senha incorretos." });
     }
     const token = jwt.sign(
       { id: user.id, email: user.email, roleId: user.roleId }, 

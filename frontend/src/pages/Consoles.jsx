@@ -12,6 +12,7 @@ import {
   Card,
   SimpleGrid,
   Text,
+  Flex
 } from "@mantine/core";
 import { AppWrapper } from "../components/AppWrapper";
 import { DataTable } from "../components/DataTable";
@@ -35,6 +36,7 @@ export function Consoles() {
   const [search, setSearch] = useState("");
   const [field, setField] = useState("id");
   const [order, setOrder] = useState("asc");
+  const [topConsole, setTopConsole] = useState(null);
 
   // modal states
   const [modalOpen, setModalOpen] = useState(false);
@@ -58,15 +60,30 @@ export function Consoles() {
     setModalOpen(true);
   };
 
+  const validateForm = () => {
+    if (!form.name) {
+      toast.error("Nome do console é obrigatório.");
+      return false;
+    }
+    return true;
+  };
+
   // crud actions
   const handleCreateOrEdit = async () => {
+    if (!validateForm()) return;
+
     try {
-      const payload = { name: form.name };
+      const payload = { ...form };
       if (modalType === "create") {
         await api.post("/consoles", payload);
       } else if (modalType === "edit" && selectedConsole) {
         await api.put(`/consoles/${selectedConsole.id}`, payload);
       }
+      toast.success(
+        modalType === "create"
+          ? "Console criado com sucesso!"
+          : "Console atualizado com sucesso!"
+      );
       setModalOpen(false);
       fetchConsoles();
     } catch (e) {
@@ -77,6 +94,7 @@ export function Consoles() {
   const handleDelete = async () => {
     try {
       await api.delete(`/consoles/${selectedConsole.id}`);
+      toast.success("Console excluído com sucesso!");
       setModalOpen(false);
       fetchConsoles();
     } catch (e) {
@@ -109,7 +127,6 @@ export function Consoles() {
 
   const fetchConsoles = useCallback(async () => {
     try {
-      //setLoading(true);
       const res = await api.get("/consoles", {
         params: { page, limit, search, field, order },
       });
@@ -120,9 +137,11 @@ export function Consoles() {
         }))
       );
       setTotal(res.data.totalItems || 0);
+      setTopConsole(res.data.consoleWithMoreGames || null); // Atualiza o estado com o console mais popular
     } catch (e) {
       setConsoles([]);
       setTotal(0);
+      setTopConsole(null);
     } finally {
       setLoading(false);
     }
@@ -132,14 +151,6 @@ export function Consoles() {
     fetchConsoles();
     // eslint-disable-next-line
   }, [page, limit, search, field, order]);
-
-  // cards de resumo para consoles
-  const totalConsoles = consoles.length;
-  // console mais popular (pelo array atual, se houver campo de jogos)
-  const topConsole = consoles.reduce(
-    (acc, c) => (c.gamesCount > (acc?.gamesCount || 0) ? c : acc),
-    null
-  );
 
   return (
     <AppWrapper>
@@ -179,7 +190,7 @@ export function Consoles() {
                 Total de Consoles
               </Text>
               <Text size="xl" weight={700}>
-                {totalConsoles}
+                {total}
               </Text>
             </div>
           </Card>
@@ -235,7 +246,9 @@ export function Consoles() {
           }}
         >
           {loading ? (
-            <Loader />
+            <Flex justify="center" align="center">
+              <Loader />
+            </Flex>
           ) : (
             <DataTable
               headers={headers}

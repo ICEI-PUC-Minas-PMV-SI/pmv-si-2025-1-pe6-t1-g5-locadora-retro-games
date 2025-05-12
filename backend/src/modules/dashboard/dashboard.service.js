@@ -1,4 +1,5 @@
 import prisma from '../../infra/prisma/prisma.js';
+import ORDER_STATUS_ENUM from '../../utils/orderStatus.enum.js';
 import AsaasService from '../order/asaas.service.js';
 
 const DashboardService = {};
@@ -80,13 +81,20 @@ DashboardService.getSummary = async () => {
   // Reservas pendentes
   const reservasPendentes = await prisma.reserve.count({ where: { statusReserveId: 4 } });
   // Reservas atrasadas (status pendente e data de retorno menor que hoje)
-  const hoje = new Date();
-  const reservasAtrasadas = await prisma.reserve.count({
+  const reservasAtrasadasPorDevolucao = await prisma.$queryRawUnsafe(
+    `SELECT COUNT(*) AS overdueReturnCount
+     FROM "Reserve"
+     WHERE "Reserve"."returnDate" > ("Reserve"."approveDate" + INTERVAL '15 days');`
+  );
+  const reservasAtrasadasPorDevolucaoCount = parseInt(reservasAtrasadasPorDevolucao[0].overduereturncount, 10);
+  const reservasAtrasadasAposAprovacao = await prisma.reserve.count({
     where: {
-      statusReserveId: 4,
-      returnDate: { lt: hoje }
+      statusReserveId: ORDER_STATUS_ENUM.ORDERED,
+      approveDate: { lte: new Date(new Date().setDate(new Date().getDate() - 15)) },
+      returnDate: null
     }
   });
+  const totalReservasAtrasadas = reservasAtrasadasAposAprovacao + reservasAtrasadasPorDevolucaoCount;
   // Últimas reservas (com nome do status)
   const ultimasReservas = await prisma.reserve.findMany({
     orderBy: { reserveDate: 'desc' },
@@ -110,7 +118,7 @@ DashboardService.getSummary = async () => {
     consolesMaisPopulares,
     usuariosAtivosMes,
     reservasPendentes,
-    reservasAtrasadas,
+    reservasAtrasadas: totalReservasAtrasadas,
     ultimasReservas,
     statusPagamentos,
     statusPagamentosPie

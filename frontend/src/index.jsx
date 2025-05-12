@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import RootApp from "./RootApp";
 import { MantineProvider, createTheme } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
 import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 
 const theme = createTheme({
   fontFamily: "Poppins, sans-serif",
@@ -78,7 +79,7 @@ root.render(
   <React.StrictMode>
     <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS>
       <Notifications />
-      <App />
+      <RootApp />
     </MantineProvider>
   </React.StrictMode>
 );

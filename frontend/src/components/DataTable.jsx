@@ -103,7 +103,16 @@ export const DataTable = ({
         return <span style={{ color: "#bbb" }}>–</span>;
       }
       const date = moment(String(row[header.key]));
-      const isPast = header.key == "returnDate" && date.isBefore(moment());
+      let isPast = false;
+
+      if (header.key === "approveDate") {
+        const returnDate = row.returnDate ? moment(String(row.returnDate)) : null;
+        isPast = !returnDate && moment().isAfter(date.clone().add(15, 'days'));
+      } else if (header.key === "returnDate") {
+        const approveDate = row.approveDate ? moment(String(row.approveDate)) : null;
+        isPast = approveDate && date.isAfter(approveDate.clone().add(15, 'days'));
+      }
+
       return date.isValid() ? (
         <span style={{ color: isPast ? "red" : "inherit" }}>
           {date.format("DD/MM/YYYY HH:mm:ss")}
@@ -235,7 +244,7 @@ export const DataTable = ({
       <Loader />
     </Flex>
   ) : (
-    <Box style={{ overflowX: "auto", width: "100%" }}>
+    <Box style={{ width: "100%" }}>
       <Group mb="md">
         <TextInput
           placeholder={placeholder}
@@ -272,7 +281,11 @@ export const DataTable = ({
       </MantineTable>
       <Box
         mt="md"
-        style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          width: "100%",
+        }}
       >
         <Pagination
           total={Math.ceil(total / limit)}

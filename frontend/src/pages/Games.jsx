@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import {
   Container,
   Title,
-  Loader,
   Button,
   Group,
   Modal,
@@ -10,13 +9,13 @@ import {
   TextInput,
   NumberInput,
   Select,
-  Paper,
   Box,
   Textarea,
-  Tooltip,
   Card,
   SimpleGrid,
   Text,
+  Loader,
+  Flex,
 } from "@mantine/core";
 import { AppWrapper } from "../components/AppWrapper";
 import { DataTable } from "../components/DataTable";
@@ -40,6 +39,7 @@ export function Games() {
   const [search, setSearch] = useState("");
   const [field, setField] = useState("id");
   const [order, setOrder] = useState("asc");
+  const [topGameName, setTopGameName] = useState("-");
 
   // modal states
   const [modalOpen, setModalOpen] = useState(false);
@@ -92,21 +92,43 @@ export function Games() {
     setModalOpen(true);
   };
 
+  const validateForm = () => {
+    if (!form.name) {
+      toast.error("Nome do jogo é obrigatório.");
+      return false;
+    }
+    if (!form.price) {
+      toast.error("Preço do jogo é obrigatório.");
+      return false;
+    }
+    if (!form.consoleId) {
+      toast.error("Console é obrigatório.");
+      return false;
+    }
+    return true;
+  };
+
   // crud actions
   const handleCreateOrEdit = async () => {
+    if (!validateForm()) return;
+
     try {
       const payload = {
-        name: form.name,
-        price: form.price,
-        description: form.description,
+        ...form,
+        price: Number(form.price),
         consoleId: Number(form.consoleId),
-        amount: form.amount,
+        amount: Number(form.amount),
       };
       if (modalType === "create") {
         await api.post("/games", payload);
       } else if (modalType === "edit" && selectedGame) {
         await api.put(`/games/${selectedGame.id}`, payload);
       }
+      toast.success(
+        modalType === "create"
+          ? "Jogo criado com sucesso!"
+          : "Jogo atualizado com sucesso!"
+      );
       setModalOpen(false);
       fetchGames();
     } catch (e) {
@@ -117,6 +139,7 @@ export function Games() {
   const handleDelete = async () => {
     try {
       await api.delete(`/games/${selectedGame.id}`);
+      toast.success("Jogo excluído com sucesso!");
       setModalOpen(false);
       fetchGames();
     } catch (e) {
@@ -149,7 +172,6 @@ export function Games() {
 
   const fetchGames = useCallback(async () => {
     try {
-      setLoading(true);
       const res = await api.get("/games", {
         params: { page, limit, search, field, order },
       });
@@ -159,7 +181,10 @@ export function Games() {
           consoleName: g.console ? g.console.name : "",
         }))
       );
-      setTotal(res.data.games?.reduce((total, game) => total + game.amount, 0) || 0);
+      setTotal(res.data.totalItems);
+      if (res.data.gameWithMoreOrders) {
+        setTopGameName(res.data.gameWithMoreOrders.name);
+      }
     } catch (e) {
       setGames([]);
       setTotal(0);
@@ -191,12 +216,6 @@ export function Games() {
   useEffect(() => {
     fetchConsoles();
   }, [fetchConsoles]);
-
-  const topGame = games.reduce(
-    (acc, g) =>
-      g.reserves && g.reserves.length > (acc?.reserves?.length || 0) ? g : acc,
-    null
-  );
 
   return (
     <AppWrapper>
@@ -263,7 +282,7 @@ export function Games() {
                 Jogo mais alugado
               </Text>
               <Text size="xl" weight={700}>
-                {topGame ? topGame.name : "-"}
+                {topGameName}
               </Text>
             </div>
           </Card>
@@ -291,24 +310,29 @@ export function Games() {
             marginBottom: 16,
           }}
         >
-          <DataTable
-            headers={headers}
-            data={games}
-            total={total}
-            limit={limit}
-            page={page}
-            setPage={setPage}
-            setLimit={setLimit}
-            setSearch={setSearch}
-            setField={setField}
-            setOrder={setOrder}
-            field={field}
-            order={order}
-            placeholder="Buscar por nome ou console"
-            actions={actions}
-            fetchData={fetchGames}
-            loading={loading}
-          />
+          {loading ? (
+            <Flex justify="center" align="center">
+              <Loader />
+            </Flex>
+          ) : (
+            <DataTable
+              headers={headers}
+              data={games}
+              total={total}
+              limit={limit}
+              page={page}
+              setPage={setPage}
+              setLimit={setLimit}
+              setSearch={setSearch}
+              setField={setField}
+              setOrder={setOrder}
+              field={field}
+              order={order}
+              placeholder="Buscar por nome ou console"
+              actions={actions}
+              fetchData={fetchGames}
+            />
+          )}
         </Box>
         {/* Modal de criar/editar/visualizar */}
         <Modal

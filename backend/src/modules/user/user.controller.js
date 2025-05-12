@@ -8,14 +8,23 @@ UserController.getUser = async (req, res) => {
     const limit = Number(req.query.limit) || 10; // default 10 items per page
     const page = Number(req.query.page) || 1; // default first page
     const offset = (page - 1) * limit;
+    const field = req.query?.field || "name";
+    const order = req.query?.order || "asc";
     const search = req.query?.search;
-    const { users, total } = await UserService.list(limit, offset, search);
+    const { users, total, userWithMoreOrders } = await UserService.list(
+      limit,
+      offset,
+      field,
+      order,
+      search
+    );
     res.status(200).json({
       users,
       currentPage: page,
       totalPages: Math.ceil(total / limit),
       totalItems: total,
-      itemsPerPage: limit
+      itemsPerPage: limit,
+      userWithMoreOrders,
     });
   } catch (error) {
     console.error(error);
@@ -50,11 +59,12 @@ UserController.insertUser = async (req, res) => {
       email: req.body.email,
       cpf: req.body.cpf,
       password: req.body.password,
+      roleId: req.body.roleId,
     };
     if (!body.name || !body.email || !body.cpf || !body.password) {
-      res.status(404).json("Missing or wrong data");
+      res.status(400).json("Missing or wrong data");
     }
-    await UserService.create(body);
+    await UserService.create(body, req.userData.roleId);
     res.status(200).json("User created successfully");
   } catch (error) {
     console.error(error);
@@ -70,8 +80,9 @@ UserController.updateUser = async (req, res) => {
       email: req.body.email,
       cpf: req.body.cpf,
       password: req.body.password,
+      roleId: req.body.roleId,
     };
-    await UserService.update(body);
+    await UserService.update(body, req.userData.roleId);
     res.status(200).json("User updated successfully");
   } catch (error) {
     console.error(error);

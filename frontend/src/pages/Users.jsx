@@ -15,6 +15,7 @@ import {
   Card,
   SimpleGrid,
   Text,
+  Flex,
 } from "@mantine/core";
 import { AppWrapper } from "../components/AppWrapper";
 import { DataTable } from "../components/DataTable";
@@ -39,6 +40,7 @@ export function Users() {
   const [search, setSearch] = useState("");
   const [field, setField] = useState("id");
   const [order, setOrder] = useState("asc");
+  const [topUser, setTopUser] = useState("-");
 
   // modal states
   const [modalOpen, setModalOpen] = useState(false);
@@ -86,19 +88,79 @@ export function Users() {
     setModalOpen(true);
   };
 
+  const validateCPF = (cpf) => {
+    cpf = cpf.replace(/[.-]/g, ""); // Remove caracteres especiais
+    if (cpf.length !== 11 || /^([0-9])\1*$/.test(cpf)) return false; // Verifica tamanho e repetição
+
+    let sum = 0;
+    for (let i = 0; i < 9; i++) sum += parseInt(cpf.charAt(i)) * (10 - i);
+    let firstCheck = (sum * 10) % 11;
+    if (firstCheck === 10 || firstCheck === 11) firstCheck = 0;
+    if (firstCheck !== parseInt(cpf.charAt(9))) return false;
+
+    sum = 0;
+    for (let i = 0; i < 10; i++) sum += parseInt(cpf.charAt(i)) * (11 - i);
+    let secondCheck = (sum * 10) % 11;
+    if (secondCheck === 10 || secondCheck === 11) secondCheck = 0;
+    if (secondCheck !== parseInt(cpf.charAt(10))) return false;
+
+    return true;
+  };
+
+  const validateForm = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!form.name) {
+      toast.error("Nome do usuário é obrigatório.");
+      return false;
+    }
+    if (!form.email) {
+      toast.error("Email do usuário é obrigatório.");
+      return false;
+    }
+    if (!emailRegex.test(form.email)) {
+      toast.error("Email inválido.");
+      return false;
+    }
+    if (!form.cpf) {
+      toast.error("CPF do usuário é obrigatório.");
+      return false;
+    }
+    if (!validateCPF(form.cpf)) {
+      toast.error("CPF inválido.");
+      return false;
+    }
+    if (modalType === "create" && !form.password) {
+      toast.error("Senha do usuário é obrigatória.");
+      return false;
+    }
+    if (modalType === "create" && form.password && form.password.length < 8) {
+      toast.error("A senha deve ter pelo menos 8 caracteres.");
+      return false;
+    }
+    return true;
+  };
+
   // cruds actions
   const handleCreateOrEdit = async () => {
+    if (!validateForm()) return;
+
     try {
-      const cleanForm = {
+      const payload = {
         ...form,
-        cpf: form.cpf.replace(/\D/g, ""),
+        cpf: form.cpf.replace(/[.-]/g, ""), // Remove caracteres especiais antes de salvar
         roleId: Number(form.roleId),
       };
       if (modalType === "create") {
-        await api.post("/users", cleanForm);
+        await api.post("/users", payload);
       } else if (modalType === "edit" && selectedUser) {
-        await api.put(`/users/${selectedUser.id}`, cleanForm);
+        await api.put(`/users/${selectedUser.id}`, payload);
       }
+      toast.success(
+        modalType === "create"
+          ? "Usuário criado com sucesso!"
+          : "Usuário atualizado com sucesso!"
+      );
       setModalOpen(false);
       fetchUsers();
     } catch (e) {
@@ -109,6 +171,7 @@ export function Users() {
   const handleDelete = async () => {
     try {
       await api.delete(`/users/${selectedUser.id}`);
+      toast.success("Usuário excluído com sucesso!");
       setModalOpen(false);
       fetchUsers();
     } catch (e) {
@@ -141,12 +204,12 @@ export function Users() {
 
   const fetchUsers = useCallback(async () => {
     try {
-      //setLoading(true);
       const res = await api.get("/users", {
         params: { page, limit, search, field, order },
       });
       setUsers(res.data.users || []);
       setTotal(res.data.totalItems || 0);
+      setTopUser(res.data.userWithMoreOrders || 0);
     } catch (e) {
       setUsers([]);
       setTotal(0);
@@ -159,15 +222,6 @@ export function Users() {
     fetchUsers();
     // eslint-disable-next-line
   }, [page, limit, search, field, order]);
-
-  // cards de resumo para usuários
-  const totalUsuarios = users.length;
-  // top 1 usuário com mais reservas (simples, só pelo array atual)
-  const topUser = users.reduce(
-    (acc, u) =>
-      u.reserves && u.reserves.length > (acc?.reserves?.length || 0) ? u : acc,
-    null
-  );
 
   return (
     <AppWrapper>
@@ -207,7 +261,7 @@ export function Users() {
                 Total de Usuários
               </Text>
               <Text size="xl" weight={700}>
-                {totalUsuarios}
+                {total}
               </Text>
             </div>
           </Card>
@@ -263,13 +317,14 @@ export function Users() {
           }}
         >
           {loading ? (
-            <Loader />
+            <Flex justify="center" align="center">
+              <Loader />
+            </Flex>
           ) : (
             <DataTable
               headers={headers}
               data={users.map((u) => ({
                 ...u,
-                cpf: maskCpf(u.cpf),
                 roleLabel: u.roleId === 1 ? "Administrador" : "Usuário",
               }))}
               total={total}
@@ -280,11 +335,11 @@ export function Users() {
               setSearch={setSearch}
               setField={setField}
               setOrder={setOrder}
-              fetchData={fetchUsers}
               field={field}
               order={order}
               placeholder="Buscar por nome ou email"
               actions={actions}
+              fetchData={fetchUsers}
             />
           )}
         </Box>
@@ -323,8 +378,10 @@ export function Users() {
             />
             <TextInput
               label="CPF"
-              value={form.cpf}
-              onChange={(e) => setForm((f) => ({ ...f, cpf: e.target.value }))}
+              value={maskCpf(form.cpf)}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, cpf: maskCpf(e.target.value) }))
+              }
               required
               maxLength={14}
               radius={8}

@@ -1,19 +1,75 @@
-import express from "express";
 import prisma from "../../infra/prisma/prisma.js";
 import { nanoid } from "nanoid";
 import AsaasService from "./asaas.service.js";
+import ORDER_STATUS_ENUM from "../../utils/orderStatus.enum.js";
 
 const OrderService = {};
 
-OrderService.list = async (limit, offset) => {
-  const [reserves, total] = await Promise.all([
-    prisma.reserve.findMany({
-      take: limit,
-      skip: offset,
+OrderService.list = async (limit, offset, field, order, search) => {
+  let orderBy = { [field]: order };
+  if (field == "userName") {
+    orderBy = {
+      user: {
+        name: order,
+      },
+    };
+  } else if (field == "gameName") {
+    orderBy = {
+      game: {
+        name: order,
+      },
+    };
+  } else if (field == "statusName") {
+    orderBy = {
+      statusReserve: {
+        name: order,
+      },
+    };
+  }
+  const query = {
+    take: limit,
+    skip: offset,
+    orderBy,
+    include: {
+      user: true,
+      game: true,
+    },
+    where: {
+      OR: [
+        { user: { name: { contains: search || "", mode: "insensitive" } } },
+        { game: { name: { contains: search || "", mode: "insensitive" } } },
+      ],
+    },
+  };
+
+  const overdueReturnCountResult = await prisma.$queryRawUnsafe(
+    `SELECT COUNT(*) AS overdueReturnCount
+     FROM "Reserve"
+     WHERE "Reserve"."returnDate" > ("Reserve"."approveDate" + INTERVAL '15 days');`
+  );
+  const overdueReturnCount = parseInt(overdueReturnCountResult[0].overduereturncount, 10);
+
+  const [reserves, total, pendingCount, overdueCount] = await Promise.all([
+    prisma.reserve.findMany(query),
+    prisma.reserve.count(),
+    prisma.reserve.count({
+      where: {
+        statusReserveId: ORDER_STATUS_ENUM.PENDING,
+      },
     }),
-    prisma.console.count()
+    prisma.reserve.count({
+      where: {
+        statusReserveId: ORDER_STATUS_ENUM.ORDERED,
+        approveDate: {
+          lte: new Date(new Date().setDate(new Date().getDate() - 15)),
+        },
+        returnDate: null,
+      },
+    }),
   ]);
-  return { reserves, total };
+
+  const totalOverdueCount = overdueCount + overdueReturnCount;
+  return { reserves, total, pendingCount, totalOverdueCount };
 };
 
 OrderService.getOrdersFromUser = async (userId) => {
@@ -32,7 +88,7 @@ OrderService.insertOrder = async ({ userId, gameList }) => {
           id: orderId,
           userId: Number(userId),
           gameId: Number(gameId),
-          statusReserveId: 4,
+          statusReserveId: ORDER_STATUS_ENUM.PENDING,
           reserveDate: new Date(),
         },
       })
@@ -63,7 +119,7 @@ OrderService.confirmOrder = async (order) => {
       userId: Number(order.user),
     },
     data: {
-      statusReserveId: 1,
+      statusReserveId: ORDER_STATUS_ENUM.ORDERED,
       approveDate: new Date(),
       returnDate: new Date(new Date().setDate(new Date().getDate() + 15)),
     },
@@ -77,13 +133,13 @@ OrderService.cancelOrder = async (order) => {
       id: order.id,
     },
     data: {
-      statusReserveId: 3,
+      statusReserveId: ORDER_STATUS_ENUM.CANCELLED,
     },
   });
   return;
 };
 
-OrderService.adminCreate = async ({ id, userId, gameId, statusReserveId, reserveDate, approveDate, returnDate }) => {
+OrderService.adminCreate = async ({ id, userId, gameId, reserveDate }) => {
   // Gera um id se não vier
   const reserveId = id || nanoid(12);
   const reserve = await prisma.reserve.create({
@@ -91,16 +147,54 @@ OrderService.adminCreate = async ({ id, userId, gameId, statusReserveId, reserve
       id: reserveId,
       userId: Number(userId),
       gameId: Number(gameId),
-      statusReserveId: Number(statusReserveId),
+      statusReserveId: ORDER_STATUS_ENUM.PENDING,
       reserveDate: new Date(reserveDate),
-      approveDate: approveDate ? new Date(approveDate) : null,
-      returnDate: returnDate ? new Date(returnDate) : null,
     },
   });
   return reserve;
 };
 
-OrderService.adminUpdate = async ({ id, userId, gameId, statusReserveId, reserveDate, approveDate, returnDate }) => {
+OrderService.adminUpdate = async ({
+  id,
+  userId,
+  gameId,
+  statusReserveId,
+  reserveDate,
+  approveDate,
+  returnDate,
+}) => {
+  let data = {};
+
+  if (statusReserveId && Number(statusReserveId) == ORDER_STATUS_ENUM.PENDING) {
+    data = {
+      statusReserveId: ORDER_STATUS_ENUM.PENDING,
+      reserveDate: reserveDate ? new Date(reserveDate) : undefined,
+      approveDate: null,
+      returnDate: null,
+    };
+  } else if (
+    statusReserveId &&
+    (Number(statusReserveId) == ORDER_STATUS_ENUM.CANCELLED || 
+    Number(statusReserveId) == ORDER_STATUS_ENUM.RETURNED)
+  ) {
+    data = {
+      statusReserveId: Number(statusReserveId),
+      reserveDate: reserveDate ? new Date(reserveDate) : undefined,
+      approveDate: approveDate ? new Date(approveDate) : undefined,
+      returnDate: returnDate ? new Date(returnDate) : undefined,
+    };
+  } else if (
+    statusReserveId &&
+    Number(statusReserveId) == ORDER_STATUS_ENUM.ORDERED
+  ) {
+    data = {
+      statusReserveId: ORDER_STATUS_ENUM.ORDERED,
+      reserveDate: reserveDate ? new Date(reserveDate) : undefined,
+      approveDate: approveDate ? new Date(approveDate) : undefined,
+      returnDate: null,
+    };
+  }
+
   const reserve = await prisma.reserve.update({
     where: {
       id_userId_gameId: {
@@ -109,12 +203,7 @@ OrderService.adminUpdate = async ({ id, userId, gameId, statusReserveId, reserve
         gameId: Number(gameId),
       },
     },
-    data: {
-      statusReserveId: statusReserveId ? Number(statusReserveId) : undefined,
-      reserveDate: reserveDate ? new Date(reserveDate) : undefined,
-      approveDate: approveDate ? new Date(approveDate) : undefined,
-      returnDate: returnDate ? new Date(returnDate) : undefined,
-    },
+    data,
   });
   return reserve;
 };
