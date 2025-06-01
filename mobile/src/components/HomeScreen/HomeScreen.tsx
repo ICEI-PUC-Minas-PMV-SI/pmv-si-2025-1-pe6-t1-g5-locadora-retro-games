@@ -1,97 +1,303 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
   TextInput,
   FlatList,
-  Image,
-  Modal,
   TouchableOpacity,
+  RefreshControl,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
-// import {
-//   useFonts,
-//   Poppins_400Regular,
-//   Poppins_600SemiBold,
-// } from "@expo-google-fonts/poppins";
 import { router } from "expo-router";
 
 import { useCart } from "../../context/CartContext";
-
-import tlouImg from "../../../assets/images/tlou.png";
-import fifa24Img from "../../../assets/images/fifa24.png";
-import mariokartImg from "../../../assets/images/mariokart.png";
+import { useAuth } from "../../context/AuthContext";
+import { GameService, ConsoleService } from "../../services/gameService";
+import { testApiConnection } from "../../services/api";
+import { Game, Console } from "../../types/api";
+import GameCard from "../GameCard/GameCard";
+import GameDetailModal from "../GameDetailModal/GameDetailModal";
+import UserProfileModal from "../UserProfileModal/UserProfileModal";
 
 import { styles } from "./HomeScreen.styles";
 
-type Game = {
-  id: string;
-  title: string;
-  category: string;
-  image: string | any;
-};
-
-const fakeGames: Game[] = [
-  {
-    id: "1",
-    title: "FIFA 24",
-    category: "Esporte",
-    image: fifa24Img,
-  },
-  {
-    id: "2",
-    title: "The Last of Us",
-    category: "Aventura",
-    image: tlouImg,
-  },
-  {
-    id: "3",
-    title: "Mario Kart",
-    category: "Corrida",
-    image: mariokartImg,
-  },
-];
-
+// @ts-ignore - Temporary fix for React 19 compatibility issues
 const HomeScreen = () => {
-  const { addToCart } = useCart();
+  const { addToCart, getCartItemsCount } = useCart();
+  const { user } = useAuth();
 
-  const [search, setSearch] = useState<string>("");
+  // State for games and pagination
+  const [games, setGames] = useState<Game[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const [hasMoreData, setHasMoreData] = useState(true);
+
+  // Search and filter state
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  
+  // Modal state
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [userModalVisible, setUserModalVisible] = useState(false);
+  
+  // Console filter state
+  const [consoles, setConsoles] = useState<Console[]>([]);
+  const [selectedConsoleId, setSelectedConsoleId] = useState<number | null>(null);
 
-  const filteredGames = fakeGames.filter((game) =>
-    game.title.toLowerCase().includes(search.toLowerCase())
-  );
+  // API connection state
+  const [apiConnected, setApiConnected] = useState<boolean | null>(null);
 
-  // let [fontsLoaded] = useFonts({
-  //   Poppins_400Regular,
-  //   Poppins_600SemiBold,
-  // });
+  // Cart count for header badge
+  const cartItemsCount = getCartItemsCount();
 
-  // if (!fontsLoaded) return null;
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
 
-  const openModal = (game: Game) => {
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  // Reset pagination when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+    setGames([]);
+    setHasMoreData(true);
+  }, [debouncedSearch, selectedConsoleId]);
+
+  // Fetch games function
+  const fetchGames = useCallback(async (page = 1, isRefresh = false) => {
+    try {
+      if (page === 1) {
+        isRefresh ? setRefreshing(true) : setLoading(true);
+      } else {
+        setLoadingMore(true);
+      }
+
+      let searchQuery = debouncedSearch;
+      
+      // If a console is selected, search by console name
+      if (selectedConsoleId && !debouncedSearch) {
+        const selectedConsole = consoles.find(c => c.id === selectedConsoleId);
+        if (selectedConsole) {
+          searchQuery = selectedConsole.name;
+        }
+      }
+
+      const response = await GameService.getGames({
+        page,
+        limit: 10,
+        search: searchQuery,
+        field: 'name',
+        order: 'asc',
+      });
+
+      if (page === 1) {
+        setGames(response.games);
+      } else {
+        setGames(prev => [...prev, ...response.games]);
+      }
+
+      setCurrentPage(page);
+      setTotalPages(response.totalPages);
+      setTotalItems(response.totalItems);
+      setHasMoreData(page < response.totalPages);
+
+    } catch (error) {
+      console.error('Error fetching games:', error);
+      Alert.alert(
+        'Erro',
+        'Não foi possível carregar os jogos. Verifique sua conexão e tente novamente.',
+        [{ text: 'OK' }]
+      );
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+      setLoadingMore(false);
+    }
+  }, [debouncedSearch, selectedConsoleId, consoles]);
+
+  // Fetch consoles for filter
+  const fetchConsoles = useCallback(async () => {
+    try {
+      const response = await ConsoleService.getAllConsoles();
+      setConsoles(response);
+    } catch (error) {
+      console.error('Error fetching consoles:', error);
+    }
+  }, []);
+  // Initial data load
+  useEffect(() => {
+    fetchConsoles();
+  }, [fetchConsoles]);
+
+  useEffect(() => {
+    if (consoles.length > 0 || debouncedSearch) {
+      fetchGames(1);
+    }
+  }, [fetchGames, consoles.length]);
+
+  // Test API connection on component mount
+  useEffect(() => {
+    const checkApiConnection = async () => {
+      console.log('🔍 Testing API connection...');
+      const connected = await testApiConnection();
+      setApiConnected(connected);
+      
+      if (!connected) {
+        Alert.alert(
+          'Erro de Conexão',
+          'Não foi possível conectar ao servidor. Verifique se o backend está executando.',
+          [{ text: 'OK' }]
+        );
+      }
+    };
+    
+    checkApiConnection();
+  }, []);
+
+  // Handle refresh
+  const handleRefresh = () => {
+    fetchGames(1, true);
+  };
+
+  // Handle load more
+  const handleLoadMore = () => {
+    if (!loadingMore && hasMoreData && currentPage < totalPages) {
+      fetchGames(currentPage + 1);
+    }
+  };
+
+  // Handle game selection
+  const handleGamePress = (game: Game) => {
     setSelectedGame(game);
     setModalVisible(true);
   };
 
-  const handleAddToCartInModal = () => {
-    if (selectedGame) {
-      addToCart(selectedGame);
-      setModalVisible(false);
+  // Handle add to cart
+  const handleAddToCart = (game: Game) => {
+    if (game.amount > 0) {
+      addToCart(game);
+      Alert.alert(
+        'Sucesso!',
+        `${game.name} foi adicionado ao carrinho.`,
+        [{ text: 'OK' }]
+      );
     }
   };
 
+  // Console filter buttons
+  const renderConsoleFilters = () => (
+    <View style={styles.consoleFilters}>
+      <TouchableOpacity
+        style={[
+          styles.consoleFilterButton,
+          selectedConsoleId === null && styles.consoleFilterButtonActive
+        ]}
+        onPress={() => setSelectedConsoleId(null)}
+      >
+        <Text style={[
+          styles.consoleFilterText,
+          selectedConsoleId === null && styles.consoleFilterTextActive
+        ]}>
+          Todos
+        </Text>
+      </TouchableOpacity>
+      
+      {consoles.map((console) => (
+        <TouchableOpacity
+          key={console.id}
+          style={[
+            styles.consoleFilterButton,
+            selectedConsoleId === console.id && styles.consoleFilterButtonActive
+          ]}
+          onPress={() => setSelectedConsoleId(console.id)}
+        >
+          <Text style={[
+            styles.consoleFilterText,
+            selectedConsoleId === console.id && styles.consoleFilterTextActive
+          ]}>
+            {console.name}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+
+  // Loading footer for pagination
+  const renderFooter = () => {
+    if (!loadingMore) return null;
+    
+    return (
+      <View style={styles.loadingFooter}>
+        <ActivityIndicator size="small" color="#a855f7" />
+        <Text style={styles.loadingText}>Carregando mais jogos...</Text>
+      </View>
+    );
+  };
+
+  // Empty state
+  const renderEmptyState = () => (
+    <View style={styles.emptyState}>
+      <Ionicons name="game-controller-outline" size={64} color="#d1d5db" />
+      <Text style={styles.emptyStateTitle}>Nenhum jogo encontrado</Text>
+      <Text style={styles.emptyStateText}>
+        {debouncedSearch 
+          ? `Não encontramos jogos para "${debouncedSearch}"`
+          : 'Não há jogos disponíveis no momento'
+        }
+      </Text>
+    </View>
+  );
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#a855f7" />
+        <Text style={styles.loadingText}>Carregando jogos...</Text>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
+      {/* API Connection Status */}
+      {apiConnected === false && (
+        <View style={styles.errorBanner}>
+          <Text style={styles.errorText}>
+            ❌ Não foi possível conectar ao servidor (host.docker.internal:8080)
+          </Text>
+        </View>
+      )}
+
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.logo}>🎮 NintendiN</Text>
-        <View style={styles.headerIcons}>
-          <TouchableOpacity onPress={() => router.push("/cart")}>
+        <View style={styles.headerIcons}>          <TouchableOpacity 
+            onPress={() => router.push("/cart")}
+            style={styles.cartButton}
+          >
             <Feather name="shopping-cart" size={24} color="#a855f7" />
+            {cartItemsCount > 0 && (
+              <View style={styles.cartBadge}>
+                <Text style={styles.cartBadgeText}>
+                  {cartItemsCount > 99 ? '99+' : cartItemsCount}
+                </Text>
+              </View>
+            )}
           </TouchableOpacity>
-          <Feather name="user" size={24} color="#a855f7" />
+          <TouchableOpacity onPress={() => setUserModalVisible(true)}>
+            <Feather name="user" size={24} color="#a855f7" />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -105,75 +311,61 @@ const HomeScreen = () => {
           onChangeText={setSearch}
           style={styles.searchInput}
         />
-      </View>
-
-      {/* Lista de jogos */}
-      <FlatList
-        data={filteredGames}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContent}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => openModal(item)}>
-            <View style={styles.card}>
-              <Image
-                source={
-                  typeof item.image === "string"
-                    ? { uri: item.image }
-                    : item.image
-                }
-                style={styles.cardImage}
-                resizeMode="contain"
-              />
-              <View style={styles.cardInfo}>
-                <Text style={styles.cardTitle}>{item.title}</Text>
-                <Text style={styles.cardCategory}>{item.category}</Text>
-              </View>
-            </View>
+        {search.length > 0 && (
+          <TouchableOpacity onPress={() => setSearch("")}>
+            <Ionicons name="close-circle" size={20} color="#a855f7" />
           </TouchableOpacity>
         )}
+      </View>
+
+      {/* Console Filters */}
+      {renderConsoleFilters()}
+
+      {/* Results Info */}
+      <View style={styles.resultsInfo}>
+        <Text style={styles.resultsText}>
+          {totalItems} {totalItems === 1 ? 'jogo encontrado' : 'jogos encontrados'}
+        </Text>
+      </View>
+
+      {/* Games List */}
+      <FlatList
+        data={games}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <GameCard
+            game={item}
+            onPress={handleGamePress}
+            onAddToCart={handleAddToCart}
+          />
+        )}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            colors={['#a855f7']}
+            tintColor="#a855f7"
+          />
+        }
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={renderFooter}
+        ListEmptyComponent={renderEmptyState}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={games.length === 0 ? styles.emptyListContainer : styles.listContent}
+      />      {/* Game Detail Modal */}
+      <GameDetailModal
+        visible={modalVisible}
+        game={selectedGame}
+        onClose={() => setModalVisible(false)}
+        onAddToCart={handleAddToCart}
       />
 
-      {/* Modal do jogo */}
-      <Modal
-        visible={modalVisible}
-        transparent
-        animationType="slide"
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            {selectedGame && (
-              <>
-                <Image
-                  source={selectedGame.image}
-                  style={styles.modalImage}
-                  resizeMode="contain"
-                />
-                <Text style={styles.modalTitle}>{selectedGame.title}</Text>
-                <Text style={styles.modalCategory}>
-                  {selectedGame.category}
-                </Text>
-
-                <TouchableOpacity
-                  style={styles.addButton}
-                  onPress={handleAddToCartInModal}
-                >
-                  <Text style={styles.addButtonText}>
-                    Adicionar ao Carrinho
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={styles.closeButton}
-                  onPress={() => setModalVisible(false)}
-                >
-                  <Text style={styles.closeButtonText}>Fechar</Text>
-                </TouchableOpacity>
-              </>
-            )}
-          </View>
-        </View>
-      </Modal>
+      {/* User Profile Modal */}
+      <UserProfileModal
+        visible={userModalVisible}
+        onClose={() => setUserModalVisible(false)}
+      />
     </View>
   );
 };

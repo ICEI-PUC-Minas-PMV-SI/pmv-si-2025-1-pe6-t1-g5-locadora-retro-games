@@ -17,7 +17,15 @@ const envFile = process.env.NODE_ENV === 'production' ? '.env.prod' : '.env';
 dotenv.config({ path: path.resolve(process.cwd(), envFile) });
 
 const corsOptions = {
-  origin: ['http://localhost:3000']
+  origin: [
+    'http://localhost:3000',      // Web frontend
+    'http://localhost:19006',     // Expo web
+    'exp://localhost:19000',      // Expo development
+    'http://192.168.1.130:19006', // Expo web on network
+    'exp://192.168.1.130:19000',   // Expo development on network
+    'http://192.168.1.130:8081', // React Native development on network
+    'http://localhost:8081', // React Native development
+  ]
 }
 const app = express();
 app.use(cors(corsOptions));
