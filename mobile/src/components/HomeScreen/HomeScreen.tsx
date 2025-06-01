@@ -9,11 +9,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
-import {
-  useFonts,
-  Poppins_400Regular,
-  Poppins_600SemiBold,
-} from "@expo-google-fonts/poppins";
+// import {
+//   useFonts,
+//   Poppins_400Regular,
+//   Poppins_600SemiBold,
+// } from "@expo-google-fonts/poppins";
 import { router } from "expo-router";
 
 import { useCart } from "../../context/CartContext";
@@ -63,12 +63,12 @@ const HomeScreen = () => {
     game.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  let [fontsLoaded] = useFonts({
-    Poppins_400Regular,
-    Poppins_600SemiBold,
-  });
+  // let [fontsLoaded] = useFonts({
+  //   Poppins_400Regular,
+  //   Poppins_600SemiBold,
+  // });
 
-  if (!fontsLoaded) return null;
+  // if (!fontsLoaded) return null;
 
   const openModal = (game: Game) => {
     setSelectedGame(game);
