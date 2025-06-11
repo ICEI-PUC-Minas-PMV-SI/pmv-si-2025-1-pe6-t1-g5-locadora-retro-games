@@ -1,0 +1,29 @@
+# Production Dockerfile for React Native/Expo
+FROM node:18-alpine
+
+# Set production environment
+ENV NODE_ENV=production
+
+# Install global packages
+RUN npm install -g @expo/cli@latest serve
+
+# Create app directory
+WORKDIR /opt/app
+
+# Copy package files
+COPY package*.json ./
+
+# Install production dependencies only
+RUN npm ci --only=production
+
+# Copy source code
+COPY . .
+
+# Build the web version of the app
+RUN npx expo export --platform web
+
+# Expose port 3000 for the static server
+EXPOSE 3000
+
+# Serve the built web app
+CMD ["serve", "-s", "dist", "-l", "3000"]

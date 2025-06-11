@@ -132,5 +132,125 @@ closeButtonText: {
   fontFamily: 'Poppins_400Regular',
   fontSize: 14,
 },
+// Cart button and badge styles
+cartButton: {
+  position: 'relative',
+  padding: 5,
+},
+cartBadge: {
+  position: 'absolute',
+  top: -5,
+  right: -5,
+  backgroundColor: '#ef4444',
+  borderRadius: 10,
+  minWidth: 20,
+  height: 20,
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingHorizontal: 5,
+},
+cartBadgeText: {
+  color: '#fff',
+  fontSize: 12,
+  fontFamily: 'Poppins_600SemiBold',
+},
+// Console filter styles
+consoleFilters: {
+  flexDirection: 'row',
+  paddingHorizontal: 20,
+  marginBottom: 15,
+  gap: 10,
+},
+consoleFilterButton: {
+  paddingHorizontal: 15,
+  paddingVertical: 8,
+  borderRadius: 20,
+  backgroundColor: '#fff',
+  borderWidth: 1,
+  borderColor: '#e5e7eb',
+},
+consoleFilterButtonActive: {
+  backgroundColor: '#a855f7',
+  borderColor: '#a855f7',
+},
+consoleFilterText: {
+  fontSize: 14,
+  fontFamily: 'Poppins_400Regular',
+  color: '#6b7280',
+},
+consoleFilterTextActive: {
+  color: '#fff',
+  fontFamily: 'Poppins_600SemiBold',
+},
+// Results info styles
+resultsInfo: {
+  paddingHorizontal: 20,
+  marginBottom: 15,
+},
+resultsText: {
+  fontSize: 14,
+  fontFamily: 'Poppins_400Regular',
+  color: '#6b7280',
+},
+// Loading states
+loadingContainer: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: '#f3e8ff',
+},
+loadingFooter: {
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingVertical: 20,
+  gap: 10,
+},
+loadingText: {
+  fontSize: 14,
+  fontFamily: 'Poppins_400Regular',
+  color: '#6b7280',
+},
+// Empty state styles
+emptyState: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingHorizontal: 40,
+  paddingVertical: 60,
+},
+emptyStateTitle: {
+  fontSize: 20,
+  fontFamily: 'Poppins_600SemiBold',
+  color: '#374151',
+  marginTop: 15,
+  marginBottom: 10,
+  textAlign: 'center',
+},
+emptyStateText: {
+  fontSize: 16,
+  fontFamily: 'Poppins_400Regular',
+  color: '#6b7280',
+  textAlign: 'center',
+  lineHeight: 24,
+},
+emptyListContainer: {
+  flexGrow: 1,
+},
+// Error banner styles
+errorBanner: {
+  backgroundColor: '#fef2f2',
+  borderLeftWidth: 4,
+  borderLeftColor: '#ef4444',
+  padding: 12,
+  margin: 16,
+  borderRadius: 8,
+},
+errorText: {
+  color: '#dc2626',
+  fontFamily: 'Poppins_500Medium',
+  fontSize: 14,
+  textAlign: 'center',
+},
 
 });
