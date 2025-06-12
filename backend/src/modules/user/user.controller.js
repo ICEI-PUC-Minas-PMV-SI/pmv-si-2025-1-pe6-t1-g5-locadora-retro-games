@@ -59,12 +59,12 @@ UserController.insertUser = async (req, res) => {
       email: req.body.email,
       cpf: req.body.cpf,
       password: req.body.password,
-      roleId: req.body.roleId,
+      roleId: req.body.roleId || 2,
     };
     if (!body.name || !body.email || !body.cpf || !body.password) {
       res.status(400).json("Missing or wrong data");
     }
-    await UserService.create(body, req.userData.roleId);
+    await UserService.create(body, (req.userData?.roleId || 2));
     res.status(200).json("User created successfully");
   } catch (error) {
     console.error(error);

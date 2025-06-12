@@ -1,7 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
+import { navigate } from 'expo-router/build/global-state/routing';
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const RegisterScreen = () => {
     const [email, setEmail] = useState('');
@@ -10,18 +11,16 @@ const RegisterScreen = () => {
     const [name, setName] = useState('');
 
     const handleRegister = () => {
-        const response = axios.post('http://localhost:8080/users', {
+        const response = axios.post('http://192.168.15.12:8080/users', {
             email: email.trim(),
             password,
             cpf,
             name
         })
         .then(() => {
-            alert('Usuário cadastrado com sucesso!');
-            setEmail('');
-            setPassword('');
-            setCpf('');
-            setName('');
+            Alert.alert('Sucesso', 'Cadastro realizado com sucesso!', [
+                    { text: 'OK', onPress: () => navigate('/login') }
+            ]);
         })
         .catch((error) => {
             console.error('Erro ao cadastrar usuário:', error);

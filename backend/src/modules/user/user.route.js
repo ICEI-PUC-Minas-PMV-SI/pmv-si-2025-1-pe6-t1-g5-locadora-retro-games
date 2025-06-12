@@ -10,7 +10,7 @@ const UserRouter = express.Router();
 UserRouter.get("/", authMiddleware, isAdmin, UserController.getUser);
 UserRouter.get("/userAdmin", authMiddleware, isAdmin, UserController.getUserById);
 UserRouter.get("/user", authMiddleware, userAuthorization, UserController.getUserById);
-UserRouter.post("/", authMiddleware, UserController.insertUser);
+UserRouter.post("/", UserController.insertUser);
 UserRouter.put("/:id", authMiddleware, userAuthorization, UserController.updateUser);
 UserRouter.delete("/:id", authMiddleware, userAuthorization, UserController.deleteUser);
 

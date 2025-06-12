@@ -70,7 +70,7 @@ UserService.create = async (body, reqUserRoleId) => {
       email: body.email,
       password: hash,
       cpf: body.cpf,
-      roleId: body.roleId ?? 2,
+      roleId: body.roleId,
     },
   });
 };

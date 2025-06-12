@@ -47,8 +47,8 @@ const LoginScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container} 
+    <KeyboardAvoidingView
+      style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
@@ -87,26 +87,26 @@ const LoginScreen = () => {
               autoCapitalize="none"
               autoCorrect={false}
             />
-            <TouchableOpacity 
+            <TouchableOpacity
               onPress={() => setShowPassword(!showPassword)}
               style={styles.passwordToggle}
             >
-              <Ionicons 
-                name={showPassword ? "eye-off-outline" : "eye-outline"} 
-                size={20} 
-                color="#9ca3af" 
+              <Ionicons
+                name={showPassword ? "eye-off-outline" : "eye-outline"}
+                size={20}
+                color="#9ca3af"
               />
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.forgotPassword}
             onPress={handleForgotPassword}
           >
             <Text style={styles.forgotPasswordText}>Esqueceu sua senha?</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[styles.loginButton, loading && styles.loginButtonDisabled]}
             onPress={handleLogin}
             disabled={loading}
@@ -123,7 +123,7 @@ const LoginScreen = () => {
         <View style={styles.footer}>
           <TouchableOpacity onPress={() => router.push('/register')}>
             <Text style={styles.footerText}>
-              Não tem uma conta? 
+              Não tem uma conta?
             </Text>
             <Text style={[styles.footerText, styles.blueText]}>
               Clique Aqui
