@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { useState } from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
   ActivityIndicator,
-  Image,
+  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
 
 const LoginScreen = () => {
@@ -122,9 +121,14 @@ const LoginScreen = () => {
 
         {/* Footer */}
         <View style={styles.footer}>
-          <Text style={styles.footerText}>
-            Não tem uma conta? Entre em contato com o suporte.
-          </Text>
+          <TouchableOpacity onPress={() => router.push('/register')}>
+            <Text style={styles.footerText}>
+              Não tem uma conta? 
+            </Text>
+            <Text style={[styles.footerText, styles.blueText]}>
+              Clique Aqui
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -231,6 +235,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 20,
   },
+  blueText: {
+    color: 'blue'
+  }
 });
 
 export default LoginScreen;
