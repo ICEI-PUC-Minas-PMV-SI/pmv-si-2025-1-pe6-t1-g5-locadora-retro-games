@@ -4,7 +4,8 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f3e8ff',
-    paddingTop: Platform.OS === 'android' ? 50 : 0,
+  },  content: {
+    flex: 1,
   },
   header: {
     flexDirection: 'row',
@@ -155,6 +156,16 @@ cartBadgeText: {
   fontFamily: 'Poppins_600SemiBold',
 },
 // Console filter styles
+consoleFiltersContainer: {
+  marginBottom: 15,
+},
+consoleFiltersScroll: {
+  paddingHorizontal: 20,
+},
+consoleFiltersContent: {
+  gap: 10,
+  paddingRight: 20, // Extra padding for last item
+},
 consoleFilters: {
   flexDirection: 'row',
   paddingHorizontal: 20,

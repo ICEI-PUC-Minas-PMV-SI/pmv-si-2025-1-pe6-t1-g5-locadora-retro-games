@@ -6,7 +6,7 @@ import isAdmin from '../../middleware/isAdminAuthorization.middleware.js';
 const GameRouter = express.Router();
 
 // Define your routes here
-GameRouter.get('/', authMiddleware, GameController.getGame);
+GameRouter.get('/', GameController.getGame);
 GameRouter.post('/', authMiddleware, isAdmin, GameController.insertGame);
 GameRouter.put('/:id', authMiddleware, isAdmin, GameController.updateGame);
 GameRouter.delete('/:id', authMiddleware, isAdmin, GameController.deleteGame);

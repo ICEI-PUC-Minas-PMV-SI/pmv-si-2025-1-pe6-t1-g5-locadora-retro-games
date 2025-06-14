@@ -13,6 +13,14 @@ UserService.findByEmailAndPassword = async (email, password) => {
   return null;
 };
 
+UserService.findByEmail = async (email) => {
+  const user = await prisma.user.findUnique({
+    where: { email },
+    omit: { password: true },
+  });
+  return user;
+};
+
 UserService.list = async (limit, offset, field, order, search) => {
   const query = {
     take: limit,
@@ -69,6 +77,7 @@ UserService.create = async (body, reqUserRoleId) => {
       name: body.name,
       email: body.email,
       password: hash,
+      telephone: body.telephone,
       cpf: body.cpf,
       roleId: body.roleId ?? 2,
     },

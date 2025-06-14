@@ -1,11 +1,6 @@
-import HomeScreen from "../components/HomeScreen/HomeScreen";
-import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
+import SplashScreen from "../components/SplashScreen/SplashScreen";
 import React from "react";
 
 export default function Index() {
-  return (
-    <ProtectedRoute>
-      <HomeScreen />
-    </ProtectedRoute>
-  );
+  return <SplashScreen />;
 }

@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  SafeAreaView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
@@ -46,12 +47,12 @@ const LoginScreen = () => {
   const handleForgotPassword = () => {
     Alert.alert('Recuperar Senha', 'Entre em contato com o suporte para recuperar sua senha.');
   };
-
   return (
-    <KeyboardAvoidingView 
-      style={styles.container} 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView 
+        style={styles.keyboardContainer} 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
       <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
         {/* Logo */}
         <View style={styles.logoContainer}>
@@ -105,9 +106,7 @@ const LoginScreen = () => {
             onPress={handleForgotPassword}
           >
             <Text style={styles.forgotPasswordText}>Esqueceu sua senha?</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
+          </TouchableOpacity>          <TouchableOpacity 
             style={[styles.loginButton, loading && styles.loginButtonDisabled]}
             onPress={handleLogin}
             disabled={loading}
@@ -117,24 +116,38 @@ const LoginScreen = () => {
             ) : (
               <Text style={styles.loginButtonText}>Entrar</Text>
             )}
+          </TouchableOpacity>          <TouchableOpacity 
+            style={styles.catalogButton}
+            onPress={() => router.push('/home')}
+          >
+            <Text style={styles.catalogButtonText}>Continuar sem login</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Footer */}
+        {/* Register Link */}
         <View style={styles.footer}>
-          <Text style={styles.footerText}>
-            Não tem uma conta? Entre em contato com o suporte.
-          </Text>
+          <TouchableOpacity 
+            onPress={() => router.push('/register')}
+            disabled={loading}
+          >
+            <Text style={styles.footerText}>
+              Não tem uma conta? <Text style={styles.footerTextBold}>Cadastre-se aqui</Text>
+            </Text>
+          </TouchableOpacity>
         </View>
+
       </ScrollView>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
+const styles = StyleSheet.create({  container: {
     flex: 1,
     backgroundColor: '#f3e8ff',
+  },
+  keyboardContainer: {
+    flex: 1,
   },
   scrollContainer: {
     flexGrow: 1,
@@ -216,20 +229,39 @@ const styles = StyleSheet.create({
   },
   loginButtonDisabled: {
     backgroundColor: '#d1d5db',
-  },
-  loginButtonText: {
+  },  loginButtonText: {
     color: '#ffffff',
     fontSize: 16,
     fontWeight: '600',
   },
-  footer: {
+  catalogButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 2,
+    borderColor: '#a855f7',
+    borderRadius: 12,
+    paddingVertical: 16,
     alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 52,
+    marginTop: 12,
+  },
+  catalogButtonText: {
+    color: '#a855f7',
+    fontSize: 16,
+    fontWeight: '600',
+  },  footer: {
+    alignItems: 'center',
+    marginTop: 20,
   },
   footerText: {
     color: '#6b7280',
     fontSize: 14,
     textAlign: 'center',
     lineHeight: 20,
+  },
+  footerTextBold: {
+    color: '#a855f7',
+    fontWeight: '600',
   },
 });
 

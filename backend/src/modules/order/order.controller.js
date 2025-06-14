@@ -46,40 +46,59 @@ OrderController.getOrdersByUserId = async (req, res) => {
 };
 
 OrderController.insertOrder = async (req, res) => {
+  console.log('🚀 POST /orders called by user:', req.userData?.id);
+  console.log('📦 Request body:', req.body);
+  
   if (!req.userData.id || !req.body.gameList) {
-    res.status(400).json("Bad Request");
+    console.log('❌ Invalid request - missing userData.id or gameList');
+    res.status(400).json({ error: "Bad Request", message: "userId and gameList are required" });
     return;
   }
+  
+  console.log('✅ Valid request - proceeding with order creation');
+  
   try {
     const params = {
       userId: req.userData.id,
       gameList: req.body.gameList,
     };
-    await OrderService.insertOrder(params);
-    res.status(200).json(true);
+    const orderId = await OrderService.insertOrder(params);
+    console.log('🎉 Order created successfully:', orderId);
+    res.status(200).json({ success: true, orderId: orderId });
   } catch (error) {
-    console.log(error);
-    res.status(500).json("Internal Server Error");
+    console.log('❌ Error creating order:', error);
+    res.status(500).json({ error: "Internal Server Error", message: error.message });
   }
 };
 
 OrderController.checkout = async (req, res) => {
   const { holderName, number, expiryMonth, expiryYear, ccv, value } = req.body;
   if (!holderName || !number || !expiryMonth || !expiryYear || !ccv || !value) {
-    res.status(400).json("Bad Request");
+    res.status(400).json({ 
+      error: "Bad Request", 
+      message: "All payment fields are required: holderName, number, expiryMonth, expiryYear, ccv, value" 
+    });
     return;
   }
+  
+  if (!req.params.id) {
+    res.status(400).json({ error: "Bad Request", message: "Order ID is required" });
+    return;
+  }
+
   try {
     const customer = await OrderService.getCustomerData(req.userData.id);
     if (!customer) {
-      res.status(401).json("Por favor, tente novamente mais tarde");
+      res.status(401).json({ error: "Unauthorized", message: "Customer data not found" });
       return;
     }
+    
     const customerId = await AsaasService.getCustomerId(customer);
     if (!customerId) {
-      res.status(500).json("Internal Server Error");
+      res.status(500).json({ error: "Internal Server Error", message: "Failed to get customer ID from payment service" });
       return;
     }
+    
     const params = {
       holderName,
       number,
@@ -87,18 +106,26 @@ OrderController.checkout = async (req, res) => {
       expiryYear,
       ccv,
     };
+    
     const isConfirmed = await OrderService.checkout(
       params,
       value,
       { ...customer, customerId },
       { id: req.params.id, user: req.userData.id }
     );
-    if (isConfirmed)
-      res.status(200).json(`Pagamento efetuado para reserva ${req.params.id}`);
-    else res.status(500).json("Internal Server Error");
+    
+    if (isConfirmed) {
+      res.status(200).json({ 
+        success: true, 
+        message: `Pagamento efetuado para reserva ${req.params.id}`,
+        orderId: req.params.id 
+      });
+    } else {
+      res.status(500).json({ error: "Payment Failed", message: "Payment could not be processed" });
+    }
   } catch (error) {
     console.log(error);
-    res.status(500).json("Internal Server Error");
+    res.status(500).json({ error: "Internal Server Error", message: error.message });
   }
 };
 

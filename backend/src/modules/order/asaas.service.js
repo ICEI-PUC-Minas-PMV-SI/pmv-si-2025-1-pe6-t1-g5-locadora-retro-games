@@ -4,6 +4,7 @@ const AsaasService = {}
 const API_KEY = process.env.API_KEY
 
 AsaasService.getCustomerId = async (customer) => {
+    console.log(customer.cpf)
     const url = `https://api-sandbox.asaas.com/v3/customers?cpfCnpj=${customer.cpf}`;
     const response = await fetch(url, {
         method: 'GET',
@@ -12,7 +13,7 @@ AsaasService.getCustomerId = async (customer) => {
             access_token: API_KEY
         }
     });
-    const responseBody = await response.json();
+    const responseBody = await response.json()
     if(!responseBody.totalCount) return AsaasService.createCustomerId(customer);
     else return responseBody.data[0].id;
 }

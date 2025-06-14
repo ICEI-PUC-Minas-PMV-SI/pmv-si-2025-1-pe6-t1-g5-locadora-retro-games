@@ -8,14 +8,17 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Game } from '../../types/api';
+import { useCart } from '../../context/CartContext';
 
 interface GameCardProps {
   game: Game;
   onPress: (game: Game) => void;
-  onAddToCart: (game: Game) => void;
+  onAddToCart: (game: Game) => boolean;
 }
 
 const GameCard: React.FC<GameCardProps> = ({ game, onPress, onAddToCart }) => {
+  const { getGameQuantityInCart } = useCart();
+  
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
@@ -23,13 +26,23 @@ const GameCard: React.FC<GameCardProps> = ({ game, onPress, onAddToCart }) => {
     }).format(price);
   };
 
-  const getAvailabilityStatus = (amount: number) => {
-    if (amount === 0) return { text: 'Indisponível', color: '#ef4444' };
-    if (amount <= 5) return { text: 'Poucos disponíveis', color: '#f59e0b' };
-    return { text: 'Disponível', color: '#10b981' };
+  const quantityInCart = getGameQuantityInCart(game.id);
+  const availableStock = game.amount - quantityInCart;
+
+  const getAvailabilityStatus = (available: number, inCart: number) => {
+    if (available === 0) {
+      if (inCart > 0) {
+        return { text: `${inCart} no carrinho`, color: '#ef4444' };
+      }
+      return { text: 'Indisponível', color: '#ef4444' };
+    }
+    if (available <= 2) {
+      return { text: `${available} disponível`, color: '#f59e0b' };
+    }
+    return { text: `${available} disponível`, color: '#10b981' };
   };
 
-  const availability = getAvailabilityStatus(game.amount);
+  const availability = getAvailabilityStatus(availableStock, quantityInCart);
 
   return (
     <TouchableOpacity style={styles.card} onPress={() => onPress(game)}>
@@ -67,21 +80,19 @@ const GameCard: React.FC<GameCardProps> = ({ game, onPress, onAddToCart }) => {
               {game.description}
             </Text>
           )}
-        </View>
-
-        {/* Add to Cart Button */}
+        </View>        {/* Add to Cart Button */}
         <TouchableOpacity
           style={[
             styles.addButton,
-            game.amount === 0 && styles.addButtonDisabled
+            availableStock === 0 && styles.addButtonDisabled
           ]}
           onPress={() => onAddToCart(game)}
-          disabled={game.amount === 0}
+          disabled={availableStock === 0}
         >
           <Ionicons 
             name="add-circle" 
             size={24} 
-            color={game.amount === 0 ? '#9ca3af' : '#ffffff'} 
+            color={availableStock === 0 ? '#9ca3af' : '#ffffff'} 
           />
         </TouchableOpacity>
       </View>

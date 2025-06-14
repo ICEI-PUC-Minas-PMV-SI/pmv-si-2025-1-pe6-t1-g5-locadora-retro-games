@@ -8,6 +8,9 @@ import {
   RefreshControl,
   ActivityIndicator,
   Alert,
+  SafeAreaView,
+  StatusBar,
+  ScrollView,
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -20,6 +23,7 @@ import { Game, Console } from "../../types/api";
 import GameCard from "../GameCard/GameCard";
 import GameDetailModal from "../GameDetailModal/GameDetailModal";
 import UserProfileModal from "../UserProfileModal/UserProfileModal";
+import GuestModal from "../GuestModal/GuestModal";
 
 import { styles } from "./HomeScreen.styles";
 
@@ -43,11 +47,11 @@ const HomeScreen = () => {
   // Search and filter state
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  
-  // Modal state
+    // Modal state
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [userModalVisible, setUserModalVisible] = useState(false);
+  const [guestModalVisible, setGuestModalVisible] = useState(false);
   
   // Console filter state
   const [consoles, setConsoles] = useState<Console[]>([]);
@@ -182,55 +186,69 @@ const HomeScreen = () => {
   const handleGamePress = (game: Game) => {
     setSelectedGame(game);
     setModalVisible(true);
-  };
-
-  // Handle add to cart
-  const handleAddToCart = (game: Game) => {
-    if (game.amount > 0) {
-      addToCart(game);
+  };  // Handle add to cart
+  const handleAddToCart = (game: Game): boolean => {
+    const success = addToCart(game);
+    if (success) {
       Alert.alert(
         'Sucesso!',
         `${game.name} foi adicionado ao carrinho.`,
         [{ text: 'OK' }]
       );
     }
+    return success;
   };
 
+  // Handle user icon click
+  const handleUserIconClick = () => {
+    if (user) {
+      setUserModalVisible(true);
+    } else {
+      setGuestModalVisible(true);
+    }
+  };
   // Console filter buttons
   const renderConsoleFilters = () => (
-    <View style={styles.consoleFilters}>
-      <TouchableOpacity
-        style={[
-          styles.consoleFilterButton,
-          selectedConsoleId === null && styles.consoleFilterButtonActive
-        ]}
-        onPress={() => setSelectedConsoleId(null)}
+    <View style={styles.consoleFiltersContainer}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.consoleFiltersContent}
+        style={styles.consoleFiltersScroll}
       >
-        <Text style={[
-          styles.consoleFilterText,
-          selectedConsoleId === null && styles.consoleFilterTextActive
-        ]}>
-          Todos
-        </Text>
-      </TouchableOpacity>
-      
-      {consoles.map((console) => (
         <TouchableOpacity
-          key={console.id}
           style={[
             styles.consoleFilterButton,
-            selectedConsoleId === console.id && styles.consoleFilterButtonActive
+            selectedConsoleId === null && styles.consoleFilterButtonActive
           ]}
-          onPress={() => setSelectedConsoleId(console.id)}
+          onPress={() => setSelectedConsoleId(null)}
         >
           <Text style={[
             styles.consoleFilterText,
-            selectedConsoleId === console.id && styles.consoleFilterTextActive
+            selectedConsoleId === null && styles.consoleFilterTextActive
           ]}>
-            {console.name}
+            Todos
           </Text>
         </TouchableOpacity>
-      ))}
+        
+        {consoles.map((console) => (
+          <TouchableOpacity
+            key={console.id}
+            style={[
+              styles.consoleFilterButton,
+              selectedConsoleId === console.id && styles.consoleFilterButtonActive
+            ]}
+            onPress={() => setSelectedConsoleId(console.id)}
+          >
+            <Text style={[
+              styles.consoleFilterText,
+              selectedConsoleId === console.id && styles.consoleFilterTextActive
+            ]}>
+              {console.name}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 
@@ -266,23 +284,22 @@ const HomeScreen = () => {
         <ActivityIndicator size="large" color="#a855f7" />
         <Text style={styles.loadingText}>Carregando jogos...</Text>
       </View>
-    );
-  }
-  return (
-    <View style={styles.container}>
+    );  }  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#f3e8ff" />
+      <View style={styles.content}>
       {/* API Connection Status */}
       {apiConnected === false && (
         <View style={styles.errorBanner}>
           <Text style={styles.errorText}>
-            ❌ Não foi possível conectar ao servidor (host.docker.internal:8080)
+            ❌ Não foi possível conectar ao servidor
           </Text>
         </View>
       )}
 
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.logo}>🎮 NintendiN</Text>
-        <View style={styles.headerIcons}>          <TouchableOpacity 
+        <Text style={styles.logo}>🎮 NintendiN</Text>        <View style={styles.headerIcons}>          <TouchableOpacity 
             onPress={() => router.push("/cart")}
             style={styles.cartButton}
           >
@@ -295,7 +312,11 @@ const HomeScreen = () => {
               </View>
             )}
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setUserModalVisible(true)}>
+          {user && (
+            <TouchableOpacity onPress={() => router.push("/orders")}>
+              <Feather name="file-text" size={24} color="#a855f7" />
+            </TouchableOpacity>
+          )}          <TouchableOpacity onPress={handleUserIconClick}>
             <Feather name="user" size={24} color="#a855f7" />
           </TouchableOpacity>
         </View>
@@ -319,12 +340,10 @@ const HomeScreen = () => {
       </View>
 
       {/* Console Filters */}
-      {renderConsoleFilters()}
-
-      {/* Results Info */}
+      {renderConsoleFilters()}      {/* Results Info */}
       <View style={styles.resultsInfo}>
         <Text style={styles.resultsText}>
-          {totalItems} {totalItems === 1 ? 'jogo encontrado' : 'jogos encontrados'}
+          {games.length} de {totalItems} {totalItems === 1 ? 'jogo encontrado' : 'jogos encontrados'}
         </Text>
       </View>
 
@@ -359,14 +378,17 @@ const HomeScreen = () => {
         game={selectedGame}
         onClose={() => setModalVisible(false)}
         onAddToCart={handleAddToCart}
-      />
-
-      {/* User Profile Modal */}
+      />      {/* User Profile Modal */}
       <UserProfileModal
         visible={userModalVisible}
         onClose={() => setUserModalVisible(false)}
+      />      {/* Guest Modal */}
+      <GuestModal
+        visible={guestModalVisible}
+        onClose={() => setGuestModalVisible(false)}
       />
-    </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
