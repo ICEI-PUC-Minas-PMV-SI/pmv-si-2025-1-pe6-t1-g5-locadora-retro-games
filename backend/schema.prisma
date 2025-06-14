@@ -12,6 +12,7 @@ model User {
   name      String    @db.VarChar(100)
   email     String    @unique @db.VarChar(100)
   cpf       String    @unique @db.VarChar(11)
+  telephone String?   @db.VarChar(15) // optional field for telephone
   password  String    @db.VarChar(255) // encrypted password
   roleId    Int       @default(2) // 1 - admin, 2 - user. "user" role is default
   role      Role      @relation(fields: [roleId], references: [id], onDelete: NoAction)

@@ -10,6 +10,15 @@ type AuthContextType = {
   login: (credentials: LoginRequest) => Promise<void>;
   logout: () => Promise<void>;
   checkAuthStatus: () => Promise<void>;
+  register: (userData: RegisterData) => Promise<void>;
+};
+
+type RegisterData = {
+  name: string;
+  email: string;
+  password: string;
+  cpf: string;
+  phone: string;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -51,6 +60,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const register = async (userData: RegisterData) => {
+    try {
+      const response = await fetch('http://192.168.1.130:8080/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Registration failed');
+      }
+
+      const data = await response.json();
+      
+      await AsyncStorage.setItem('authToken', data.token);
+      await AsyncStorage.setItem('userData', JSON.stringify(data.user));
+      
+      setUser(data.user);
+    } catch (error) {
+      console.error('Registration error:', error);
+      throw error;
+    }
+  };
+
   const logout = async () => {
     try {
       await AsyncStorage.removeItem('authToken');
@@ -64,7 +99,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     checkAuthStatus();
   }, []);
-
   const value = {
     user,
     isAuthenticated: !!user,
@@ -72,6 +106,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     login,
     logout,
     checkAuthStatus,
+    register,
   };
 
   return (

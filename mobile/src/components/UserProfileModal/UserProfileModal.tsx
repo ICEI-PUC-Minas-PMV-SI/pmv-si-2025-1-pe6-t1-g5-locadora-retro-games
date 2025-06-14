@@ -17,9 +17,7 @@ interface UserProfileModalProps {
 }
 
 const UserProfileModal: React.FC<UserProfileModalProps> = ({ visible, onClose }) => {
-  const { user, logout } = useAuth();
-
-  const handleLogout = () => {
+  const { user, logout } = useAuth();  const handleLogout = () => {
     Alert.alert(
       'Confirmar Logout',
       'Tem certeza que deseja sair?',
@@ -64,9 +62,7 @@ const UserProfileModal: React.FC<UserProfileModalProps> = ({ visible, onClose })
             {user.cpf && (
               <Text style={styles.userInfo}>CPF: {user.cpf}</Text>
             )}
-          </View>
-
-          <View style={styles.actionsSection}>
+          </View>          <View style={styles.actionsSection}>
             <TouchableOpacity style={styles.actionButton} onPress={handleLogout}>
               <Ionicons name="log-out-outline" size={20} color="#ef4444" />
               <Text style={styles.logoutButtonText}>Sair</Text>
@@ -135,8 +131,7 @@ const styles = StyleSheet.create({
   },
   actionsSection: {
     marginBottom: 20,
-  },
-  actionButton: {
+  },  actionButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

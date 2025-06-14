@@ -54,16 +54,17 @@ UserController.getUserFromRequest = async (req, res) => {
 
 UserController.insertUser = async (req, res) => {
   try {
+    if (!body.name || !body.email || !body.cpf || !body.password) {
+      res.status(400).json("Missing or wrong data");
+    }
     const body = {
       name: req.body.name,
       email: req.body.email,
+      telephone: req.body?.telephone ?? null,
       cpf: req.body.cpf,
       password: req.body.password,
       roleId: req.body.roleId,
     };
-    if (!body.name || !body.email || !body.cpf || !body.password) {
-      res.status(400).json("Missing or wrong data");
-    }
     await UserService.create(body, req.userData.roleId);
     res.status(200).json("User created successfully");
   } catch (error) {
