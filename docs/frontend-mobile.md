@@ -12,7 +12,12 @@ A NintendIN é uma plataforma de aluguel de jogos e consoles retrô com o objeti
 
 ## Design Visual
 
-[Descreva o estilo visual da interface, incluindo paleta de cores, tipografia, ícones e outros elementos gráficos.]
+Buscamos construir uma interface acessível para usuários de todas as idades e níveis de familiaridade com tecnologia, uma vez que o público-alvo da NintendIN é composto por pessoas de diferentes faixas etárias e com variados graus de acesso ao mundo digital. Por isso, optamos por um design minimalista, que facilita a navegação e a compreensão das funcionalidades, mas que ainda assim traz elementos visuais que reforçam a identidade retrô da marca.
+A proposta visual combina o novo e o moderno com o antigo e o afetivo. Nosso objetivo foi oferecer uma experiência que despertasse a nostalgia dos usuários em relação aos jogos da infância, ao mesmo tempo em que apresentamos novidades com títulos de consoles mais atuais. Essa fusão entre passado e presente cria uma conexão emocional com o público e reforça o propósito da plataforma.
+A paleta de cores da aplicação é concentrada principalmente em tons de roxo, branco e cinza, escolhidos para transmitir modernidade e harmonia visual, além de proporcionar boa legibilidade. Os ícones utilizados são majoritariamente vazados, justamente para evitar poluição visual e manter a interface limpa. Uma exceção intencional é o ícone do controle de videogame, que aparece colorido, preenchido ou como ilustração em diversas áreas da aplicação, garantindo destaque ao símbolo mais icônico do imaginário coletivo relacionado ao universo dos games.
+A tipografia adotada é básica e de traços arredondados, escolhida para não roubar a atenção dos elementos principais — os jogos e os consoles. Essa decisão é essencial, considerando que a plataforma exibe diversas informações e fotografias dos produtos disponíveis no catálogo.
+De forma geral, o estilo visual da NintendIN foi cuidadosamente planejado para equilibrar estética e funcionalidade, reforçando a proposta da marca e oferecendo uma experiência agradável e intuitiva ao usuário.
+
 
 # Fluxo de Dados
 
