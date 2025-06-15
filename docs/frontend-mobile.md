@@ -21,7 +21,22 @@ A NintendIN é uma plataforma de aluguel de jogos e consoles retrô com o objeti
 
 # Tecnologias Utilizadas
 
-[Lista das tecnologias principais que serão utilizadas no projeto.]
+## 📱 Projeto com React Native + Expo
+
+| **Atuação**              | **Linguagem / Biblioteca**                                     | **Descrição** |
+|--------------------------|---------------------------------------------------------------|----------------|
+| **Front-End**            | `React Native` <br><br> `JavaScript / TypeScript` <br><br> `expo-router` | Framework para desenvolvimento de apps móveis nativos. <br><br> Linguagens principais do projeto. <br><br> Gerenciamento de rotas com abordagem baseada em arquivos, semelhante ao Next.js. |
+| **Estilização e UI**     | `@expo/vector-icons`                                          | Biblioteca de ícones padrão em apps Expo. |
+| **APIs e Utilitários**   | `Axios`                                                       | Requisições HTTP de forma simples e eficiente. |
+| **Back-End**             | `Node.js + Express` <br><br> `PostgreSQL`                     | API backend em Node. <br><br> Banco de dados relacional. |
+
+## 🛠️ Ferramentas de Desenvolvimento
+
+| **Atuação**              | **Ferramenta**                         | **Descrição** |
+|--------------------------|----------------------------------------|----------------|
+| **IDE**                  | `Visual Studio Code (VSCode)`          | IDE principal do projeto. |
+| **Gerenciador de Pacotes** | `Yarn`, `Npm`                        | Instalação e gerenciamento de dependências. |
+
 
 # Considerações de Segurança
 
