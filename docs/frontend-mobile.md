@@ -1,31 +1,33 @@
 # Front-end Móvel
 
-[Inclua uma breve descrição do projeto e seus objetivos.]
+A NintendIN é uma plataforma de aluguel de jogos e consoles retrô com o objetivo de tornar acessível essa coletânia para os entusiastas da cultura pop e diferentes públicos. Sua plataforma Mobile é voltada para o uso dos consumidores, permitindo o navegamento pela coletânia de jogos disponíveis no catálogo, realização dos aluguéis após a adição no carrinho de compras, criação de login na plataforma e a liberação do acesso do histórico de reservas com o uso do mesmo ativo.
+<br>
 
-## Projeto da Interface
+# Projeto da Interface
 [Descreva o projeto da interface móvel da aplicação, incluindo o design visual, layout das páginas, interações do usuário e outros aspectos relevantes.]
 
-### Wireframes
+## Wireframes
 
 [Inclua os wireframes das páginas principais da interface, mostrando a disposição dos elementos na página.]
 
-### Design Visual
+## Design Visual
 
 [Descreva o estilo visual da interface, incluindo paleta de cores, tipografia, ícones e outros elementos gráficos.]
 
-## Fluxo de Dados
+# Fluxo de Dados
 
-[Diagrama ou descrição do fluxo de dados na aplicação.]
+![Userflow](./img/UserFlowMobile.png)
+<br>
 
-## Tecnologias Utilizadas
+# Tecnologias Utilizadas
 
 [Lista das tecnologias principais que serão utilizadas no projeto.]
 
-## Considerações de Segurança
+# Considerações de Segurança
 
 [Discuta as considerações de segurança relevantes para a aplicação distribuída, como autenticação, autorização, proteção contra ataques, etc.]
 
-## Implantação
+# Implantação
 
 [Instruções para implantar a aplicação distribuída em um ambiente de produção.]
 
@@ -35,7 +37,7 @@
 4. Faça o deploy da aplicação no ambiente escolhido, seguindo as instruções específicas da plataforma de hospedagem.
 5. Realize testes para garantir que a aplicação esteja funcionando corretamente no ambiente de produção.
 
-## Testes
+# Testes
 
 Para a realização dos testes, foram escritos os casos no formato BDD (Behavior Driven Development), usando a estrutura Gherkin, dessa forma mantendo-os de forma clara e objetiva.
 
@@ -152,7 +154,9 @@ Junto a cada um dos casos, temos links com os vídeos da realização destes cen
     Então o aplicativo deve encerrar a sessão do usuário
     E o usuário deve ser redirecionado para a tela de login
 ```
+<br>
 
 # Referências
 
-Inclua todas as referências (livros, artigos, sites, etc) utilizados no desenvolvimento do trabalho.
+* Criação de Wireframes: https://www.figma.com/
+* Criação do Fluxo de Dados:  https://www.canva.com/
