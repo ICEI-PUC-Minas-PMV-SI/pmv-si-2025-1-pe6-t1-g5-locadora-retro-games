@@ -7,8 +7,10 @@ A NintendIN é uma plataforma de aluguel de jogos e consoles retrô com o objeti
 [Descreva o projeto da interface móvel da aplicação, incluindo o design visual, layout das páginas, interações do usuário e outros aspectos relevantes.]
 
 ## Wireframes
+![LogIn01](./img/LogIn-PáginaCarregando.png)  ![LogIn02](./img/LogIn-PáginaInicial.png) ![LogIn03](./img/LogIn-PáginaCadastro.png)
 
-[Inclua os wireframes das páginas principais da interface, mostrando a disposição dos elementos na página.]
+![Página Inicial do app](./img/Páginainicialdoapp.png) ![Página Inicial com menu aberto](./img/Páginainicialcommenuaberto.png) ![Página Catálogo](./img/Páginadocatálogodejogos.png) 
+![Página do jogo](./img/Páginadojogoselecionado.png) ![Página carrinho](./img/Páginadocarrinhodecompras.png) ![Página usuário](./img/Páginadoperfildousuário.png) ![Página filtros](./img/Páginadosfiltros.png) 
 
 ## Design Visual
 
