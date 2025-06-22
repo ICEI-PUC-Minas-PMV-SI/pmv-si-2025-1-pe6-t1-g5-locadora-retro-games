@@ -104,6 +104,236 @@ Usamos um ambiente de produção específico, com env de produção para acesso 
 <br>
 
 ## Testes
+# 🧪 Casos de Teste da API
+
+---
+
+## 🔐 Autenticação de Usuários
+
+### 🔸 `POST /auth/login`
+
+#### ✅ Teste: Login com credenciais válidas
+- **Entrada:** E-mail e senha corretos  
+- **Resultado Esperado:** `200 OK`  
+- **📎 Evidência:** [Visualizar Evidência](https://drive.google.com/file/d/1rFGFNwHURRtftgrmp4xwWxau1yH-IWHD/view?usp=drive_link)
+
+#### ❌ Teste: Login com credenciais inválidas
+- **Entrada:** E-mail ou senha incorretos  
+- **Resultado Esperado:** `400 Bad Request` com mensagem de erro  
+- **📎 Evidência:** ![img](./img/auth.png)
+
+---
+
+## 👥 Listagem de Usuários
+
+### 🔸 `GET /users/`
+
+#### ✅ Teste: Token válido
+- **Entrada:** Token de autenticação  
+- **Resultado Esperado:** `200 OK`  
+- **📎 Evidência:** [Visualizar Evidência](https://drive.google.com/file/d/1ekORIumLeZOhekgbd40N5NghZofkwcQ-/view?usp=drive_link)
+
+#### ❌ Teste: Token inválido ou expirado
+- **Resultado Esperado:** `401 Unauthorized`  
+- **📎 Evidência:** ![img](./img/getusers.png)
+
+---
+
+## 📝 Atualização de Usuário
+
+### 🔸 `PUT /users/{id}`
+
+#### ✅ Teste: Atualização com dados válidos
+- **Entrada:** ID e novos dados  
+- **Resultado Esperado:** `200 OK`  
+- **📎 Evidência:** [Visualizar Evidência](https://drive.google.com/file/d/15WIYHCZuZXHIZ0yGbkxDlOpj8Our7djY/view?usp=drive_link)
+
+#### ❌ Teste: Token inválido ou expirado
+- **Resultado Esperado:** `401 Unauthorized`  
+- **📎 Evidência:** ![img](./img/putusers.png)
+
+---
+
+## ➕ Criação de Usuário
+
+### 🔸 `POST /users/`
+
+#### ✅ Teste: Dados válidos e token válido
+- **Resultado Esperado:** `200 OK`  
+- **📎 Evidência:** [Visualizar Evidência](https://drive.google.com/file/d/1hamxy_7VLlqksD53kni6BbgBF23n89Gl/view?usp=drive_link)
+
+#### ❌ Teste: Token inválido ou expirado
+- **Resultado Esperado:** `401 Unauthorized`  
+- **📎 Evidência:** ![img](./img/postusers.png)
+
+---
+
+## 🗑️ Exclusão de Usuário
+
+### 🔸 `DELETE /users/{id}`
+
+#### ✅ Teste: Exclusão com token válido
+- **Entrada:** ID do usuário  
+- **Resultado Esperado:** `200 OK`  
+- **📎 Evidência:** [Visualizar Evidência](https://drive.google.com/file/d/1oTk0ncebwvK7HAVCyNLPdL6WqmoxtX9s/view?usp=drive_link)
+
+#### ❌ Teste: Token inválido ou expirado
+- **Resultado Esperado:** `401 Unauthorized`  
+- **📎 Evidência:** ![img](./img/deleteusers.png)
+
+---
+
+## 🎮 Criação de Console
+
+### 🔸 `POST /consoles/`
+
+#### ✅ Teste: Dados válidos e token válido
+- **Resultado Esperado:** `200 OK`  
+- **📎 Evidência:** [Visualizar Evidência](https://drive.google.com/file/d/1ZRnyNyXFdoxaNibJ2FTiNenYw_6HJJrK/view?usp=drive_link)
+
+#### ❌ Teste: Token inválido ou expirado
+- **Resultado Esperado:** `401 Unauthorized`  
+- **📎 Evidência:** ![img](./img/postconsoles.png)
+
+---
+
+## 📋 Listagem de Consoles
+
+### 🔸 `GET /consoles/`
+
+#### ✅ Teste: Token válido
+- **Resultado Esperado:** `200 OK`  
+- **📎 Evidência:** [Visualizar Evidência](https://drive.google.com/file/d/11AbY15RrgWJkptU6h0r4ZWjenLhJGC40/view?usp=drive_link)
+
+#### ❌ Teste: Token inválido ou expirado
+- **Resultado Esperado:** `401 Unauthorized`  
+- **📎 Evidência:** ![img](./img/getconsoles.png)
+
+---
+
+## ✏️ Atualização de Console
+
+### 🔸 `PUT /consoles/{id}`
+
+#### ✅ Teste: Dados válidos e token válido
+- **Resultado Esperado:** `200 OK`  
+- **📎 Evidência:** [Visualizar Evidência](https://drive.google.com/file/d/1qJZH_ZaNxMBQpjABGW2YQziIk7Qsddoq/view?usp=drive_link)
+
+#### ❌ Teste: Token inválido ou expirado
+- **Resultado Esperado:** `401 Unauthorized`  
+- **📎 Evidência:** ![img](./img/putconsoles.png)
+
+---
+
+## 🗑️ Exclusão de Console
+
+### 🔸 `DELETE /consoles/{id}`
+
+#### ✅ Teste: Exclusão com token válido
+- **Resultado Esperado:** `200 OK`  
+- **📎 Evidência:** [Visualizar Evidência](https://drive.google.com/file/d/1svaVqQLGGerG-WKfjio8wn9Y_AgC2jJ-/view?usp=drive_link)
+
+#### ❌ Teste: Token inválido ou expirado
+- **Resultado Esperado:** `401 Unauthorized`  
+- **📎 Evidência:** ![img](./img/deleteconsoles.png)
+
+---
+
+## 🕹️ Criação de Jogo
+
+### 🔸 `POST /games/`
+
+#### ✅ Teste: Dados válidos e token válido
+- **Resultado Esperado:** `200 OK`  
+- **📎 Evidência:** [Visualizar Evidência](https://drive.google.com/file/d/1lp2NYGDP42dfWJ_zclBTNM6jCQ3iQT6E/view?usp=drive_link)
+
+#### ❌ Teste: Token inválido ou expirado
+- **Resultado Esperado:** `401 Unauthorized`  
+- **📎 Evidência:** ![img](./img/postgames.png)
+
+---
+
+## 🎲 Listagem de Jogos
+
+### 🔸 `GET /games/`
+
+#### ✅ Teste: Token válido
+- **Resultado Esperado:** `200 OK`  
+- **📎 Evidência:** [Visualizar Evidência](https://drive.google.com/file/d/1MU9IGygTe2ZLaMbXZQLVyTUmq5eyqWqP/view?usp=drive_link)
+
+#### ❌ Teste: Token inválido ou expirado
+- **Resultado Esperado:** `401 Unauthorized`  
+- **📎 Evidência:** ![img](./img/getgames.png)
+
+---
+
+## 🔧 Edição de Jogo
+
+### 🔸 `PUT /games/{id}`
+
+#### ✅ Teste: Edição com dados válidos
+- **Resultado Esperado:** `200 OK`  
+- **📎 Evidência:** [Visualizar Evidência](https://drive.google.com/file/d/15IzCWhkOQaqgLiNl2ixYwZVxxKL-Kzhf/view?usp=drive_link)
+
+#### ❌ Teste: Token inválido ou expirado
+- **Resultado Esperado:** `401 Unauthorized`  
+- **📎 Evidência:** ![img](./img/putgames.png)
+
+---
+
+## ❌ Exclusão de Jogo
+
+### 🔸 `DELETE /games/{id}`
+
+#### ✅ Teste: Exclusão com token válido
+- **Resultado Esperado:** `200 OK`  
+- **📎 Evidência:** [Visualizar Evidência](https://drive.google.com/file/d/1A7Qe_WKpwb3fosMva5cfRHHxUXcrJav1/view?usp=drive_link)
+
+#### ❌ Teste: Token inválido ou expirado
+- **Resultado Esperado:** `401 Unauthorized`  
+- **📎 Evidência:** ![img](./img/deletegames.png)
+
+---
+
+## 🧾 Criação de Pedido
+
+### 🔸 `POST /orders/`
+
+#### ✅ Teste: Criação com token válido
+- **Resultado Esperado:** `200 OK`  
+- **📎 Evidência:** [Visualizar Evidência](https://drive.google.com/file/d/1V8LJKWUtX7watxK9xks5WtS7vc2G1_ek/view?usp=drive_link)
+
+#### ❌ Teste: Token inválido ou expirado
+- **Resultado Esperado:** `401 Unauthorized`  
+- **📎 Evidência:** ![img](./img/postorders.png)
+
+---
+
+## 📦 Listagem de Pedidos
+
+### 🔸 `GET /orders/`
+
+#### ✅ Teste: Token válido
+- **Resultado Esperado:** `200 OK`  
+- **📎 Evidência:** [Visualizar Evidência](https://drive.google.com/file/d/11zrxsWs9YMWqizHejbYcK-4u479QJMa-/view?usp=drive_link)
+
+#### ❌ Teste: Token inválido ou expirado
+- **Resultado Esperado:** `401 Unauthorized`  
+- **📎 Evidência:** ![img](./img/getorders.png)
+
+---
+
+## 🗑️ Exclusão de Pedido
+
+### 🔸 `DELETE /orders/{id}`
+
+#### ✅ Teste: Exclusão com token válido
+- **Resultado Esperado:** `200 OK`  
+- **📎 Evidência:** [Visualizar Evidência](https://drive.google.com/file/d/1UM3WCViQW_qUGpe_ejQ5eqqlcvjRI3pR/view?usp=drive_link)
+
+#### ❌ Teste: Token inválido ou expirado
+- **Resultado Esperado:** `401 Unauthorized`  
+- **📎 Evidência:** ![img](./img/deleteorders.png)
 
 Os testes foram de uso, estão evidenciados no Google Drive. Basta acessar e assistir os vídeos para conferir como nossa aplicação funciona caso todos os parâmetros das rotas estejam configurados corretamente.
 
