@@ -231,25 +231,123 @@ O sistema está hospedado na Vercel. A Vercel fornece ferramentas de desenvolved
 https://nintendin.vercel.app/login
 
 # Testes
+## 🔹 Cenário 1: [Login](./videos/Login/2025-05-10%2019-25-28.mkv)
 
-[Descreva a estratégia de teste, incluindo os tipos de teste a serem realizados (unitários, integração, carga, etc.) e as ferramentas a serem utilizadas.]
+```
+Dado que o usuário está na tela inicial  
+Quando preencher o e-mail e a senha corretamente  
+E clicar no botão de login  
+Então o sistema deve autenticar o usuário  
+E redirecioná-lo para o ambiente interno da aplicação  
+```
 
-1. [Login](./videos/Login/2025-05-10%2019-25-28.mkv) - O usuário deve entrar  com e-mail e senha.
+---
 
+## 🔹 Cenário 2: [Consoles Criar, Editar, Visualizar, Deletar](./videos/Consoles/2025-05-10%2019-38-54.mkv)
 
-2. [Consoles Criar  Editar  Visualizar  Deletar](./videos/Consoles/2025-05-10%2019-38-54.mkv) - É possivel criar, editar, visualizar e deletar os consoles.
+```
+Dado que o usuário acessa a seção de consoles  
+Quando o usuário criar um novo console com dados válidos  
+Então o console deve ser salvo com sucesso  
 
-3. [Jogos Criar  Editar  Visualizar  Deletar](./videos/Jogos/2025-05-10%2019-41-03.mkv) - É possível criar, editar, visualizar e deletar jogos. 
+Quando o usuário editar um console existente  
+Então as informações devem ser atualizadas  
 
-4. [Reservas Criar  Editar  Visualizar  Deletar](./videos/Reservas/2025-05-12%2000-52-56.mkv) - É possível criar, editar, visualizar e deletar uma reserva.
+Quando o usuário visualizar a lista de consoles  
+Então todos os registros devem ser exibidos corretamente  
 
-5. [Usuário Criar  Editar  Visualizar  Deletar](./videos/Usuário/2025-05-10%2019-29-00.mkv) - Para cirar, basta inserir os dados do usário no formulário, é possivel também edidar o cadastro, visualizar e deletar caso necessário.
+Quando o usuário deletar um console  
+Então ele deve ser removido da base de dados  
+```
 
-6. [Testar ordenacao de paginas](./videos/Ordenacao/2025-05-12%2000-44-00.mkv) - A ordenação é feita de acordo com a necessidade do usuário, basta clicar na coluna que deseja ordenar.
+---
 
-7. [Testas as buscas de páginas](./videos/Buscas/2025-05-12%2000-47-36.mkv) - Para fazer a busca, basta digitar a informação.
+## 🔹 Cenário 3: [Jogos Criar, Editar, Visualizar, Deletar](./videos/Jogos/2025-05-10%2019-41-03.mkv)
 
-7. [Testar o Logout](./videos/Logout/2025-05-12%2000-57-17.mkv) - Clicar em sair para fazer o logout.
+```
+Dado que o usuário acessa a seção de jogos  
+Quando o usuário criar um novo jogo com informações válidas  
+Então o jogo deve ser adicionado à lista  
+
+Quando o usuário editar um jogo existente  
+Então as alterações devem ser aplicadas  
+
+Quando o usuário visualizar os jogos disponíveis  
+Então todos os jogos devem ser apresentados corretamente  
+
+Quando o usuário excluir um jogo  
+Então ele deve ser removido da listagem  
+```
+
+---
+
+## 🔹 Cenário 4: [Reservas Criar, Editar, Visualizar, Deletar](./videos/Reservas/2025-05-12%2000-52-56.mkv)
+
+```
+Dado que o usuário está na seção de reservas  
+Quando o usuário criar uma nova reserva  
+Então ela deve ser registrada corretamente  
+
+Quando o usuário editar uma reserva existente  
+Então os dados devem ser atualizados  
+
+Quando o usuário visualizar a lista de reservas  
+Então todas as informações devem estar visíveis  
+
+Quando o usuário excluir uma reserva  
+Então ela deve ser removida do sistema  
+```
+
+---
+
+## 🔹 Cenário 5: [Usuário Criar, Editar, Visualizar, Deletar](./videos/Usuário/2025-05-10%2019-29-00.mkv)
+
+```
+Dado que o usuário está na tela de gerenciamento de usuários  
+Quando preencher o formulário com dados válidos e salvar  
+Então o novo usuário deve ser cadastrado  
+
+Quando o usuário editar um cadastro existente  
+Então as informações devem ser atualizadas  
+
+Quando o usuário visualizar a lista de usuários  
+Então todos os cadastros devem ser listados  
+
+Quando o usuário deletar um registro  
+Então ele deve ser removido com sucesso  
+```
+
+---
+
+## 🔹 Cenário 6: [Ordenação de Páginas](./videos/Ordenacao/2025-05-12%2000-44-00.mkv)
+
+```
+Dado que o usuário está em uma tabela com dados  
+Quando o usuário clicar em uma coluna  
+Então os registros devem ser ordenados com base na coluna selecionada  
+```
+
+---
+
+## 🔹 Cenário 7: [Busca nas Páginas](./videos/Buscas/2025-05-12%2000-47-36.mkv)
+
+```
+Dado que o usuário está visualizando uma tabela de dados  
+Quando digitar um termo no campo de busca  
+Então os resultados devem ser filtrados conforme o termo inserido  
+```
+
+---
+
+## 🔹 Cenário 8: [Logout](./videos/Logout/2025-05-12%2000-57-17.mkv)
+
+```
+Dado que o usuário está logado na aplicação  
+Quando clicar no botão "Sair"  
+Então a sessão deve ser encerrada  
+E o usuário deve ser redirecionado para a tela de login  
+```
+
 
 # Referências
 
