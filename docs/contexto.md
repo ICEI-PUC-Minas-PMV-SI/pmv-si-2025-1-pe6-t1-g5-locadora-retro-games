@@ -119,7 +119,7 @@ O projeto está restrito pelos itens apresentados na tabela a seguir.
 
 A imagem abaixo representa como a solução será arquitetada, visando atender os requisitos de maneira otimizada, tanto tecnologicamente quanto do conhecimento e domínio da equipe no uso das mesmas.
 
-![arq](./img/arquitetura.png)
+![arq](./img/Arquitetura.png)
 
 <br> 
 
