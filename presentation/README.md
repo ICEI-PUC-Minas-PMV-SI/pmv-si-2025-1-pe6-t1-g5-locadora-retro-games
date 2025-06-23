@@ -1,3 +1,7 @@
-# Apresentação da Solução
+# 🎮 Locadora Retro Games
 
-Faça uma apresentação de um resumo de todos o processo de desenvolvimento e no final apresente a solução desenvolvida, usando um pequeno vídeo.
+Sistema completo de locadora de jogos retrô com aplicativo mobile e painel administrativo web.
+
+## 📹 Demonstração
+
+**[▶️ Assista ao Pitch do Projeto](./pitch.mp4)**

@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://pmv-si-2025-1-pe6-t1-g5-locadora-retro.onrender.com"
+      "url": "http://localhost:8080"
     }
   ],
   "paths": {
